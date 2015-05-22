@@ -1,0 +1,168 @@
+.editor-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 270px;
+  background-color: #000;
+  color: #666;
+  z-index: 1000;
+  -moz-transition: all .50s ease-in-out;
+  -o-transition: all .50s ease-in-out;
+  -webkit-transition: all .50s ease-in-out;
+  transition: all .50s ease-in-out;
+}
+/*.editor-menu.collapsed {*/
+  /*left: -275px;*/
+  /*overflow: hidden;*/
+  /*-moz-transition: all .50s ease-in-out;*/
+  /*-o-transition: all .50s ease-in-out;*/
+  /*-webkit-transition: all .50s ease-in-out;*/
+  /*transition: all .50s ease-in-out;*/
+/*}*/
+
+.jsz-fa-big {
+  font-size: 42px;
+}
+
+.jsz-fa-btn {
+  margin: 6px 0;
+  cursor: pointer;
+}
+.jsz-fa-btn:hover {
+  color: darkorange;
+}
+
+.jsz-fa-btn-small {
+  font-size: 18px;
+}
+.jsz-fa-btn-big {
+  font-size: 28px;
+}
+
+
+.jsz-fa-btn-checked {
+  color: #428bca;
+  cursor: pointer;
+}
+
+.jsz-fa-btn-checked:hover {
+  color: #2a6496;
+}
+
+.editor-menu-header {
+  position: absolute;
+  padding: 10px;
+  height: 60px;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  background-color: #000;
+  width: 100%;
+}
+
+.editor-menu-footer {
+  position: absolute;
+  bottom: 0;
+  height: 46px;
+  font-size: 10px;
+  text-align: center;
+  background-color: #000;
+  padding-top: 10px;
+  z-index: 10;
+}
+
+.editor-menu-body {
+  position: absolute;
+  width: 100%;
+  top: 60px;
+  overflow: auto;
+  bottom: 0;
+}
+
+.editor-menu-body.dragging {
+  overflow: inherit;
+}
+
+.editor-menu .form-control {
+  background-color: #444;
+  border: 1px solid #222;
+  border-radius: 2px;
+  color: #999;
+}
+
+.editor-menu .btn {
+  border: 1px solid #222;
+  border-radius: 2px;
+}
+.editor-menu .btn-default {
+  color: #999;
+  background-color: #444;
+}
+
+.editor-menu .btn-default:hover,
+.editor-menu .btn-default:focus,
+.editor-menu .btn-default:active,
+.editor-menu .btn-default.active {
+  color: #999;
+  background-color: darkorange;
+  border-color: #222;
+}
+
+.editor-menu .list-group-item {
+  color: #999;
+  background-color: #444;
+  border: #222 1px solid;
+  border-radius: 0;
+}
+
+.editor-menu .list-group > a:hover,
+.editor-menu .list-group > li:hover {
+  background-color: yellowgreen;
+  color: #111;
+  border-color: yellowgreen;
+}
+.editor-menu a.list-group-item.active {
+  background-color: darkorange;
+  border-color: #222;
+}
+.editor-menu a.list-group-item.active:hover{
+  background-color: yellowgreen;
+  color: #111;
+  border-color: #222;
+}
+.editor-menu a.list-group-item.active:focus {
+  background-color: darkorange;
+  border-color: #222;
+}
+
+.panel-default > .panel-heading {
+  color: #777;
+  background-color: #111;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.panel-default > .panel-heading + .panel-collapse .panel-body {
+  background-color: #222;
+  border: 0;
+  color: #777;
+}
+
+.panel-group .panel {
+  border: #000 4px solid;
+  border-radius: 0;
+}
+
+.panel-title {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-size: 10px;
+  color: yellowgreen;
+  text-transform: uppercase;
+}
+
+.panel-heading a {
+  text-decoration: none;
+  cursor: pointer;
+}

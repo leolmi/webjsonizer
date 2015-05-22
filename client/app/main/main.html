@@ -1,0 +1,83 @@
+<!--<div ng-include="'components/navbar/navbar.html'"></div>-->
+
+<header class="hero-unit" id="banner">
+  <div class="container">
+    <h1>WEB JSON<small>izer</small></h1>
+    <i class="fa fa-5x fa-globe"></i><i class="fa fa-2x fa-chevron-right separator"></i><i class="fa fa-5x fa-align-justify"></i>
+  </div>
+</header>
+
+<div class="container">
+  <div class="login-form" ng-show="loginform">
+    <form class="form" name="formlgn" ng-submit="login(formlgn)" novalidate>
+      <!-- EMAIL -->
+      <div class="form-group" ng-class="{ 'has-success': formlgn.email.$valid && submitted,'has-error': formlgn.email.$invalid && submitted }">
+        <label>Email</label>
+        <input type="email" name="email" class="form-control" ng-model="user.email" required mongoose-error/>
+        <p class="help-block" ng-show="formlgn.email.$error.email && submitted"> Doesn't look like a valid email.</p>
+        <p class="help-block" ng-show="formlgn.email.$error.required && submitted"> What's your email address?</p>
+        <p class="help-block" ng-show="formlgn.email.$error.mongoose"> {{ errors.email }}</p>
+      </div>
+      <!-- PSWD -->
+      <div class="form-group" ng-class="{ 'has-success': formlgn.password.$valid && submitted,'has-error': formlgn.password.$invalid && submitted }">
+        <label>Password</label>
+        <input type="password" name="password" class="form-control" ng-model="user.password" ng-minlength="3" required mongoose-error/>
+        <p class="help-block" ng-show="(formlgn.password.$error.minlength || formlgn.password.$error.required) && submitted">Password must be at least 3 characters.</p>
+        <p class="help-block" ng-show="formlgn.password.$error.mongoose">{{ errors.password }}</p>
+      </div>
+      <!-- ERRORS -->
+      <div class="form-group has-error">
+        <p class="help-block">{{ errors.other }}</p>
+      </div>
+      <!-- BUTTONS -->
+      <div class="buttons-container">
+        <button class="btn jsz-fa-btn jsz-fa-btn-trsp" type="button" ng-click="toggle(false)"><i class="fa fa-4x fa-user-plus"></i></button>
+        <button class="btn jsz-fa-btn jsz-fa-btn-trsp" type="submit"><i class="fa fa-4x fa-play-circle"></i></button>
+        <i class="fa fa-user-md aslink recover-tool" ng-show="user.email && formlgn.email.$valid" ng-click="recover()"></i>
+      </div>
+    </form>
+  </div>
+  <div class="login-form" ng-hide="loginform">
+    <form class="form" name="formreg" ng-submit="register(formreg)" novalidate>
+      <!-- EMAIL -->
+      <div class="form-group" ng-class="{ 'has-success': formreg.email.$valid && submitted,'has-error': formreg.email.$invalid && submitted }">
+        <label>Email</label>
+        <input type="email" name="email" class="form-control" ng-model="user.email" required mongoose-error/>
+        <p class="help-block" ng-show="formreg.email.$error.email && submitted"> Doesn't look like a valid email.</p>
+        <p class="help-block" ng-show="formreg.email.$error.required && submitted"> What's your email address?</p>
+        <p class="help-block" ng-show="formreg.email.$error.mongoose"> {{ errors.email }}</p>
+      </div>
+      <!-- PSWD -->
+      <div class="form-group" ng-class="{ 'has-success': formreg.password.$valid && submitted,'has-error': formreg.password.$invalid && submitted }">
+        <label>Password</label>
+        <input type="password" name="password" class="form-control" ng-model="user.password" ng-minlength="3" required mongoose-error/>
+        <p class="help-block" ng-show="(formreg.password.$error.minlength || formreg.password.$error.required) && submitted">Password must be at least 3 characters.</p>
+        <p class="help-block" ng-show="formreg.password.$error.mongoose">{{ errors.password }}</p>
+      </div>
+      <!-- REPEAT PSWD -->
+      <div class="form-group" ng-class="{ 'has-success': formreg.confirmPassword.$valid && submitted,'has-error': formreg.confirmPassword.$invalid && submitted }">
+        <label>Repeat Password</label>
+        <input type="password" name="confirmPassword" class="form-control" ng-model="user.password2" ng-minlength="3" required compare-to="user.password"/>
+        <p class="help-block" ng-show="formreg.confirmPassword.$error.compareTo && submitted">Repeat password correctly</p>
+      </div>
+      <div class="buttons-container">
+        <button class="btn jsz-fa-btn jsz-fa-btn-trsp" type="button" ng-click="toggle(true)"><i class="fa fa-4x fa-sign-in"></i></button>
+        <button class="btn jsz-fa-btn jsz-fa-btn-trsp" type="submit"><i class="fa fa-4x fa-play-circle"></i></button>
+      </div>
+    </form>
+  </div>
+  <div class="func-desc">
+    <p><i class="fa fa-fw fa-3x fa-globe"></i><br>Generate a web request, simple or complex...</p>
+    <i class="fa fa-3x fa-caret-down"></i>
+    <p><i class="fa fa-fw fa-3x fa-table"></i><br>access to specific content such as tables, or other data...</p>
+    <i class="fa fa-3x fa-caret-down"></i>
+    <p><i class="fa fa-fw fa-3x fa-align-justify"></i><br>return data in JSON format.</p>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+      <p>Web-Jsonizer v{{version}} |
+         <a href="https://github.com/leolmi/webjsonizer/issues?state=open">Issues</a></p>
+  </div>
+</footer>

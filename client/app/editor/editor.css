@@ -1,0 +1,72 @@
+.editor-container {
+  position: relative;
+}
+.menu-hidden {
+  width: 270px;
+  display: inline-block;
+}
+
+.editor-body {
+  display: inline-block;
+  /*padding: 20px;*/
+  width: calc(100% - 270px);
+  position: absolute;
+}
+.new-sequence {
+  text-align: center;
+  border-radius: 10px;
+  color: yellowgreen;
+  padding: 10px;
+  margin: 20px;
+}
+.new-sequence-evident {
+  background-color: #444;
+}
+
+.top-menu {
+  position: fixed;
+  text-align: right;
+  width: calc(100% - 270px);
+  background-color: #222;
+  z-index: 10;
+}
+.top-menu > .title {
+  position: absolute;
+  color: yellowgreen;
+  margin: 10px;
+  font-weight: bold;
+}
+
+.sequence {
+  padding: 50px 20px;
+}
+.sequence-header {
+  border: #999 6px solid;
+  padding: 10px;
+  background-color: #999;
+  color: #222;
+}
+
+
+.my-star-sequence {
+  padding: 4px;
+  margin: 4px;
+}
+.my-sequence {
+  padding: 0 10px 4px;
+}
+.my-sequence.current,
+.my-star-sequence.current {
+  border-left: #ff8c00 4px solid;
+}
+.my-sequence:hover {
+  cursor: pointer;
+  color: #9acd32;
+}
+.my-star-sequence:hover {
+  background-color: #9acd32;
+  cursor: pointer;
+  border-radius: 6px;
+  color: #111;
+  /*color: #ff8c00;*/
+}

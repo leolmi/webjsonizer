@@ -1,0 +1,58 @@
+<div class="editor-menu">
+  <header class="editor-menu-header">
+    <i class="jsz-fa-btn jsz-fa-btn-big fa fa-fw fa-power-off" ng-click="logout()"></i>
+    <span class="font-awesome"><i class="fa fa-fw jsz-fa-btn-big fa-user"></i> {{user.email}}</span>
+  </header>
+  <article class="editor-menu-body">
+    <div class="sequences-star">
+      <div class="my-star-sequence"
+           ng-repeat="s in sequences | filter:{ 'star':true }"
+           ng-click="open(s)" ng-class="{'current':s._id==sequence._id}">
+        <i class="fa fa-fw aslink"
+           ng-class="{'fa-star-o':!s.star ,'fa-star':s.star }"
+           ng-click="star($event,s)"></i> {{s.title}}
+      </div>
+    </div>
+    <accordion close-others="false" id="page-controls-container">
+      <accordion-group heading="All my sequences" is-open="true">
+        <span ng-show="!sequences || sequences.length<=0">Your sequences...</span>
+        <div class="my-sequence" ng-repeat="s in sequences"
+             ng-click="open(s)" ng-class="{'current':s._id==sequence._id}">
+          <i class="fa fa-fw aslink"
+             ng-class="{'fa-star-o':!s.star ,'fa-star':s.star }"
+             ng-click="star($event,s)"></i> {{s.title}}
+        </div>
+      </accordion-group>
+    </accordion>
+  </article>
+</div>
+<div class="editor-container">
+  <div class="menu-hidden"></div>
+  <div class="editor-body">
+    <div ng-hide="sequence" class="new-sequence new-sequence-evident aslink" ng-click="newSequence()">
+      <i class="fa fa-fw fa-plus-circle"></i> Create new sequence
+    </div>
+    <div ng-show="sequence" class="sequence-editor">
+      <div class="top-menu">
+        <div class="title">{{sequence.title}}</div>
+        <i class="jsz-fa-btn jsz-fa-btn-big fa fa-fw" ng-repeat="b in buttons"
+           ng-class="b.icon" ng-click="b.action()" title="{{b.tooltip}}"></i>
+      </div>
+      <div class="sequence">
+        <header class="sequence-header">
+          <p><small>Title:</small> {{sequence.title}}</p>
+          <p><small>Enabled:</small> {{sequence.enabled}}</p>
+          <p><small>SSL:</small> {{sequence.SSL}}</p>
+          <p><small>Parameters:</small> {{sequence.parameters.length}}</p>
+        </header>
+        <sequence-item ng-repeat="i in sequence.items" data-ng-model="i"
+                       last="($index==sequence.items.length-1)"
+                       collapsed="true"></sequence-item>
+        <div class="new-sequence aslink" ng-click="newSequenceItem()">
+          <i class="fa fa-fw fa-plus-circle"></i> Add new sequence item
+        </div>
+      </div>
+    </div>
+    <pre>Sequence: {{sequence}}</pre>
+  </div>
+</div>

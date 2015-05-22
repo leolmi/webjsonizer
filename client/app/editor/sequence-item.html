@@ -1,0 +1,12 @@
+<div class="sequence-item">
+  <div class="item-line item-line-up"></div>
+  <div class="item-point aslink" ng-click="toggle()"></div>
+  <div class="item-line item-line-down" ng-class="{'last':last}"></div>
+  <div ng-show="collapsed">{{getShortDesc()}}</div>
+  <div ng-hide="collapsed">
+    <p><small>Title:</small> {{item.title}}</p>
+    <p><small>Method:</small> {{item.method}}</p>
+    <p><small>Path:</small> {{item.path}}</p>
+    <p><small>Referer:</small> {{item.referer}}</p>
+  </div>
+</div>

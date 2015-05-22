@@ -1,0 +1,45 @@
+.sequence-item {
+  background-color: #333;
+  padding: 10px;
+  margin: 10px 0 10px 40px;
+  border-radius: 5px;
+  position: relative;
+}
+
+.item-line {
+  position: absolute;
+  background-color: #999;
+  width: 8px;
+  left: -30px;
+  height: 50%;
+  z-index: 0;
+}
+.item-line-up {
+  top: -10px;
+}
+.item-line-down {
+  top: 50%;
+}
+.item-line.last {
+  display: none;
+}
+
+.item-point {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border: #999 4px solid;
+  border-radius: 15px;
+  background-color: #999;
+  left: -40px;
+  top: calc(50% - 15px);
+  z-index: 3;
+  -moz-transition: all .50s ease-in-out;
+  -o-transition: all .50s ease-in-out;
+  -webkit-transition: all .50s ease-in-out;
+  transition: all .50s ease-in-out;
+}
+
+.item-point:hover {
+  background-color: #222;
+}
