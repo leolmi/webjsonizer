@@ -27,11 +27,17 @@
 
 .jsz-fa-btn {
   margin: 6px 0;
+}
+.jsz-fa-btn.disabled {
+  color: #444;
+}
+.jsz-fa-btn:not(.disabled) {
   cursor: pointer;
 }
-.jsz-fa-btn:hover {
+.jsz-fa-btn:not(.disabled):hover {
   color: darkorange;
 }
+
 
 .jsz-fa-btn-small {
   font-size: 18px;

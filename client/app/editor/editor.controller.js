@@ -12,7 +12,7 @@ angular.module('webjsonizerApp')
     $scope.newSequence = function() {
       $http.post('/api/sequence', { title: 'New Sequence', enabled: true })
         .success(function(seq){
-          $scope.refreshDocuments();
+          refreshAllSequences();
           $scope.open(seq);
         })
         .error(function(err) {
@@ -43,8 +43,9 @@ angular.module('webjsonizerApp')
     var modalDelete = Modal.confirm.ask(function(seq) {
       $http.delete('/api/sequence/'+seq._id)
         .success(function(){
+          removeSequence(seq._id)
           $scope.sequence = undefined;
-          $scope.refreshDocuments();
+          refreshAllSequences();
           Logger.ok('Sequence "'+seq.title+'" deleted!');
         })
         .error(function(err) {
@@ -70,7 +71,32 @@ angular.module('webjsonizerApp')
         });
     };
 
+    $scope.save = function() {
+      var seq = $scope.sequence;
+      if (!seq || !$scope.modified) return;
+      $http.put('/api/sequence/'+seq._id, seq)
+        .success(function(){
+          $scope.modified = false;
+          Logger.ok('Sequence '+seq.title+' updated');
+          refreshDocument(seq._id);
+        })
+        .error(function(err){
+          Logger.error('Error updating sequence '+seq.title, JSON.stringify(err));
+        });
+    };
+
+    $scope.getClass = function(b) {
+      var c = { 'disabled': b.disabled };
+      c[b.icon]=true;
+      return c;
+    };
+
     $scope.buttons = [{
+      icon:'fa-download',
+      action: $scope.save,
+      tooltip:'Save current sequence',
+      disabled: !$scope.modified || !$scope.sequence
+    },{
       icon:'fa-play-circle',
       action: $scope.play,
       tooltip:'Test current sequence'
@@ -84,8 +110,26 @@ angular.module('webjsonizerApp')
       tooltip:'Delete current sequence'
     }];
 
+    function removeSequence(id) {
+      var result = $.grep($scope.sequences, function(s){ return s._id==id; });
+      if (!result || result.length<=0) return;
+      var index = $scope.sequences.indexOf(result[0]);
+      $scope.sequences.splice(index, 1);
+    }
 
-    $scope.refreshDocuments = function() {
+    function refreshDocument(id){
+      var result = $.grep($scope.sequences, function(s){ return s._id==id; });
+      if (!result || result.length<=0) return;
+      var index = $scope.sequences.indexOf(result[0]);
+      $http.get('/api/sequence/'+id)
+        .success(function(seq){
+          $scope.sequences[index] = seq;
+        })
+        .error(function(err){
+          Logger.error('Error loading sequence', JSON.stringify(err));
+        });
+    }
+    function refreshAllSequences() {
       $http.get('/api/sequence')
         .success(function(sequences){
           $scope.sequences = sequences;
@@ -93,7 +137,7 @@ angular.module('webjsonizerApp')
         .error(function(err){
           Logger.error('Error loading sequences', JSON.stringify(err));
         });
-    };
+    }
 
     $scope.logout = function() {
       $rootScope.user = {};
@@ -119,27 +163,29 @@ angular.module('webjsonizerApp')
         });
     };
 
-    var modalSaveChanges = Modal.confirm.ask(function(seq, cb, result) {
-      if (result=='no') {
-        $scope.refreshDocuments();
+    var modalSaveChanges = Modal.confirm.ask(function(seq, cb, res) {
+      if (res=='no') {
+        refreshDocument(seq._id);
         return cb();
       }
       $http.put('/api/sequence/'+seq._id, seq)
         .success(function(){
           Logger.ok('Sequence "'+seq.title+'" updated!');
+          refreshDocument(seq._id);
           cb();
         })
         .error(function(err) {
-          Logger.error("Error deleting sequence", JSON.stringify(err));
+          Logger.error("Error updating sequence", JSON.stringify(err));
         });
     });
 
     function checkToUpdateSequence(cb) {
       if (!$scope.modified) return cb();
+      var seq = $scope.sequence;
       var opt = Modal.confirm.getAskOptions(Modal.MODAL_YESNOCANCEL);
       opt.title = 'Save Changes';
-      opt.body = '<p>Sequence <strong>'+$scope.sequence.title+'</strong> was modified, want to save it before close?</p>';
-      modalSaveChanges(opt, $scope.sequence, cb);
+      opt.body = '<p>The sequence <strong>'+seq.title+'</strong> has been changed. Do you want to save it before closing?</p>';
+      modalSaveChanges(opt, seq, cb);
     }
 
     $scope.open = function(sequence) {
@@ -150,5 +196,5 @@ angular.module('webjsonizerApp')
       })
     };
 
-    $scope.refreshDocuments();
+    refreshAllSequences();
   }]);

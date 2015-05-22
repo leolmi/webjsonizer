@@ -36,7 +36,7 @@
       <div class="top-menu">
         <div class="title">{{sequence.title}}</div>
         <i class="jsz-fa-btn jsz-fa-btn-big fa fa-fw" ng-repeat="b in buttons"
-           ng-class="b.icon" ng-click="b.action()" title="{{b.tooltip}}"></i>
+           ng-class="getClass(b)" ng-click="b.action()" title="{{b.tooltip}}"></i>
       </div>
       <div class="sequence">
         <header class="sequence-header">
