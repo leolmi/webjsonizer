@@ -21,13 +21,27 @@ angular.module('webjsonizerApp')
         };
 
         scope.getShortDesc = function() {
-          return 'Descriione breve dell\'item';
+          var path = scope.item.path || '<undefined>';
+          return scope.item.method + ' - ' + path;
         };
 
         scope.$on('open-item', function(e, args){
           if (args.item == scope.item)
             scope.collapsed = false;
         });
+
+        scope.properties = [{
+          title:'Host',
+          name:'host',
+          placeholder: '<auto>'
+        },{
+          title:'Method',
+          name:'method',
+          placeholder: 'GET'
+        },{
+          title:'Path',
+          name:'path'
+        }];
       }
     }
   }]);

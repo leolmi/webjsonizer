@@ -50,6 +50,12 @@
 .editor-row-simply {
   border-bottom: none;
 }
+.editor-row-flat {
+  margin: 0 10px;
+}
+.editor-row-flat .form-group {
+  margin-bottom: 2px;
+}
 .editor-row p {
   font-size: 11px;
 }

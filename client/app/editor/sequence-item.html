@@ -11,7 +11,23 @@
   <div class="item-line item-line-down" ng-class="{'last':last}"></div>
   <div ng-show="collapsed">{{getShortDesc()}}</div>
   <div ng-hide="collapsed">
-
+    <div class="row editor-row">
+      <div class="col-md-5">
+        <label class="control-label" for="inputTitle">Title</label>
+        <p>Set the item title to read log with right references.</p>
+      </div>
+      <div class="col-md-7">
+        <div class="form-group">
+          <input type="text" class="form-control input-sm" id="inputTitle" ng-model="item.title" ng-change="changed()">
+        </div>
+      </div>
+    </div>
+    <div class="row editor-row-flat" ng-repeat="prp in properties">
+      <div class="col-md-5"><label>{{prp.title}}</label></div>
+      <div class="col-md-7"><div class="form-group">
+        <input type="text" class="form-control input-sm" ng-model="item[prp.name]" ng-change="changed()" placeholder="{{prp.placeholder}}">
+      </div></div>
+    </div>
     <!--<div class="form-group has-feedback">-->
     <!--<label class="control-label" for="inputTitle">Code</label>-->
     <!--<input type="text" class="form-control" id="inputCode" aria-describedby="inputTitleStatus" ng-model="sequence.title">-->
@@ -20,9 +36,9 @@
     <!--</div>-->
 
 
-    <p><small>Title:</small> {{item.title}}</p>
-    <p><small>Method:</small> {{item.method}}</p>
-    <p><small>Path:</small> {{item.path}}</p>
-    <p><small>Referer:</small> {{item.referer}}</p>
+    <!--<p><small>Title:</small> {{item.title}}</p>-->
+    <!--<p><small>Method:</small> {{item.method}}</p>-->
+    <!--<p><small>Path:</small> {{item.path}}</p>-->
+    <!--<p><small>Referer:</small> {{item.referer}}</p>-->
   </div>
 </div>
