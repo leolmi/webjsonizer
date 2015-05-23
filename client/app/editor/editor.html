@@ -50,19 +50,19 @@
             </div>
             <div class="col-md-7">
               <div class="form-group">
-                <input type="text" class="form-control input-sm" id="inputTitle" ng-model="sequence.title">
+                <input type="text" class="form-control input-sm" id="inputTitle" ng-model="sequence.title" ng-change="changed()">
               </div>
             </div>
           </div>
           <div class="row editor-row">
             <div class="col-md-12">
-              <label><input type="checkbox" ng-model="sequence.enabled"> Enabled </label>
+              <label><input type="checkbox" ng-model="sequence.enabled" ng-change="changed()"> Enabled </label>
               <p>If the sequence is disabled web request will fail.</p>
             </div>
           </div>
           <div class="row editor-row">
             <div class="col-md-12">
-              <label> <input type="checkbox" ng-model="sequence.SSL"> SSL </label>
+              <label> <input type="checkbox" ng-model="sequence.SSL" ng-change="changed()"> SSL </label>
               <p>Make only https requests.</p>
             </div>
           </div>
@@ -81,10 +81,10 @@
               <div class="row parameter-row" ng-repeat="p in sequence.parameters">
                 <div class="col col-md-6">
                   <i class="jsz-fa-btn btn-left fa" ng-class="{'fa-eye-slash':p.hidden,'fa-eye':!p.hidden}"  ng-click="togglePublic(p)"></i>
-                  <input type="text" class="form-control input-sm" ng-model="p.name">
+                  <input type="text" class="form-control input-sm" ng-model="p.name" ng-change="changed()">
                 </div>
                 <div class="col col-md-6">
-                  <input type="text" class="form-control input-sm" ng-model="p.value">
+                  <input type="text" class="form-control input-sm" ng-model="p.value" ng-change="changed()">
                   <i class="jsz-fa-btn btn-right fa fa-remove" ng-click="removeParameter($index)"></i>
                 </div>
               </div>

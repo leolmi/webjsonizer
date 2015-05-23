@@ -225,6 +225,8 @@ angular.module('webjsonizerApp')
       notifyModifies();
     };
 
+    $scope.changed = function() { notifyModifies(); };
+
     $scope.togglePublic = function(p) {
       p.hidden = !p.hidden;
       notifyModifies();
