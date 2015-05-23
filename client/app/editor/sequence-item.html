@@ -1,9 +1,25 @@
 <div class="sequence-item">
+  <div class="contextual-menu item-menu">
+    <div ng-repeat="b in buttons" ng-click="b.action()"
+         class="editor-button editor-button-sm" title="{{b.tooltip}}"
+         ng-class="{active:!b.isactive || b.isactive(), separator:b.separator}">
+      <i class="fa fa-fw" ng-class="b.icon"></i>
+    </div>
+  </div>
   <div class="item-line item-line-up"></div>
-  <div class="item-point aslink" ng-click="toggle()"></div>
+  <div class="item-point" ng-click="toggle()">{{index+1}}</div>
   <div class="item-line item-line-down" ng-class="{'last':last}"></div>
   <div ng-show="collapsed">{{getShortDesc()}}</div>
   <div ng-hide="collapsed">
+
+    <!--<div class="form-group has-feedback">-->
+    <!--<label class="control-label" for="inputTitle">Code</label>-->
+    <!--<input type="text" class="form-control" id="inputCode" aria-describedby="inputTitleStatus" ng-model="sequence.title">-->
+    <!--<span ng-show="true" class="fa fa-check form-control-feedback" aria-hidden="true"></span>-->
+    <!--<span ng-show="false" class="fa fa-warning form-control-feedback" aria-hidden="true"></span>-->
+    <!--</div>-->
+
+
     <p><small>Title:</small> {{item.title}}</p>
     <p><small>Method:</small> {{item.method}}</p>
     <p><small>Path:</small> {{item.path}}</p>

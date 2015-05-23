@@ -84,7 +84,13 @@ Sequence.find({}).remove(function() {
     owner: '54b3e04cde6279a8211b42fe',
     star: false,
     enabled: false,
-    parameters: [],
+    parameters: [{
+      name:'puno',
+      value:'135135'
+    },{
+      name:'pdue',
+      value:'cacca di vacca'
+    }],
     items: [{
       title: 'Enter',
       host: 'www.bubbodibebbo.com',

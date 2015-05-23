@@ -8,6 +8,7 @@ angular.module('webjsonizerApp')
     $scope.sequence = undefined;
     $scope.user = Auth.getCurrentUser();
     $scope.modified = false;
+    $scope.debug = false;
 
     $scope.newSequence = function() {
       $http.post('/api/sequence', { title: 'New Sequence', enabled: true })
@@ -19,6 +20,14 @@ angular.module('webjsonizerApp')
           Logger.error("Error creating new sequence", JSON.stringify(err));
         });
     };
+
+    function notifyModifies(modified){
+      $scope.modified = modified==undefined ? true : modified;
+    }
+
+    function getSequenceAddress() {
+      return $scope.sequence ? "https://jsonizer.herokuapp.com/api/sequence/"+$scope.sequence._id : '<undefined>';
+    }
 
     $scope.newSequenceItem = function () {
       var i = $scope.sequence.items;
@@ -34,10 +43,15 @@ angular.module('webjsonizerApp')
         postvalidations: [],
         headers: []
       });
-      $scope.modified = true;
+      notifyModifies();
       $timeout(function () {
         $scope.$broadcast('open-item', {item: i[i.length - 1]});
       }, 30);
+    };
+
+    $scope.removeItem = function(index) {
+      $scope.sequence.items.splice(index,1);
+      notifyModifies();
     };
 
     var modalDelete = Modal.confirm.ask(function(seq) {
@@ -76,7 +90,7 @@ angular.module('webjsonizerApp')
       if (!seq || !$scope.modified) return;
       $http.put('/api/sequence/'+seq._id, seq)
         .success(function(){
-          $scope.modified = false;
+          notifyModifies(false);
           Logger.ok('Sequence '+seq.title+' updated');
           refreshDocument(seq._id);
         })
@@ -85,17 +99,19 @@ angular.module('webjsonizerApp')
         });
     };
 
-    $scope.getClass = function(b) {
-      var c = { 'disabled': b.disabled };
-      c[b.icon]=true;
-      return c;
-    };
+    //$scope.getClass = function(b) {
+    //  var c = { 'disabled': b.disabled };
+    //  c[b.icon]=true;
+    //  return c;
+    //};
 
     $scope.buttons = [{
       icon:'fa-download',
       action: $scope.save,
       tooltip:'Save current sequence',
-      disabled: !$scope.modified || !$scope.sequence
+      isactive: function() { return $scope.modified && $scope.sequence; }
+    },{
+      separator: true
     },{
       icon:'fa-play-circle',
       action: $scope.play,
@@ -192,8 +208,26 @@ angular.module('webjsonizerApp')
       if ($scope.sequence && sequence._id==$scope.sequence._id) return;
       checkToUpdateSequence(function() {
         $scope.sequence = sequence;
-        $scope.modified = false
+        $scope.address = getSequenceAddress();
+        notifyModifies(false);
       })
+    };
+
+    $scope.addParameter = function() {
+      if (!$scope.sequence) return;
+      $scope.sequence.parameters.push({name:'',value:'',hidden:false});
+      notifyModifies();
+    };
+
+    $scope.removeParameter = function(index) {
+      if (!$scope.sequence) return;
+      $scope.sequence.parameters.splice(index,1);
+      notifyModifies();
+    };
+
+    $scope.togglePublic = function(p) {
+      p.hidden = !p.hidden;
+      notifyModifies();
     };
 
     refreshAllSequences();

@@ -37,16 +37,58 @@
   font-weight: bold;
 }
 
-.sequence {
-  padding: 50px 20px;
-}
-.sequence-header {
-  border: #999 6px solid;
-  padding: 10px;
-  background-color: #999;
-  color: #222;
+.contextual-menu {
+  position: absolute;
+  text-align: right;
+  z-index: 10;
 }
 
+.editor-row {
+  border-bottom: #ddd 1px solid;
+  margin: 0 10px 20px;
+}
+.editor-row-simply {
+  border-bottom: none;
+}
+.editor-row p {
+  font-size: 11px;
+}
+
+.parameter-row {
+  padding-bottom: 10px;
+}
+.parameter-row > .col {
+  padding: 0 4px;
+}
+.parameter-row > .col > i {
+  display: inline-block;
+  position: absolute;
+  top: 0;
+}
+.parameter-row > .col > .btn-right {
+  right: -14px;
+}
+.parameter-row > .col > .btn-left {
+  left: -14px;
+}
+.parameter-row-label {
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.sequence {
+  padding: 50px 10px;
+}
+.sequence-header {
+  border: #fff 6px solid;
+  padding: 10px;
+  background-color: #fff;
+  color: #222;
+}
+.sequence-address {
+  background-color: transparent;
+  font-weight: bold;
+}
 
 .my-star-sequence {
   padding: 4px;
@@ -54,6 +96,7 @@
 }
 .my-sequence {
   padding: 0 10px 4px;
+  font-size: 12px;
 }
 .my-sequence.current,
 .my-star-sequence.current {

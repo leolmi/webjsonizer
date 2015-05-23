@@ -38,6 +38,29 @@
   color: darkorange;
 }
 
+.editor-button {
+  display: inline-block;
+  font-size: 28px;
+  margin: 6px 0;
+}
+.editor-button-sm {
+  font-size: 14px;
+}
+.editor-button.active:not(.separator) {
+  cursor: pointer;
+}
+.editor-button.active:not(.separator):hover {
+  color: darkorange;
+}
+.editor-button:not(.active):not(.separator){
+  color: #444;
+}
+.editor-button.separator {
+  border-left: #333 1px solid;
+  margin: 0 10px 0 20px;
+  width: 10px;
+}
+
 
 .jsz-fa-btn-small {
   font-size: 18px;

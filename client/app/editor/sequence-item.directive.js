@@ -7,9 +7,14 @@ angular.module('webjsonizerApp')
   .directive('sequenceItem', ['$location', function ($location) {
     return {
       restrict: 'E',
-      scope: {item: '=ngModel', last:'=', collapsed:'='},
+      scope: {item: '=ngModel', last:'=', index:'=', collapsed:'='},
       templateUrl: 'app/editor/sequence-item.html',
       link: function (scope, elm, atr) {
+
+        scope.buttons = [{
+          icon: 'fa-remove',
+          action: function() { scope.$parent.removeItem(scope.index); }
+        }];
 
         scope.toggle = function() {
           scope.collapsed = !scope.collapsed;
