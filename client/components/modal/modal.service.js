@@ -126,6 +126,46 @@ angular.module('webjsonizerApp')
               dsc.apply(event, args);
             });
           };
+        },
+
+        /**
+         * Crea una nuova sequenza ...
+         * @param cb
+         * @returns {Function}
+         */
+        create: function(cb) {
+          cb = cb || angular.noop;
+
+          return function() {
+            var args = Array.prototype.slice.call(arguments);
+
+            var createModal = openModal({
+              modal: {
+                info: args[0],
+                dismissable: true,
+                idle: false,
+                title: 'Create new Sequence',
+                template: 'components/modal/modal.create.html',
+                buttons: [{
+                  classes: 'btn-success',
+                  text: 'Ok',
+                  click: function(e) {
+                    createModal.close(e);
+                  }
+                },{
+                  classes: 'btn-warning',
+                  text: 'Cancel',
+                  click: function(e) {
+                    createModal.dismiss(e);
+                  }
+                }]
+              }
+            }, 'modal-warning');
+
+            createModal.result.then(function(event) {
+              cb.apply(event, args);
+            });
+          }
         }
       }
     };

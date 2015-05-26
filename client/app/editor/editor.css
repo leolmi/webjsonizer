@@ -56,12 +56,14 @@
 .editor-row-flat .form-group {
   margin-bottom: 2px;
 }
-.editor-row p {
+.editor-row p,
+.editor-row-flat p{
   font-size: 11px;
+  color: steelblue;
 }
 
 .parameter-row {
-  padding-bottom: 10px;
+  padding: 0 10px 2px;
 }
 .parameter-row > .col {
   padding: 0 4px;

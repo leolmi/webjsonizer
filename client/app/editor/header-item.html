@@ -1,0 +1,12 @@
+<div class="row parameter-row">
+  <div class="col col-md-6">
+    <input type="text" class="form-control input-sm" ng-model="header.name" ng-change="nameChanged()"
+           typeahead="name for name in headerNames | filter:$viewValue"
+           typeahead-on-select="nameChanged()">
+  </div>
+  <div class="col col-md-6">
+    <input type="text" class="form-control input-sm" ng-model="header.value" ng-change="changed()"
+           typeahead="value for value in headerValues | filter:$viewValue">
+    <i class="jsz-fa-btn btn-right fa fa-remove" ng-click="remove()"></i>
+  </div>
+</div>

@@ -24,8 +24,9 @@ var SequenceItemSchema = new Schema({
   host: String,
   method: String,
   path: String,
-  //referer: String,  //se='auto' viene preso il precedente path
-  data: String,
+  referer: String,  //se='auto' viene preso il precedente path
+  data: [NameValueSchema],
+  datatype: String,
   prevalidations: [SequenceValidationSchema],
   postvalidations: [SequenceValidationSchema],
   headers: [NameValueSchema]

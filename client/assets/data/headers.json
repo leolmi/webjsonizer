@@ -1,0 +1,110 @@
+[{
+  "name":"Accept",
+  "values": [
+    "text/html, application/xhtml+xml, */*",
+    "text/css, */*",
+    "text/json, */*",
+    "application/javascript, */*;q=0.8",
+    "image/png, image/svg+xml, image/*;q=0.8, */*;q=0.5",
+    "audio/*, q=0.2"]
+},{
+  "name":"Accept-Charset",
+  "values": ["utf-8"]
+},{
+  "name":"Accept-Encoding",
+  "values":[
+    "gzip, deflate",
+    "x-compress; x-zip"]
+},{
+  "name": "Accept-Language",
+  "values": [
+      "en-US",
+      "it-IT"]
+},{
+  "name": "Accept-Datetime", "values": []
+},{
+  "name": "Authorization", "values": []
+},{
+  "name": "ChargeTo", "values": []
+},{
+  "name": "Cache-Control", "values": [
+    "no-cache" ]
+},{
+  "name": "Connection", "values": [
+    "Keep-Alive",
+    "Upgrade"]
+},{
+  "name": "Cookie", "values": []
+},{
+  "name": "Content-Length", "values": []
+},{
+  "name": "Content-MD5", "values": []
+},{
+  "name": "Content-Type", "values": ["application/x-www-form-urlencoded"]
+},{
+  "name": "Date", "values": []
+},{
+  "name": "DNT", "values": ["0","1"]
+},{
+  "name": "Expect", "values": ["100-continue"]
+},{
+  "name": "From", "values": []
+},{
+  "name": "Front-End-Https", "values": []
+},{
+  "name": "Host", "values": []
+},{
+  "name": "If-Match", "values": []
+},{
+  "name": "If-Modified-Since", "values": []
+},{
+  "name": "If-None-Match", "values": []
+},{
+  "name": "If-Range", "values": []
+},{
+  "name": "If-Unmodified-Since", "values": []
+},{
+  "name": "Max-Forwards", "values": ["10"]
+},{
+  "name": "Origin", "values": []
+},{
+  "name": "Pragma", "values": ["no-cache"]
+},{
+  "name": "Proxy-Authorization", "values": ["Basic"]
+},{
+  "name": "Proxy-Connection", "values":["keep-alive"]
+},{
+  "name": "Range", "values": []
+},{
+  "name": "Referer", "values": []
+},{
+  "name": "TE", "values": []
+},{
+  "name": "User-Agent", "values": [
+    "Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko",
+    "Mozilla/5.0 (X11; Linux x86_64; rv:12.0) Gecko/20100101 Firefox/21.0"]
+},{
+  "name": "Upgrade", "values": ["HTTP/2.0, SHTTP/1.3, IRC/6.9, RTA/x11"]
+},{
+  "name": "Via", "values": []
+},{
+  "name": "Warning", "values": []
+},{
+  "name": "X-Csrf-Token", "values": []
+},{
+  "name": "X-Requested-With", "values": []
+},{
+  "name": "X-Forwarded-For", "values": []
+},{
+  "name": "X-Forwarded-Host", "values": []
+},{
+  "name": "X-Forwarded-Photo", "values": []
+},{
+  "name": "X-Http-Method-Override", "values": []
+},{
+  "name": "X-ATT-DeviceId", "values": []
+},{
+  "name": "X-Wap-Profile", "values": []
+},{
+  "name": "X-UIDH", "values": []
+}]

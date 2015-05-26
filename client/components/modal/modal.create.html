@@ -1,0 +1,11 @@
+<div class="modal-create" ng-controller="ModalCreateCtrl">
+  <label>Sequence Title</label>
+  <input type="text" class="form-control input-sm" ng-model="modal.info.title">
+  <input id="network-data-file" type="file" class="hidden" ng-model-instant onchange="angular.element(this).scope().setNetworkData(this)"/>
+  <p>You can select a Network-data file (xml for Explorer; har for Chrome) to auto generate sequence steps.</p>
+  <label>Exclusion list for requests urls</label>
+  <input type="text" class="form-control input-sm" ng-model="exclusion">
+  <br>
+  <button class="btn btn-info" ng-click="selectFile()">Network Data</button>
+  <div ng-show="modal.idle"><i class="fa fa-cog fa-spin"></i> building sequence....</div>
+</div>

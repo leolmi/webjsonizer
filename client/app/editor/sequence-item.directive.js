@@ -4,7 +4,7 @@
 'use strict';
 
 angular.module('webjsonizerApp')
-  .directive('sequenceItem', ['$location', function ($location) {
+  .directive('sequenceItem', ['$rootScope', function ($rootScope) {
     return {
       restrict: 'E',
       scope: {item: '=ngModel', last:'=', index:'=', collapsed:'='},
@@ -33,7 +33,7 @@ angular.module('webjsonizerApp')
         scope.properties = [{
           title:'Host',
           name:'host',
-          placeholder: '<auto>'
+          placeholder: 'auto'
         },{
           title:'Method',
           name:'method',
@@ -41,7 +41,30 @@ angular.module('webjsonizerApp')
         },{
           title:'Path',
           name:'path'
+        },{
+          title:'Referer',
+          name:'referer'
         }];
+
+        scope.changed = function() { $rootScope.$broadcast('MODIFIED'); };
+
+        scope.addHeader = function() {
+          scope.item.headers.push({name:'',value:'',hidden:false});
+          scope.changed();
+        };
+        scope.removeHeader = function(index) {
+          scope.item.headers.splice(index,1);
+          scope.changed();
+        };
+
+        scope.addDataItem = function() {
+          scope.item.data.push({name:'',value:'',hidden:false});
+          scope.changed();
+        };
+        scope.removeDataItem = function(index) {
+          scope.item.data.splice(index,1);
+          scope.changed();
+        };
       }
     }
   }]);

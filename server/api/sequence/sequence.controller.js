@@ -45,8 +45,10 @@ exports.show = function(req, res) {
 
 // Creates a new sequence in the DB.
 exports.create = function(req, res) {
-  req.body.owner = req.user._id;
-  Sequence.create(req.body, function(err, sequence) {
+  var template = req.body;
+  template.owner = req.user._id;
+  template.enabled = true;
+  Sequence.create(template, function(err, sequence) {
     if(err) { return handleError(res, err); }
     return res.json(201, sequence);
   });

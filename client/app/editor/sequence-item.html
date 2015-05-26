@@ -28,17 +28,51 @@
         <input type="text" class="form-control input-sm" ng-model="item[prp.name]" ng-change="changed()" placeholder="{{prp.placeholder}}">
       </div></div>
     </div>
+
+    <div class="row editor-row-flat">
+      <div class="col-md-5">
+        <label class="control-label" for="inputTitle">Headers</label>
+        <i class="jsz-fa-btn fa fa-fw fa-plus-circle" ng-click="addHeader()"></i>
+        <p>Headers are defined once: all subsequent requests will use this value until it is redefined.</p>
+      </div>
+      <div class="col-md-7">
+        <div class="row parameter-row" ng-show="item.headers.length">
+          <div class="col col-md-6 parameter-row-label">Name</div>
+          <div class="col col-md-6 parameter-row-label">Value</div>
+        </div>
+        <header-item ng-repeat="h in item.headers" ng-model="h" index="$index"></header-item>
+      </div>
+    </div>
+
+    <div class="row editor-row-flat">
+      <div class="col-md-5">
+        <label class="control-label" for="inputTitle">Data</label>
+        <i class="jsz-fa-btn fa fa-fw fa-plus-circle" ng-click="addDataItem()"></i>
+        <p>Data item can contains parameters references: [nomeparametro] will be replaced with nomeparametro's value.</p>
+      </div>
+      <div class="col-md-7">
+        <div class="row parameter-row" ng-show="item.data.length">
+          <div class="col col-md-6 parameter-row-label">Name</div>
+          <div class="col col-md-6 parameter-row-label">Value</div>
+        </div>
+        <div class="row parameter-row" ng-repeat="d in item.data">
+          <div class="col col-md-6">
+            <input type="text" class="form-control input-sm" ng-model="d.name" ng-change="changed()">
+          </div>
+          <div class="col col-md-6">
+            <input type="text" class="form-control input-sm" ng-model="d.value" ng-change="changed()">
+            <i class="jsz-fa-btn btn-right fa fa-remove" ng-click="removeDataItem()"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
     <!--<div class="form-group has-feedback">-->
     <!--<label class="control-label" for="inputTitle">Code</label>-->
     <!--<input type="text" class="form-control" id="inputCode" aria-describedby="inputTitleStatus" ng-model="sequence.title">-->
     <!--<span ng-show="true" class="fa fa-check form-control-feedback" aria-hidden="true"></span>-->
     <!--<span ng-show="false" class="fa fa-warning form-control-feedback" aria-hidden="true"></span>-->
     <!--</div>-->
-
-
-    <!--<p><small>Title:</small> {{item.title}}</p>-->
-    <!--<p><small>Method:</small> {{item.method}}</p>-->
-    <!--<p><small>Path:</small> {{item.path}}</p>-->
-    <!--<p><small>Referer:</small> {{item.referer}}</p>-->
   </div>
 </div>

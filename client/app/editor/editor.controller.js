@@ -10,16 +10,16 @@ angular.module('webjsonizerApp')
     $scope.modified = false;
     $scope.debug = false;
 
-    $scope.newSequence = function() {
-      $http.post('/api/sequence', { title: 'New Sequence', enabled: true })
-        .success(function(seq){
-          refreshAllSequences();
-          $scope.open(seq);
-        })
-        .error(function(err) {
-          Logger.error("Error creating new sequence", JSON.stringify(err));
-        });
-    };
+    //$scope.newSequence = function() {
+    //  $http.post('/api/sequence', { title: 'New Sequence', enabled: true })
+    //    .success(function(seq){
+    //      refreshAllSequences();
+    //      $scope.open(seq);
+    //    })
+    //    .error(function(err) {
+    //      Logger.error("Error creating new sequence", JSON.stringify(err));
+    //    });
+    //};
 
     function notifyModifies(modified){
       $scope.modified = modified==undefined ? true : modified;
@@ -99,27 +99,40 @@ angular.module('webjsonizerApp')
         });
     };
 
-    //$scope.getClass = function(b) {
-    //  var c = { 'disabled': b.disabled };
-    //  c[b.icon]=true;
-    //  return c;
-    //};
+    var modalCreate = Modal.confirm.create(function(seqinfo) {
+      $http.post('/api/sequence', seqinfo)
+        .success(function(seq){
+          refreshAllSequences();
+          $scope.open(seq);
+        })
+        .error(function(err) {
+          Logger.error("Error creating new sequence", JSON.stringify(err));
+        });
+    });
+
+    $scope.newSequence = function() {
+      var info = {
+        title: 'New Sequence',
+        items: []
+      };
+      modalCreate(info);
+    };
 
     $scope.buttons = [{
+      icon:'fa-magic',
+      action: $scope.newSequence,
+      tooltip:'Build new sequence'
+    },{
+      separator: true
+    },{
       icon:'fa-download',
       action: $scope.save,
       tooltip:'Save current sequence',
       isactive: function() { return $scope.modified && $scope.sequence; }
     },{
-      separator: true
-    },{
       icon:'fa-play-circle',
       action: $scope.play,
       tooltip:'Test current sequence'
-    },{
-      icon:'fa-plus-circle',
-      action: $scope.newSequence,
-      tooltip:'Create new sequence'
     },{
       icon:'fa-trash',
       action: $scope.deleteSequence,
@@ -231,6 +244,8 @@ angular.module('webjsonizerApp')
       p.hidden = !p.hidden;
       notifyModifies();
     };
+
+    $scope.$on('MODIFIED', function() { notifyModifies(); });
 
     refreshAllSequences();
   }]);

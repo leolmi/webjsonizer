@@ -23,6 +23,11 @@ angular.module('webjsonizerApp')
     $scope.version = '1.0.3';
     $scope.loginform = true;
 
+    $http.get('assets/data/headers.json')
+      .then(function(res){
+        $rootScope.headers = res.data;
+      });
+
     if (!$rootScope.user) {
       $rootScope.user = {
         email: 'test@test.com',

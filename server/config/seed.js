@@ -67,13 +67,16 @@ Sequence.find({}).remove(function() {
       path: '/bello/fuffo.html',
       prevalidations: [],
       postvalidations: [],
-      headers: []
+      headers: [{
+        name:"Content-Type", value:"testo puppappera"}]
     }, {
       title: 'Page',
       method: 'post',
       path: '/bello/lallo.html',
       referer: 'auto',
-      data: '',
+      data: [
+        {name:"valore1",value:"123"},
+        {name:"valore2",value:"456"}],
       prevalidations: [],
       postvalidations: [],
       headers: []
