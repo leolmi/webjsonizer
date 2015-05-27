@@ -29,23 +29,25 @@ angular.module('webjsonizerApp')
       return $scope.sequence ? "https://jsonizer.herokuapp.com/api/sequence/"+$scope.sequence._id : '<undefined>';
     }
 
-    $scope.newSequenceItem = function () {
+    $scope.newSequenceItem = function (index) {
       var i = $scope.sequence.items;
-      var last = i.length>0 ? i[i.length-1] : undefined;
-      $scope.sequence.items.push({
+      index = index==undefined ? i.length : index;
+      var prev = index>0 ? i[index-1] : undefined;
+
+      $scope.sequence.items.splice(index, 0, {
         title: 'New Item',
-        host: last ? last.host : '',
+        host: prev ? prev.host : '',
         method: 'get',
         path: '',
         referer: 'auto',
         data: '',
-        prevalidations: [],
-        postvalidations: [],
+        prejs: [],
+        postjs: [],
         headers: []
       });
       notifyModifies();
       $timeout(function () {
-        $scope.$broadcast('open-item', {item: i[i.length - 1]});
+        $scope.$broadcast('open-item', {item: i[index]});
       }, 30);
     };
 

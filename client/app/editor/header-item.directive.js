@@ -17,10 +17,12 @@ angular.module('webjsonizerApp')
               }
 
               function refreshValues() {
-                var ch = $.grep($rootScope.headers, function (h) {
-                  return h.name == scope.header.name;
-                });
-                scope.headerValues = (ch && ch.length) ? ch[0].values : [];
+                if ($rootScope.headers && $rootScope.headers.length>0) {
+                  var ch = $.grep($rootScope.headers, function (h) {
+                    return h.name == scope.header.name;
+                  });
+                  scope.headerValues = (ch && ch.length) ? ch[0].values : [];
+                }
               }
 
               scope.nameChanged = function() {

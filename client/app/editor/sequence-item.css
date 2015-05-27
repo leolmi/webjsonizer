@@ -5,7 +5,9 @@
   border-radius: 5px;
   position: relative;
 }
-
+.sequence-item:hover {
+  background-color: #111;
+}
 .item-line {
   position: absolute;
   background-color: #fff;
@@ -51,4 +53,33 @@
 .item-menu {
   right: 10px;
   margin-top: -10px;
+}
+
+.add-here {
+  background-color: #333;
+  color: #333;
+  width: 10px;
+  height: 10px;
+  border-radius: 10px;
+  -moz-transition: all .20s ease-in-out;
+  -o-transition: all .20s ease-in-out;
+  -webkit-transition: all .20s ease-in-out;
+  transition: all .20s ease-in-out;
+  position: absolute;
+  top: -10px;
+  left: calc(50% - 5px);
+  cursor: pointer;
+  text-align: center;
+  vertical-align: middle;
+  overflow: hidden;
+}
+.add-here > i {
+  margin-top: 6px;
+}
+.add-here:hover {
+  width: 40px;
+  height: 40px;
+  top: -20px;
+  background-color: darkorange;
+  left: calc(50% - 20px);
 }

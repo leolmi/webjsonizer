@@ -10,11 +10,15 @@ angular.module('webjsonizerApp')
       scope: {item: '=ngModel', last:'=', index:'=', collapsed:'='},
       templateUrl: 'app/editor/sequence-item.html',
       link: function (scope, elm, atr) {
-
+        scope.items = ["Ciccio","Bubo","Stallio"];
         scope.buttons = [{
           icon: 'fa-remove',
           action: function() { scope.$parent.removeItem(scope.index); }
         }];
+
+        scope.addnew = function() {
+          scope.$parent.newSequenceItem(scope.index);
+        };
 
         scope.toggle = function() {
           scope.collapsed = !scope.collapsed;

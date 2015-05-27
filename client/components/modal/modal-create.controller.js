@@ -4,12 +4,13 @@
 'use strict';
 
 angular.module('webjsonizerApp')
-  .controller('ModalCreateCtrl', ['$scope','Logger', function ($scope, Logger) {
+  .controller('ModalCreateCtrl', ['$scope','$timeout','Logger', function ($scope,$timeout,Logger) {
     $scope.selectFile = function() {
+      $scope.modal.idle = true;
       angular.element('#network-data-file').trigger('click');
     };
     $scope.exclusion = 'jpg;gif;png;js;css;';
-
+    $scope.file = undefined;
 
     function validate(exlist, url) {
       var result = $.grep(exlist, function(ext){
@@ -76,17 +77,19 @@ angular.module('webjsonizerApp')
       else
         Logger.error('No available parser!');
 
-      $scope.modal.idle = false;
-      $scope.$apply();
+      $scope.$apply(function() { $scope.modal.idle = false;});
     }
 
-    $scope.setNetworkData = function(args) {
-      $scope.modal.idle = true;
-      $scope.$apply();
+    $scope.$watch('file', function() {
+      if (!$scope.file) return;
       var reader = new FileReader();
-      reader.onload = function(e) {
+      reader.onload = function (e) {
         generateSequence(e.target.result);
       };
-      reader.readAsText(args.files[0]);
+      reader.readAsText($scope.file);
+    });
+
+    $scope.setNetworkData = function(args) {
+      $scope.$apply(function() { $scope.file = args.files[0]; });
     };
   }]);

@@ -24,3 +24,6 @@
 .modal-body {
   color: #222;
 }
+.btn-left {
+  float: left;
+}
