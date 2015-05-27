@@ -24,6 +24,7 @@ angular.module('webjsonizerApp')
         var exlist = $scope.exclusion.split(';');
         var jsondata = JSON.parse(jsn);
         var prev = '';
+        var justheaders = [];
         if (jsondata.log && jsondata.log.entries && jsondata.log.entries.length>0){
           jsondata.log.entries.forEach(function(e){
             if (validate(exlist, e.request.url)) {
@@ -43,7 +44,11 @@ angular.module('webjsonizerApp')
               if (e.request.headers) {
                 item.headers = [];
                 e.request.headers.forEach(function (h) {
-                  item.headers.push(h);
+                  //TODO : da migliorare, dovrebbe cercare l'ultimo header con tale nome.
+                  if ($.grep(justheaders, function(xh){ return xh.name== h.name && xh.value== h.value;}).length<=0) {
+                    item.headers.push(h);
+                    justheaders.push(h);
+                  }
                 });
               }
               $scope.modal.info.items.push(item);
@@ -57,12 +62,19 @@ angular.module('webjsonizerApp')
       }
     }
 
+    function parseXml(xml){
+      //TODO: xml parser
+      Logger.error('Xml parser is not yet available!');
+    }
+
     function generateSequence(txt) {
       $scope.modal.info.items = [];
       if (txt.indexOf('{')==0)
         parseJson(txt);
       else if (txt.indexOf('<?xml ')==0)
         parseXml(txt);
+      else
+        Logger.error('No available parser!');
 
       $scope.modal.idle = false;
       $scope.$apply();

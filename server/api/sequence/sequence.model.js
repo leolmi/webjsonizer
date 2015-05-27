@@ -6,7 +6,7 @@
 var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
-var SequenceValidationSchema = new Schema({
+var SequenceJSSchema = new Schema({
   name: String,  //nome della logica di validazione (può individuare la funzione)
   //func: Function  //non è persistita, ma passata dall'utilizzatore a run-time
   js: String, //corpo del metodo js che accetta come parametri 'content' e 'params' per restituire il valore di un parametro
@@ -27,8 +27,8 @@ var SequenceItemSchema = new Schema({
   referer: String,  //se='auto' viene preso il precedente path
   data: [NameValueSchema],
   datatype: String,
-  prevalidations: [SequenceValidationSchema],
-  postvalidations: [SequenceValidationSchema],
+  prejs: [SequenceJSSchema],
+  postjs: [SequenceJSSchema],
   headers: [NameValueSchema]
 });
 

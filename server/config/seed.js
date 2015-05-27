@@ -65,8 +65,8 @@ Sequence.find({}).remove(function() {
       host: 'www.ciccio.com',
       method: 'get',
       path: '/bello/fuffo.html',
-      prevalidations: [],
-      postvalidations: [],
+      prejs: [],
+      postjs: [],
       headers: [{
         name:"Content-Type", value:"testo puppappera"}]
     }, {
@@ -77,8 +77,8 @@ Sequence.find({}).remove(function() {
       data: [
         {name:"valore1",value:"123"},
         {name:"valore2",value:"456"}],
-      prevalidations: [],
-      postvalidations: [],
+      prejs: [],
+      postjs: [],
       headers: []
     }]
   },{
@@ -99,8 +99,8 @@ Sequence.find({}).remove(function() {
       host: 'www.bubbodibebbo.com',
       method: 'get',
       path: '/fafa/sgnacco.html',
-      prevalidations: [],
-      postvalidations: [],
+      prejs: [],
+      postjs: [],
       headers: []
     }]
   }, function() {
