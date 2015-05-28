@@ -57,7 +57,8 @@
   margin-bottom: 2px;
 }
 .editor-row p,
-.editor-row-flat p{
+.editor-row-flat p,
+.data-parser p{
   font-size: 11px;
   color: steelblue;
 }
@@ -120,4 +121,11 @@
   border-radius: 6px;
   color: #111;
   /*color: #ff8c00;*/
+}
+
+.data-parser {
+  padding: 10px;
+  background-color: #fff;
+  color: #222;
+  margin: 40px 0;
 }

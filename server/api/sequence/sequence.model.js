@@ -39,7 +39,8 @@ var SequenceSchema = new Schema({
   star: Boolean,
   enabled: Boolean,
   parameters: [NameValueSchema],
-  items: [SequenceItemSchema]
+  items: [SequenceItemSchema],
+  selector: String
 });
 
 module.exports = mongoose.model('Sequence', SequenceSchema);

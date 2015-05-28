@@ -103,6 +103,11 @@
         <div class="new-sequence aslink" ng-click="newSequenceItem()">
           <i class="fa fa-fw fa-plus-circle"></i> Append new sequence item
         </div>
+        <div class="data-parser">
+          <label>JS/jQuery Selector</label>
+          <p>Type js/jquery selector for table data.<br>To select a table with id="mytable", type: $('#mytable') </p>
+          <textarea class="form-control input-sm vertical" ng-model="sequence.selector" ng-change="changed()"></textarea>
+        </div>
       </div>
     </div>
     <pre ng-show="debug">Sequence: {{sequence}}</pre>

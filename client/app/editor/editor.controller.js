@@ -43,7 +43,8 @@ angular.module('webjsonizerApp')
         data: '',
         prejs: [],
         postjs: [],
-        headers: []
+        headers: [],
+        selector:''
       });
       notifyModifies();
       $timeout(function () {
