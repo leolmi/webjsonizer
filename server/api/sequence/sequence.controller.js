@@ -94,7 +94,6 @@ exports.milk = function(req,res) {
   var id = req.params.id;
   if (!id)
     return J.util.error(res, 'No sequence identity specified!');
-
   Sequence.findById(id, function (err, sequence) {
     if (err) return J.util.error(res, err);
     if (!sequence) return J.util.notfound(res);
@@ -103,90 +102,9 @@ exports.milk = function(req,res) {
 };
 
 
-
-
-var https = require('https');
-var querystring = require('querystring');
-function test(cb) {
-  cb = cb || noop;
-  var data = undefined;
-  var title = 'www.random.org';
-
-  https.get('https://www.random.org/integers/?num=1&min=1&max=10&col=1&base=10&format=plain&rnd=new', function(res) {
-    var result = {
-      code:res.statusCode,
-      headers:res.headers
-    };
-    console.log('TEST ['+title+']-RESULTS: ' + JSON.stringify(result));
-    var content = '';
-    res.on('data', function (chunk) {
-      console.log('TEST ['+title+']-download data: '+chunk);
-      content+=chunk;
-    });
-    res.on('end', function () {
-      cb(null, content);
-    });
-
-  }).on('error', function(e) {
-    cb(e);
-  });
-
-
-  //var req = https.request({
-  //  method: 'GET',
-  //  host: 'www.random.org',
-  //  path: '/integers/?num=1&min=1&max=10&col=1&base=10&format=plain&rnd=new',
-  //  headers: {
-  //    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-  //    'user-agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.130 Safari/537.36'
-  //  }
-  //},function(res){
-  //  var result = {
-  //    code:res.statusCode,
-  //    headers:res.headers
-  //  };
-  //  console.log('TEST ['+title+']-RESULTS: ' + JSON.stringify(result));
-  //
-  //  var content = '';
-  //
-  //  res.on('data', function (chunk) {
-  //    console.log('TEST ['+title+']-download data: '+chunk);
-  //    content+=chunk;
-  //  });
-  //
-  //  res.on('end', function () {
-  //    cb(null, content);
-  //  });
-  //});
-  //
-  //req.setTimeout(10000);
-  //
-  //req.on('error', function(e) {
-  //  console.log('TEST ['+title+']-problem with request: ' + e.message);
-  //  cb(e);
-  //});
-  //
-  //if (data) {
-  //  console.log('TEST ['+title+']-send data: '+data);
-  //  req.write(data);
-  //}
-  //
-  //req.end();
-
-}
-
-
-
 exports.play = function(req,res) {
-  console.log('PLAY');
   var sequence = req.body;
-  console.log('Sequenza: '+JSON.stringify(sequence));
   if (!sequence) return J.util.error(res, 'No sequence specified!');
-
-  //test(function(err,c){
-  //  if (err) return J.util.error(res, err);
-  //  return J.util.ok(res, c);
-  //});
   evalSequence(sequence, res);
 };
 
