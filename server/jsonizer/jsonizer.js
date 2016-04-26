@@ -11,10 +11,11 @@
 
 var _ = require('lodash'),
   u = require('./lib/utils'),
+  parser = require('./lib/parser'),
   https = require('https'),
   http = require('http'),
   querystring = require('querystring'),
-  cheerio = require("cheerio"),
+  //cheerio = require("cheerio"),
   zlib = require("zlib");
 
 
@@ -231,36 +232,36 @@ var jsonizer = function() {
 
 
 
-  function parseHtmlTable(html, pattern, cb) {
-    try {
-      var table = [];
-      var $ = cheerio.load(html);
-      var res = eval(pattern);
-      res.find('tr').each(function () {
-        var row = {};
-        $(this).children().each(function (i, e) {
-          row['C' + i] = $(e).text();
-        });
-        table.push(row);
-      });
-      return cb(null, table);
-    }
-    catch(err) {
-      return cb(err);
-    }
-  }
-
-  function parse(content, options, cb){
-    cb = cb || noop;
-    options = options || {};
-    var type = options.type || 'none';
-    switch (type){
-      //PARSER HTML
-      case 'htmltable': return parseHtmlTable(content, options.pattern, cb);
-      //DEFAULT: restituisce il testo così come è stato recuperato
-      default: return cb(null, content);
-    }
-  }
+  //function parseHtmlTable(html, pattern, cb) {
+  //  try {
+  //    var table = [];
+  //    var $ = cheerio.load(html);
+  //    var res = eval(pattern);
+  //    res.find('tr').each(function () {
+  //      var row = {};
+  //      $(this).children().each(function (i, e) {
+  //        row['C' + i] = $(e).text();
+  //      });
+  //      table.push(row);
+  //    });
+  //    return cb(null, table);
+  //  }
+  //  catch(err) {
+  //    return cb(err);
+  //  }
+  //}
+  //
+  //function parse(content, options, cb){
+  //  cb = cb || noop;
+  //  options = options || {};
+  //  var type = options.type || 'none';
+  //  switch (type){
+  //    //PARSER HTML
+  //    case 'htmltable': return parseHtmlTable(content, options.pattern, cb);
+  //    //DEFAULT: restituisce il testo così come è stato recuperato
+  //    default: return cb(null, content);
+  //  }
+  //}
 
   /**
    * valorizza il target secondo il tipo e se il valore esiste
@@ -382,7 +383,7 @@ var jsonizer = function() {
       checkCookies(r, options);
 
       if (i >= sequence.items.length - 1)
-        return parse(c, parseroptions, cb);
+        return parser.parse(c, parseroptions, cb);
 
       if (c) {
         checkKeepers(sequence.keepers, c);
@@ -391,52 +392,6 @@ var jsonizer = function() {
 
       evalSequence(sequence, cb, parseroptions, options, i+1);
     });
-  }
-
-  function test(cb) {
-    cb = cb || noop;
-
-    var data = undefined;
-    var title = 'www.random.org';
-
-    var req = https.request({
-      method: 'GET',
-      host: 'www.random.org',
-      path: '/integers/?num=1&min=1&max=10&col=1&base=10&format=plain&rnd=new',
-      headers: {
-        'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-        'user-agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.130 Safari/537.36'
-      }
-    },function(res){
-      var result = {
-        code:res.statusCode,
-        headers:res.headers
-      };
-      console.log('TEST ['+title+']-RESULTS: ' + JSON.stringify(result));
-
-      var content = '';
-
-      res.on('data', function (chunk) {
-        console.log('TEST ['+title+']-download data: '+chunk);
-        content+=chunk;
-      });
-
-      res.on('end', function () {
-        cb(null, content);
-      });
-    });
-
-    req.on('error', function(e) {
-      console.log('TEST ['+title+']-problem with request: ' + e.message);
-      cb(e);
-    });
-
-    if (data) {
-      console.log('TEST ['+title+']-send data: '+data);
-      req.write(data);
-    }
-
-    req.end();
   }
 
 
@@ -461,10 +416,9 @@ var jsonizer = function() {
       getkeeper: function(name) { return _.find(_keepers, {'name':name}); }
     },
     parser: {
-      parseHtmlTable: parseHtmlTable
+      parseHtmlTable: parser.parseHtmlTable
     },
-    eval: evalSequenceStart,
-    test: test
+    eval: evalSequenceStart
   };
 }.call(this);
 
