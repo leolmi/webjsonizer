@@ -1,0 +1,9 @@
+.html-form {
+  font-family: "Consolas", monospace;
+}
+
+.test-result.error {
+  color: red;
+  background-color: #dca7a7;
+  border-color: brown;
+}

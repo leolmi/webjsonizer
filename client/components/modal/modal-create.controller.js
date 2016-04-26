@@ -9,12 +9,14 @@ angular.module('webjsonizerApp')
       $scope.modal.idle = true;
       angular.element('#network-data-file').trigger('click');
     };
-    $scope.exclusion = 'jpg;gif;png;js;css;';
+    $scope.allexclusion = ['jpg','gif','png','js','css','ads','jsp','php','ico','json'];
+    $scope.exclusion = ['jpg','gif','png','js','css','ads','jsp','php','ico','json'];
+
     $scope.file = undefined;
 
     function validate(exlist, url) {
       var result = $.grep(exlist, function(ext){
-        return url.substr(url.length-ext.length-1, ext.length+1).toLowerCase()=='.'+ext.toLowerCase();
+        return url.indexOf('.'+ext+'?')>0 || url.indexOf('.'+ext)==url.length-ext.length-1;
       });
       return !result || result.length<=0;
     }
@@ -22,13 +24,12 @@ angular.module('webjsonizerApp')
     function parseJson(jsn){
       try {
         var step = 1;
-        var exlist = $scope.exclusion.split(';');
         var jsondata = JSON.parse(jsn);
         var prev = '';
         var justheaders = [];
         if (jsondata.log && jsondata.log.entries && jsondata.log.entries.length>0){
           jsondata.log.entries.forEach(function(e){
-            if (validate(exlist, e.request.url)) {
+            if (validate($scope.exclusion, e.request.url)) {
               var item = {
                 title: 'step ' + step++,
                 method: e.request.method,

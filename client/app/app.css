@@ -43,6 +43,18 @@ body {
   color: #ccc;
 }
 
+pre {
+  white-space: pre-wrap;
+}
+
+.blur {
+  -webkit-filter: blur(4px);
+  -moz-filter: blur(4px);
+  -ms-filter: blur(4px);
+  -o-filter: blur(4px);
+  filter: blur(4px);
+}
+
 .aslink {
   cursor: pointer;
 }
@@ -52,4 +64,88 @@ body {
 }
 .trasparent {
   background-color: transparent;
+}
+.center-text {
+  text-align: center;
+  margin: 10px;
+}
+
+.onright {
+  float: right;
+}
+
+.vertical {
+  resize: vertical;
+}
+
+
+/*//////////////////  BUTTONS  /////////////////////*/
+.jsz-fa-big {
+  font-size: 42px;
+}
+
+.jsz-fa-btn {
+  margin: 6px 0;
+}
+.jsz-fa-btn.disabled {
+  color: #444;
+}
+.jsz-fa-btn:not(.disabled) {
+  cursor: pointer;
+}
+.jsz-fa-btn:not(.disabled):hover {
+  color: darkorange;
+}
+.jsz-fa-btn.checked {
+  color: yellowgreen;
+}
+
+
+
+.jsz-fa-btn-trsp {
+  border: 0;
+  background-color: transparent;
+}
+.jsz-fa-btn-trsp:active {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+.jsz-fa-btn-trsp:focus {
+  outline: none;
+}
+
+
+@-webkit-keyframes working{
+  from{-webkit-transform:rotate(0deg)}
+  to{-webkit-transform:rotate(360deg)}
+}
+@-moz-keyframes working{
+  from{-moz-transform:rotate(0deg)}
+  to{-moz-transform:rotate(360deg)}
+}
+@-ms-keyframes working{
+  from{-ms-transform:rotate(0deg)}
+  to{-ms-transform:rotate(360deg)}
+}
+@keyframes working{
+  from{transform:rotate(0deg)}
+  to{transform:rotate(360deg)}
+}
+
+.working {
+  display: block;
+  width: 50px;
+  height: 50px;
+  margin: 10px auto 10px auto;
+  border: 5px solid rgba(99,99,99,0.1);
+  border-top-color: rgba(154,205,50,0.6);
+  border-radius: 100%;
+  background: transparent;
+  animation: working 1s linear infinite;
+  -ms-animation: working 1s linear infinite;
+  -moz-animation: working 1s linear infinite;
+  -webkit-animation: working 1s linear infinite;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }

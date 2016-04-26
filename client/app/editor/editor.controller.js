@@ -21,6 +21,10 @@ angular.module('webjsonizerApp')
     //    });
     //};
 
+    $scope.toggleDebug = function() {
+      $scope.debug = !$scope.debug;
+    }
+
     function notifyModifies(modified){
       $scope.modified = modified==undefined ? true : modified;
     }
@@ -79,12 +83,21 @@ angular.module('webjsonizerApp')
      * Esegue la sequenza
      */
     $scope.play = function() {
-      $http.post('/api/sequence/'+$scope.sequence._id)
-        .success(function() {
-          Logger.ok('Sequence OK!');
+      $scope.overpage = {
+        template: 'app/editor/overpage-play.html',
+        running: true,
+        title: $scope.sequence.title
+      };
+      $http.post('/api/sequence/play', $scope.sequence)
+        .success(function(content) {
+          $scope.overpage.running = false;
+          $scope.overpage.result = 'Sequence OK!';
+          $scope.overpage.content = content;
         })
         .error(function(err){
-          Logger.error('Error running sequences', JSON.stringify(err));
+          $scope.overpage.running = false;
+          $scope.overpage.result = 'Errors!';
+          $scope.overpage.error = JSON.stringify(err);
         });
     };
 
@@ -102,6 +115,10 @@ angular.module('webjsonizerApp')
         });
     };
 
+    $scope.closeOverlay = function() {
+      $scope.overpage = undefined;
+    };
+
     var modalCreate = Modal.confirm.create(function(seqinfo) {
       $http.post('/api/sequence', seqinfo)
         .success(function(seq){
@@ -116,12 +133,24 @@ angular.module('webjsonizerApp')
     $scope.newSequence = function() {
       var info = {
         title: 'New Sequence',
+        selector: '$(\'#TABLEID\')',
         items: []
       };
       modalCreate(info);
     };
 
+    $scope.closeSequence = function() {
+      checkToUpdateSequence(function() {
+        $scope.sequence = undefined;
+      });
+    };
+
     $scope.buttons = [{
+      icon:'fa-times',
+      action: $scope.closeSequence,
+      tooltip:'Close current sequence',
+      isactive: function() { return $scope.sequence; }
+    },{
       icon:'fa-magic',
       action: $scope.newSequence,
       tooltip:'Build new sequence'
@@ -212,7 +241,7 @@ angular.module('webjsonizerApp')
     });
 
     function checkToUpdateSequence(cb) {
-      if (!$scope.modified) return cb();
+      if (!$scope.modified || !$scope.sequence) return cb();
       var seq = $scope.sequence;
       var opt = Modal.confirm.getAskOptions(Modal.MODAL_YESNOCANCEL);
       opt.title = 'Save Changes';
@@ -249,6 +278,20 @@ angular.module('webjsonizerApp')
     };
 
     $scope.$on('MODIFIED', function() { notifyModifies(); });
+
+    var modalTest = Modal.confirm.test(function(info) {
+      $scope.sequence.selector = info.pattern;
+    });
+    $scope.test = function() {
+      var info = {
+        html: '',
+        pattern: $scope.sequence.selector
+      };
+      modalTest(info);
+    };
+
+
+
 
     refreshAllSequences();
   }]);

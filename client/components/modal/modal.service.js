@@ -145,7 +145,7 @@ angular.module('webjsonizerApp')
                 dismissable: true,
                 idle: false,
                 title: 'Create new Sequence',
-                template: 'components/modal/modal.create.html',
+                template: 'components/modal/modal-create.html',
                 buttons: [{
                   classes: 'btn-success',
                   text: 'Ok',
@@ -163,6 +163,45 @@ angular.module('webjsonizerApp')
             }, 'modal-warning');
 
             createModal.result.then(function(event) {
+              cb.apply(event, args);
+            });
+          }
+        },
+
+        /**
+         * Apre il form per il test del parser dei risultati
+         * @param cb
+         */
+        test: function(cb) {
+          cb = cb || angular.noop;
+
+          return function() {
+            var args = Array.prototype.slice.call(arguments);
+
+            var testModal = openModal({
+              modal: {
+                test: args[0],
+                dismissable: true,
+                idle: false,
+                title: 'Test pattern',
+                template: 'components/modal/modal-test.html',
+                buttons: [{
+                  classes: 'btn-success',
+                  text: 'Ok',
+                  click: function(e) {
+                    testModal.close(e);
+                  }
+                },{
+                  classes: 'btn-warning',
+                  text: 'Cancel',
+                  click: function(e) {
+                    testModal.dismiss(e);
+                  }
+                }]
+              }
+            }, 'modal-warning');
+
+            testModal.result.then(function(event) {
               cb.apply(event, args);
             });
           }

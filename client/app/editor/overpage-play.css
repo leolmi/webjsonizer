@@ -1,0 +1,11 @@
+.overpage-play {
+  text-align: center;
+}
+
+.overpage-play > h1 {
+  color: yellowgreen;
+}
+
+.overpage-play > .error {
+  color: darkorange;
+}

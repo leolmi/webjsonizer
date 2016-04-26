@@ -5,31 +5,8 @@
 
 'use strict';
 
-var Thing = require('../api/thing/thing.model');
 var User = require('../api/user/user.model');
 var Sequence = require('../api/sequence/sequence.model');
-
-Thing.find({}).remove(function() {
-  Thing.create({
-    name : 'Development Tools',
-    info : 'Integration with popular tools such as Bower, Grunt, Karma, Mocha, JSHint, Node Inspector, Livereload, Protractor, Jade, Stylus, Sass, CoffeeScript, and Less.'
-  }, {
-    name : 'Server and Client integration',
-    info : 'Built with a powerful and fun stack: MongoDB, Express, AngularJS, and Node.'
-  }, {
-    name : 'Smart Build System',
-    info : 'Build system ignores `spec` files, allowing you to keep tests alongside code. Automatic injection of scripts and styles into your index.html'
-  },  {
-    name : 'Modular Structure',
-    info : 'Best practice client and server structures allow for more code reusability and maximum scalability'
-  },  {
-    name : 'Optimized Build',
-    info : 'Build process packs up your templates as a single JavaScript payload, minifies your scripts/css/images, and rewrites asset names for caching.'
-  },{
-    name : 'Deployment Ready',
-    info : 'Easily deploy your app to Heroku or Openshift with the heroku and openshift subgenerators'
-  });
-});
 
 User.find({}).remove(function() {
   User.create({
@@ -54,6 +31,30 @@ User.find({}).remove(function() {
 
 Sequence.find({}).remove(function() {
   Sequence.create({
+      title: 'Repubblica',
+      SSL: false,
+      owner: '54b3e04cde6279a8211b42fe',
+      star: false,
+      enabled: true,
+      parameters: [],
+      items: [{
+        title: 'Access',
+        host: 'www.repubblica.it',
+        method: 'GET',
+        path: '/sport/calcio/serie-a/fiorentina/',
+        prejs: [],
+        postjs: [],
+        headers: [
+          { name:'Accept-Encoding', value:'gzip, deflate, sdch' },
+          { name:'Host', value:'www.repubblica.it' },
+          { name:'Accept-Language', value:'it,it-IT;q=0.8,en;q=0.6,en-US;q=0.4' },
+          { name:'User-Agent', value:'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.81 Safari/537.36' },
+          { name:'Accept', value:'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8' },
+          { name:'Cache-Control', value:'max-age=0' },
+          { name:'Proxy-Connection', value:'keep-alive' }]
+      }],
+      selector:'$(\'#tab-risultati1\').find(\'table\')'
+    },{
     title: 'Prova Salvata 01',
     SSL: false,
     owner: '54b3e04cde6279a8211b42fe',
@@ -103,7 +104,49 @@ Sequence.find({}).remove(function() {
       postjs: [],
       headers: []
     }]
-  }, function() {
+  },{
+      title: 'HQ',
+      SSL: false,
+      owner: '54b3e04cde6279a8211b42fe',
+      star: true,
+      enabled: true,
+      parameters: [],
+      items: [{
+        title: 'Enter',
+        host: 'earthquake.usgs.gov',
+        method: 'get',
+        path: '/monitoring/operations/network.php',
+        prejs: [],
+        postjs: [],
+        headers: [{
+          "name":"Accept",
+          "value":"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"
+        },{
+          "name":"Accept-Encoding",
+          "value":"gzip, deflate, sdch"
+        },{
+          "name":"Cookie",
+          "value":"__utma=129506072.1762013534.1435913077.1435913077.1435913077.1; __utmb=129506072.2.10.1435913077; __utmc=129506072; __utmz=129506072.1435913077.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)"
+        },{
+          "name":"Proxy-Connection",
+          "value":"keep-alive"
+        },{
+          "name":"Host",
+          "value":"earthquake.usgs.gov"
+        },{
+          "name":"Accept-Language",
+          "value":"it,it-IT;q=0.8,en;q=0.6,en-US;q=0.4"
+        },{
+          "name":"User-Agent",
+          "value":"Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.130 Safari/537.36"
+        }],
+        "data":[{
+          "name":"network",
+          "value":"GSN","hidden":false
+        }]
+      }],
+      selector:'$(\'.network-table\')'
+    }, function() {
       console.log('finished populating sequences');
     }
   );

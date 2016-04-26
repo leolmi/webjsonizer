@@ -80,17 +80,7 @@
   vertical-align: middle;
 }
 
-.jsz-fa-btn-trsp {
-  border: 0;
-  background-color: transparent;
-}
-.jsz-fa-btn-trsp:active {
-  -webkit-box-shadow: none;
-  box-shadow: none;
-}
-.jsz-fa-btn-trsp:focus {
-  outline: none;
-}
+
 .buttons-container {
   text-align: center;
   color: #444;

@@ -7,10 +7,12 @@ var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
 var SequenceJSSchema = new Schema({
-  name: String,  //nome della logica di validazione (può individuare la funzione)
-  //func: Function  //non è persistita, ma passata dall'utilizzatore a run-time
-  js: String, //corpo del metodo js che accetta come parametri 'content' e 'params' per restituire il valore di un parametro
-  target: String  //parametro target del valore calcolato
+  name: String,    // nome della logica di validazione (può individuare la funzione)
+  //func: Function // non è persistita, ma passata dall'utilizzatore a run-time
+  content: String, // corpo del metodo js che accetta come parametri 'content' e 'params' per restituire il valore di un parametro
+  mode: String,    // modalità
+  target: String,  // target del valore calcolato
+  ttype: String    // tipologia del target: 'parameter' o 'data'
 });
 
 var NameValueSchema = new Schema({
@@ -40,6 +42,7 @@ var SequenceSchema = new Schema({
   enabled: Boolean,
   parameters: [NameValueSchema],
   items: [SequenceItemSchema],
+  keepers: [SequenceJSSchema],
   selector: String
 });
 

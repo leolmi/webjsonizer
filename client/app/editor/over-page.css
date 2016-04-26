@@ -1,0 +1,43 @@
+.over-page > .overlay{
+  background-color: #0A0A16;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 200;
+  transition-property: opacity;
+  transition-duration: .15s;
+}
+
+.over-page.active > .overlay {
+  opacity: .6;
+}
+
+.over-page:not(.active) {
+  display: none;
+}
+.over-page > .over-page-content {
+  width: calc(100% - 280px);
+  left: 280px;
+  position: fixed;
+  height: 100%;
+  z-index: 210;
+  overflow: auto;
+}
+
+.overlay-times {
+  margin: 20px;
+  opacity: .2;
+}
+.overlay-times:hover {
+  opacity: 1;
+}
+
+.overpage label {
+  font-weight: normal;
+}
+.overpage-body {
+  overflow: hidden;
+}

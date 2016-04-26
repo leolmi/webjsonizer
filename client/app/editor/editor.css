@@ -19,6 +19,9 @@
   padding: 10px;
   margin: 20px;
 }
+.new-sequence:hover {
+  background-color: #111;
+}
 .new-sequence-evident {
   background-color: #444;
 }
