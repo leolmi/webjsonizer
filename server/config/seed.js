@@ -115,7 +115,7 @@ Sequence.find({}).remove(function() {
         title: 'Enter',
         host: 'earthquake.usgs.gov',
         method: 'get',
-        path: '/monitoring/operations/network.php',
+        path: '/monitoring/deformation/data/download/table.php',
         prejs: [],
         postjs: [],
         headers: [{
@@ -124,9 +124,6 @@ Sequence.find({}).remove(function() {
         },{
           "name":"Accept-Encoding",
           "value":"gzip, deflate, sdch"
-        },{
-          "name":"Cookie",
-          "value":"__utma=129506072.1762013534.1435913077.1435913077.1435913077.1; __utmb=129506072.2.10.1435913077; __utmc=129506072; __utmz=129506072.1435913077.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)"
         },{
           "name":"Proxy-Connection",
           "value":"keep-alive"
@@ -140,12 +137,9 @@ Sequence.find({}).remove(function() {
           "name":"User-Agent",
           "value":"Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.130 Safari/537.36"
         }],
-        "data":[{
-          "name":"network",
-          "value":"GSN","hidden":false
-        }]
+        "data":[]
       }],
-      selector:'$(\'.network-table\')'
+      selector:'$(\'.tabular\').eq(0)'
     }, function() {
       console.log('finished populating sequences');
     }

@@ -183,11 +183,11 @@ exports.play = function(req,res) {
   console.log('Sequenza: '+JSON.stringify(sequence));
   if (!sequence) return J.util.error(res, 'No sequence specified!');
 
-  test(function(err,c){
-    if (err) return J.util.error(res, err);
-    return J.util.ok(res, c);
-  });
-  //evalSequence(sequence, res);
+  //test(function(err,c){
+  //  if (err) return J.util.error(res, err);
+  //  return J.util.ok(res, c);
+  //});
+  evalSequence(sequence, res);
 };
 
 exports.parse = function(req, res) {

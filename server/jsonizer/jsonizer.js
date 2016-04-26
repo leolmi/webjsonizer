@@ -14,15 +14,15 @@ var _ = require('lodash'),
   https = require('https'),
   http = require('http'),
   querystring = require('querystring'),
-  cheerio = require("cheerio");
-
+  cheerio = require("cheerio"),
+  zlib = require("zlib");
 
 
 'use strict';
 var jsonizer = function() {
   function noop(){}
 
-  var opt_prototipe = {
+  var opt_prototype = {
   };
 
   var _keepers = [
@@ -107,16 +107,33 @@ var jsonizer = function() {
     var skipped = false;
     var download = false;
     cb = cb || noop;
-    if (options.verbose) console.log('['+title+']-OPTIONS: ' + JSON.stringify(options));
+    if (options.verbose) console.log('['+title+']-OPTIONS: ' + JSON.stringify(options, null, 2));
     options.agent = false;
     var proto = options.https ? https : http;
+    var protocol = options.https ? 'https://' : 'http://';
 
-    var req = proto.request(options, function(res) {
+    var req_opt = {
+      path: protocol + options.host + options.path,
+      method: options.method,
+      headers: options.headers
+    };
+
+    console.log('['+title+']-ENV: ' + JSON.stringify(process.env));
+
+    if (process.env.PROXY_URL && process.env.PROXY_PORT) {
+      req_opt.host = process.env.PROXY_URL;
+      req_opt.port = process.env.PROXY_PORT;
+    }
+
+    if (options.verbose) console.log('['+title+']-REQ OPT: ' + JSON.stringify(req_opt, null, 2));
+
+    var req = proto.request(req_opt, function(res) {
       var result = {
         code:res.statusCode,
         headers:res.headers
       };
-      if (options.verbose) console.log('['+title+']-RESULTS: ' + JSON.stringify(result));
+      if (options.verbose) console.log('['+title+']-RESULTS: ' + JSON.stringify(result, null, 2));
+
 
       var newpath = res.headers.location;
       if ((res.statusCode.toString()=='302' || res.statusCode.toString()=='301') && newpath) {
@@ -143,26 +160,41 @@ var jsonizer = function() {
           target.close(cb(null, options,result));
         });
       }
-      else res.setEncoding('utf8');
 
+      var chunks = [];
       var content = '';
 
       res.on('data', function (chunk) {
-        if (options.verbose) console.log('['+title+']-download data: '+chunk);
-        content+=chunk;
+        var type = _.isString(chunk) ? 'stringa' : 'altro';
+        if (options.verbose) console.log('[' + title + ']-download data (' + type + '): ' + chunk);
+        content += chunk;
+        chunks.push(chunk);
       });
 
       res.on('end', function () {
         if (options.verbose) console.log('['+title+']-Fine richiesta!   skipped='+skipped+'   download='+download+'  target='+(target ? 'si' : 'no'));
         if (!skipped && !target && !download) {
           options.headers = _.merge(options.headers, req.headers);
-          cb(null, options, result, content);
+          var buffer = Buffer.concat(chunks);
+
+          var encoding = res.headers['content-encoding'];
+          if (encoding == 'gzip') {
+            zlib.gunzip(buffer, function(err, decoded) {
+              cb(err, options, result, decoded && decoded.toString());
+            });
+          } else if (encoding == 'deflate') {
+            zlib.inflate(buffer, function(err, decoded) {
+              cb(err, options, result, decoded && decoded.toString());
+            })
+          } else {
+            cb(null, options, result, buffer.toString());
+          }
         }
       });
     });
 
     req.on('error', function(e) {
-      if (options.verbose) console.log('['+title+']-problem with request: ' + e.message);
+      if (options.verbose) console.log('['+title+']-problem with request: ' + JSON.stringify(e));
       cb(e);
     });
 
@@ -204,7 +236,7 @@ var jsonizer = function() {
       var table = [];
       var $ = cheerio.load(html);
       var res = eval(pattern);
-      res.find('tbody > tr').each(function () {
+      res.find('tr').each(function () {
         var row = {};
         $(this).children().each(function (i, e) {
           row['C' + i] = $(e).text();
@@ -317,11 +349,11 @@ var jsonizer = function() {
   function evalSequence(sequence, cb, parseroptions, options, i) {
     options = options || { headers: {}, verbose:true };
     //il merging con il prototipo garantisce la correttezza della classe
-    options = _.merge(options, opt_prototipe);
+    options = _.merge(options, opt_prototype);
     i = i || 0;
 
-
-    if (!sequence || !sequence.items || sequence.items.length <= 0)
+    console.log('OPTIONS: '+JSON.stringify(options));
+    if (!sequence || !sequence.items || sequence.items.length <= i)
       return cb(new Error('Sequence is empty or undefined!'));
     if (sequence.items.length < i + 1)
       return cb(new Error('Wrong sequence!'));
@@ -344,13 +376,12 @@ var jsonizer = function() {
     doRequest(item.title, options, data, undefined, function (err, o, r, c) {
       if (err)
         return cb(err);
-      if (r.code != 200)
-        return cb(new Error('[' + item.title + '] - ended with code: ' + r.code));
+
       if (options.verbose) console.log('['+(i+1)+' '+item.title+'] - RICHIESTA EFFETTUATA CON SUCCESSO, CONTENT: '+c);
 
       checkCookies(r, options);
 
-      if (i >= sequence.length - 1)
+      if (i >= sequence.items.length - 1)
         return parse(c, parseroptions, cb);
 
       if (c) {
