@@ -321,7 +321,7 @@ var jsonizer = function() {
    * @param {number} [i]
    */
   function evalSequence(sequence, cb, parseroptions, options, i) {
-    options = options || { headers: {}, verbose:true };
+    options = options || { headers: {} };
     //il merging con il prototipo garantisce la correttezza della classe
     options = _.merge(options, opt_prototype);
     i = i || 0;

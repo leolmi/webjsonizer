@@ -23,7 +23,7 @@ angular.module('webjsonizerApp')
 
     $scope.toggleDebug = function() {
       $scope.debug = !$scope.debug;
-    }
+    };
 
     function notifyModifies(modified){
       $scope.modified = modified==undefined ? true : modified;

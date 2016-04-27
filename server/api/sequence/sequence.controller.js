@@ -85,9 +85,14 @@ exports.destroy = function(req, res) {
 
 function evalSequence(sequence, res) {
   J.eval(sequence, function (err, result) {
-    if (err) return J.util.error(res, err);
-    return J.util.ok(res, result);
-  }, {type: 'htmltable', pattern: sequence.selector});
+      if (err) return J.util.error(res, err);
+      return J.util.ok(res, result);
+    }, {
+      type: 'htmltable',
+      pattern: sequence.selector
+    }, {
+      verbose: false
+    });
 }
 
 // Esegue la sequenza restituendo i risultati

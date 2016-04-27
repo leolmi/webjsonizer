@@ -30,9 +30,11 @@
 <div class="editor-container" ng-class="{'blur':overpage}">
   <div class="menu-hidden"></div>
   <div class="editor-body">
-    <div ng-hide="sequence" class="new-sequence new-sequence-evident aslink" ng-click="newSequence()">
-      <i class="fa fa-fw fa-plus-circle"></i> Create new sequence
-    </div>
+    <div ng-hide="sequence" ng-include="'app/editor/splash.html'"></div>
+    <i ng-hide="sequence" class="fa fa-magic aslink new-sequence-button" ng-click="newSequence()"></i>
+    <!--<div ng-hide="sequence" class="new-sequence new-sequence-evident aslink" ng-click="newSequence()">-->
+      <!--<i class="fa fa-fw fa-plus-circle"></i> Create new sequence-->
+    <!--</div>-->
     <div ng-show="sequence" class="sequence-editor">
       <div class="top-menu">
         <div class="title">{{sequence.title}}</div>
@@ -109,6 +111,7 @@
           <p>Type js/jquery selector for table data.<br>To select a table with id="mytable", type: $('#mytable') </p>
           <textarea class="form-control input-sm vertical" ng-model="sequence.selector" ng-change="changed()"></textarea>
           <i class="fa fa-2x fa-pencil-square aslink" ng-click="test()"></i>
+          <a href="https://github.com/cheeriojs/cheerio/blob/master/Readme.md" target="_black"><i class="fa fa-2x fa-question-circle aslink"></i></a>
         </div>
       </div>
     </div>
