@@ -89,10 +89,11 @@ angular.module('webjsonizerApp')
         title: $scope.sequence.title
       };
       $http.post('/api/sequence/play', $scope.sequence)
-        .success(function(content) {
+        .success(function(result) {
           $scope.overpage.running = false;
           $scope.overpage.result = 'Sequence OK!';
-          $scope.overpage.content = content;
+          $scope.overpage.content = result.data;
+          $scope.sequence.result = result;
         })
         .error(function(err){
           $scope.overpage.running = false;
@@ -157,12 +158,12 @@ angular.module('webjsonizerApp')
     },{
       separator: true
     },{
-      icon:'fa-download',
+      icon:'fa-save',
       action: $scope.save,
       tooltip:'Save current sequence',
       isactive: function() { return $scope.modified && $scope.sequence; }
     },{
-      icon:'fa-play-circle',
+      icon: 'fa-bolt', //'fa-play-circle',
       action: $scope.play,
       tooltip:'Test current sequence'
     },{
@@ -284,8 +285,9 @@ angular.module('webjsonizerApp')
     });
     $scope.test = function() {
       var info = {
-        html: '',
-        pattern: $scope.sequence.selector
+        html: $scope.sequence.result ? $scope.sequence.result.content : '',
+        pattern: $scope.sequence.selector,
+        width: '80%'
       };
       modalTest(info);
     };

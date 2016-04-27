@@ -10,12 +10,23 @@ angular.module('webjsonizerApp')
         Logger.warning('Evaluation is running, please wait...');
         return;
       }
+
+      //function parse() {
+      //  if (_.isArray($scope.result)) {
+      //    $scope.resultItems = _.map($scope.result, function(r){
+      //      return _.map(_.keys(r), function(k) { return r[k]; });
+      //    });
+      //  }
+      //}
+
       $scope.evaluating = true;
+      $scope.resultItems = undefined;
       $http.post('api/sequence/test', $scope.modal.test)
         .success(function(json){
           $scope.result = json;
           $scope.iserror = false;
           $scope.evaluating = false;
+          //parse();
         })
         .error(function(err){
           $scope.result = undefined;

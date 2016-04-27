@@ -2,8 +2,18 @@
   font-family: "Consolas", monospace;
 }
 
-.test-result.error {
-  color: red;
-  background-color: #dca7a7;
-  border-color: brown;
+.test-content {
+  max-height: 400px;
+  white-space: pre;
+}
+
+.test-no-content {
+  text-align: center;
+  color: tomato;
+  padding: 40px;
+}
+
+.modal-test result-viewer .result-list {
+  overflow: auto;
+  max-height: 400px;
 }

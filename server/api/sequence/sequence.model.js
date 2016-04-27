@@ -40,6 +40,7 @@ var SequenceSchema = new Schema({
   owner: String,
   star: Boolean,
   enabled: Boolean,
+  result: Schema.Types.Mixed,
   parameters: [NameValueSchema],
   items: [SequenceItemSchema],
   keepers: [SequenceJSSchema],

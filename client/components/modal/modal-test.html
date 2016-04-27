@@ -1,6 +1,7 @@
-<div ng-controller="TestCtrl">
+<div ng-controller="TestCtrl" class="modal-test">
   <label>HTML of last page where looking for data</label>
-  <textarea class="form-control input-sm vertical html-form" ng-model="modal.test.html" rows="10" wrap="off"></textarea>
+  <pre class="test-content" ng-if="modal.test.html">{{modal.test.html}}</pre>
+  <div class="test-no-content" ng-if="!modal.test.html">Take the test at least once</div>
   <label>JS/jQuery script </label>
   <textarea class="form-control input-sm vertical" ng-model="modal.test.pattern" rows="2"></textarea>
   <div class="center-text">
@@ -8,5 +9,5 @@
     <i ng-show="evaluating" class="fa fa-2x fa-cog fa-spin"></i>
   </div>
   <label>Results</label>
-  <pre class="test-result" ng-class="{'error':iserror}">{{result}}</pre>
+  <result-viewer result="result"></result-viewer>
 </div>

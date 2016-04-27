@@ -20,7 +20,8 @@ angular.module('webjsonizerApp')
       return $modal.open({
         templateUrl: 'components/modal/modal.html',
         windowClass: modalClass,
-        scope: modalScope
+        scope: modalScope,
+        size: scope.modal ? scope.modal.size : ''
       });
     }
 
@@ -182,6 +183,7 @@ angular.module('webjsonizerApp')
               modal: {
                 test: args[0],
                 dismissable: true,
+                size: 'lg',
                 idle: false,
                 title: 'Test pattern',
                 template: 'components/modal/modal-test.html',

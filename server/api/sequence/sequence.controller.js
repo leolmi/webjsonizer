@@ -2,7 +2,7 @@
 
 var _ = require('lodash');
 var Sequence = require('./sequence.model');
-//var J = require('jsonizer');  //<-- quando sarà in node_modules
+//var J = require('node-jsonizer');
 var J = require('../../jsonizer/jsonizer.js');
 
 function checkUser(req, res){
@@ -63,6 +63,7 @@ exports.update = function(req, res) {
     var updated = _.merge(sequence, req.body, function(a,b){
       return _.isArray(a) ? b : undefined;
     });
+    updated.markModified('result');
     updated.save(function (err) {
       if (err) { return J.util.error(res, err); }
       return J.util.ok(res, sequence);
@@ -83,10 +84,10 @@ exports.destroy = function(req, res) {
 };
 
 function evalSequence(sequence, res) {
-  J.eval(sequence, function(err, table){
+  J.eval(sequence, function (err, result) {
     if (err) return J.util.error(res, err);
-    return J.util.ok(res, table);
-  }, {type:'htmltable', pattern:sequence.selector});
+    return J.util.ok(res, result);
+  }, {type: 'htmltable', pattern: sequence.selector});
 }
 
 // Esegue la sequenza restituendo i risultati
@@ -110,7 +111,7 @@ exports.play = function(req,res) {
 
 exports.parse = function(req, res) {
   var data = req.body;
-  console.log('dati ricevuti:'+JSON.stringify(data));
+  console.log('[PARSER] - dati ricevuti:'+JSON.stringify(data));
   if (!data || !data.pattern || !data.html)
     return J.util.error(res, 'Not available data passed!');
 

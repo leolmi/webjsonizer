@@ -21,6 +21,7 @@
 .over-page > .over-page-content {
   width: calc(100% - 280px);
   left: 280px;
+  top: 0;
   position: fixed;
   height: 100%;
   z-index: 210;
