@@ -11,6 +11,16 @@ function checkUser(req, res){
   return check;
 }
 
+function onSequence(id, cb) {
+  if (!id)
+    return cb(new Error('No sequence identity specified!'));
+  Sequence.findById(id, function (err, sequence) {
+    if (err) return cb(err);
+    if (!sequence) return cb(new Error('Sequence not found!'));
+    cb(null, sequence);
+  });
+}
+
 
 // Get list of sequences
 exports.index = function(req, res) {
@@ -23,9 +33,8 @@ exports.index = function(req, res) {
 
 // Get a single sequence
 exports.show = function(req, res) {
-  Sequence.findById(req.params.id, function (err, sequence) {
-    if(err) { return J.util.error(res, err); }
-    if(!sequence) { return J.util.notfound(res); }
+  onSequence(req.params.id, function(err, sequence){
+    if(err) return J.util.error(res, err);
     return J.util.ok(res, sequence);
   });
 };
@@ -43,9 +52,8 @@ exports.create = function(req, res) {
 
 // Update the star field of the sequence
 exports.toggle = function(req, res) {
-  Sequence.findById(req.body._id, function (err, sequence) {
-    if (err) { return J.util.error(res, err); }
-    if(!sequence) { return J.util.notfound(res); }
+  onSequence(req.body._id, function(err, sequence) {
+    if (err) return J.util.error(res, err);
     sequence.star = req.body.star;
     sequence.save(function (err) {
       if (err) { return J.util.error(res, err); }
@@ -57,9 +65,8 @@ exports.toggle = function(req, res) {
 // Updates an existing sequence in the DB.
 exports.update = function(req, res) {
   if(req.body._id) { delete req.body._id; }
-  Sequence.findById(req.params.id, function (err, sequence) {
-    if (err) { return J.util.error(res, err); }
-    if(!sequence) { return J.util.notfound(res); }
+  onSequence(req.params.id, function(err, sequence) {
+    if (err) return J.util.error(res, err);
     var updated = _.merge(sequence, req.body, function(a,b){
       return _.isArray(a) ? b : undefined;
     });
@@ -73,9 +80,8 @@ exports.update = function(req, res) {
 
 // Deletes a sequence from the DB.
 exports.destroy = function(req, res) {
-  Sequence.findById(req.params.id, function (err, sequence) {
-    if(err) { return J.util.error(res, err); }
-    if(!sequence) { return J.util.notfound(res); }
+  onSequence(req.params.id, function(err, sequence) {
+    if (err) return J.util.error(res, err);
     sequence.remove(function(err) {
       if(err) { return J.util.error(res, err); }
       return J.util.deleted(res);
@@ -97,12 +103,8 @@ function evalSequence(sequence, res) {
 
 // Esegue la sequenza restituendo i risultati
 exports.milk = function(req, res) {
-  var id = req.params.id;
-  if (!id)
-    return J.util.error(res, 'No sequence identity specified!');
-  Sequence.findById(id, function (err, sequence) {
+  onSequence(req.params.id, function(err, sequence) {
     if (err) return J.util.error(res, err);
-    if (!sequence) return J.util.notfound(res);
     evalSequence(sequence, res);
   });
 };
@@ -126,5 +128,18 @@ exports.parse = function(req, res) {
     if (!json)
       return J.util.error(res, 'No data');
     return J.util.ok(res, json);
+  });
+};
+
+exports.schema = function(req, res) {
+  onSequence(req.params.id, function(err, sequence) {
+    if (err) return J.util.error(res, err);
+    var schema = {};
+    sequence.parameters.forEach(function(p){
+      if (!p.hidden) {
+        schema[p.name] = '';
+      }
+    });
+    return J.util.ok(res, schema);
   });
 };

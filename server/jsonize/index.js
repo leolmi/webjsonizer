@@ -6,6 +6,7 @@ var controller = require('./jsonize.controller');
 
 var router = express.Router();
 
-router.post('/', controller.jsonize);
+router.get('/:id', controller.schema);
+router.post('/:id', controller.jsonize);
 
 module.exports = router;

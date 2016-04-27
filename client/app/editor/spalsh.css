@@ -3,8 +3,15 @@
   padding: 50px;
 }
 
-.splash i {
+.splash > i {
   color: #888;
+  display: block;
+}
+
+.splash > p {
+  color: yellowgreen;
+  margin: 40px 0;
+  font-style: italic;
 }
 
 .splash .splash-some {
@@ -13,7 +20,6 @@
 
 .splash .splash-page {
   width: 150px;
-  height: 50px;
   background-color: #333;
   border: #666 1px solid;
   border-radius: 5px;
