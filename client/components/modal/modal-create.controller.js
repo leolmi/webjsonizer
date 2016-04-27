@@ -82,7 +82,10 @@ angular.module('webjsonizerApp')
     }
 
     $scope.$watch('file', function() {
-      if (!$scope.file) return;
+      if (!$scope.file) {
+        $scope.modal.idle = false;
+        return;
+      }
       var reader = new FileReader();
       reader.onload = function (e) {
         generateSequence(e.target.result);

@@ -1,5 +1,5 @@
-<pre class="result-text" ng-if="!resultItems" ng-class="{'error':iserror}">{{result}}</pre>
-<div class="result-list" ng-if="resultItems">
+<pre class="result-text" ng-hide="resultItems" ng-class="{'error':iserror}">{{result}}</pre>
+<div class="result-list" ng-show="resultItems">
   <div class="result-item-row" ng-repeat="i in resultItems">
     <div class="result-item-num">{{$index}} </div>
     <div class="result-item-cell" ng-repeat="c in i track by $index" title="{{c}}">{{c}}</div>

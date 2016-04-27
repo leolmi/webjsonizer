@@ -78,6 +78,9 @@ pre {
   resize: vertical;
 }
 
+.modal {
+  overflow-y: auto !Important;
+}
 
 /*//////////////////  BUTTONS  /////////////////////*/
 .jsz-fa-big {

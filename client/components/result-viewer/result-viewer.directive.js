@@ -13,6 +13,7 @@ angular.module('webjsonizerApp')
               return _.map(_.keys(r), function(k) { return r[k]; });
             });
           }
+          else scope.resultItems = undefined;
         }
 
         scope.$watch('result', function() {

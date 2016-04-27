@@ -11,28 +11,23 @@ angular.module('webjsonizerApp')
         return;
       }
 
-      //function parse() {
-      //  if (_.isArray($scope.result)) {
-      //    $scope.resultItems = _.map($scope.result, function(r){
-      //      return _.map(_.keys(r), function(k) { return r[k]; });
-      //    });
-      //  }
-      //}
-
       $scope.evaluating = true;
       $scope.resultItems = undefined;
+      $scope.result = undefined;
       $http.post('api/sequence/test', $scope.modal.test)
-        .success(function(json){
-          $scope.result = json;
+        .then(function(resp){
+          $scope.result = resp.data;
           $scope.iserror = false;
           $scope.evaluating = false;
-          //parse();
-        })
-        .error(function(err){
-          $scope.result = undefined;
+        }, function(err){
           $scope.evaluating = false;
           $scope.iserror = true;
-          $scope.result = JSON.stringify(err);
+          if (_.isString(err.data))
+            $scope.result = ''+err.data;
+          else if (_.isString(err.message))
+            $scope.result = ''+err.message;
+          else
+            $scope.result = JSON.stringify(err);
         });
     };
   }]);
