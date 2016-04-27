@@ -2,8 +2,8 @@
 
 var _ = require('lodash');
 var Sequence = require('./sequence.model');
-//var J = require('node-jsonizer');
-var J = require('../../jsonizer/jsonizer.js');
+var J = require('node-jsonizer');
+//var J = require('../../jsonizer/jsonizer.js');
 
 function checkUser(req, res){
   var check = (req.user && req.user._id);
@@ -91,7 +91,7 @@ function evalSequence(sequence, res) {
 }
 
 // Esegue la sequenza restituendo i risultati
-exports.milk = function(req,res) {
+exports.milk = function(req, res) {
   var id = req.params.id;
   if (!id)
     return J.util.error(res, 'No sequence identity specified!');

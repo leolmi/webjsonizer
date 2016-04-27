@@ -30,7 +30,7 @@ angular.module('webjsonizerApp')
     }
 
     function getSequenceAddress() {
-      return $scope.sequence ? "https://jsonizer.herokuapp.com/api/sequence/"+$scope.sequence._id : '<undefined>';
+      return $scope.sequence ? "https://jsonizer.herokuapp.com/jsonize/"+$scope.sequence._id : '<undefined>';
     }
 
     $scope.newSequenceItem = function (index) {
