@@ -3,7 +3,6 @@
 var _ = require('lodash');
 var Sequence = require('./sequence.model');
 var J = require('node-jsonizer');
-//var J = require('../../jsonizer/jsonizer.js');
 
 function checkUser(req, res){
   var check = (req.user && req.user._id);
@@ -20,6 +19,19 @@ function onSequence(id, cb) {
     cb(null, sequence);
   });
 }
+
+function evalSequence(sequence, res) {
+  J.eval(sequence, function (err, result) {
+    if (err) return J.util.error(res, err);
+    return J.util.ok(res, result);
+  }, {
+    type: 'htmltable',
+    pattern: sequence.selector
+  }, {
+    verbose: false
+  });
+}
+
 
 
 // Get list of sequences
@@ -88,18 +100,6 @@ exports.destroy = function(req, res) {
     });
   });
 };
-
-function evalSequence(sequence, res) {
-  J.eval(sequence, function (err, result) {
-      if (err) return J.util.error(res, err);
-      return J.util.ok(res, result);
-    }, {
-      type: 'htmltable',
-      pattern: sequence.selector
-    }, {
-      verbose: false
-    });
-}
 
 // Esegue la sequenza restituendo i risultati
 exports.milk = function(req, res) {

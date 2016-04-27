@@ -2,7 +2,7 @@
 'use strict';
 
 angular.module('webjsonizerApp')
-  .controller('MainCtrl', ['$scope','$rootScope','$http',
+  .controller('TestCtrl', ['$scope','$rootScope','$http',
     function($scope, $rootScope, $http) {
 
     }]);
