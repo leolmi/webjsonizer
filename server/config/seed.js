@@ -55,7 +55,10 @@ Sequence.find({}).remove(function() {
         {name: 'Cache-Control', value: 'max-age=0'},
         {name: 'Proxy-Connection', value: 'keep-alive'}]
     }],
-    selector: '$(\'#tab-risultati1\').find(\'table\')'
+    parserOptions: {
+      type: 'htmltable',
+      pattern: '$(\'#tab-risultati1\').find(\'table\')'
+    }
   }, {
     title: 'HQ',
     SSL: false,
@@ -91,7 +94,10 @@ Sequence.find({}).remove(function() {
       }],
       "data": []
     }],
-    selector: '$(\'.tabular\').eq(0)'
+    parserOptions: {
+      type: 'htmltable',
+      pattern: '$(\'.tabular\').eq(0)'
+    }
   }, {
     title: 'HQ2',
     SSL: false,
@@ -115,7 +121,10 @@ Sequence.find({}).remove(function() {
       }],
       "data": []
     }],
-    selector: '$(\'.network-table\')'
+    parserOptions: {
+      type: 'htmltable',
+      pattern: '$(\'.network-table\')'
+    }
   }, function() {
     console.log('finished populating sequences');
   });

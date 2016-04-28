@@ -1,8 +1,8 @@
 <div class="editor-menu">
   <header class="editor-menu-header">
     <i class="jsz-fa-btn jsz-fa-btn-big fa fa-fw fa-power-off" ng-click="logout()"></i>
-    <span class="font-awesome"><i class="fa fa-fw jsz-fa-btn-big fa-user"></i> {{user.email}}</span>
-    <i class="jsz-fa-btn fa fa-fw fa-bug onright" ng-click="toggleDebug()" ng-class="{checked:debug}"></i>
+    <span class="font-awesome"><i class="fa fa-fw jsz-fa-btn jsz-fa-btn-big fa-user" ng-click="profile()"></i> {{user.email}}</span>
+    <!--<i class="jsz-fa-btn fa fa-fw fa-bug onright" ng-click="toggleDebug()" ng-class="{checked:debug}"></i>-->
   </header>
   <article class="editor-menu-body">
     <div class="sequences-star">
@@ -102,17 +102,11 @@
         </header>
         <sequence-item ng-repeat="i in sequence.items" data-ng-model="i"
                        last="($index==sequence.items.length-1)"
-                       index="$index" collapsed="true"></sequence-item>
+                       index="$index" collapsed="true" ng-change="changed()"></sequence-item>
         <div class="new-sequence aslink" ng-click="newSequenceItem()">
           <i class="fa fa-fw fa-plus-circle"></i> Append new sequence item
         </div>
-        <div class="data-parser">
-          <label>JS/jQuery Selector</label>
-          <p>Type js/jquery selector for table data.<br>To select a table with id="mytable", type: $('#mytable') </p>
-          <textarea class="form-control input-sm vertical" ng-model="sequence.selector" ng-change="changed()"></textarea>
-          <i class="fa fa-2x fa-pencil-square aslink" ng-click="test()"></i>
-          <a href="https://github.com/cheeriojs/cheerio/blob/master/Readme.md" target="_black"><i class="fa fa-2x fa-question-circle aslink"></i></a>
-        </div>
+        <sequence-parser ng-model="sequence" ng-change="changed()"></sequence-parser>
       </div>
     </div>
     <pre ng-show="debug">Sequence: {{sequence}}</pre>

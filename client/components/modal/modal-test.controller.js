@@ -14,7 +14,16 @@ angular.module('webjsonizerApp')
       $scope.evaluating = true;
       $scope.resultItems = undefined;
       $scope.result = undefined;
-      $http.post('api/sequence/test', $scope.modal.test)
+
+      var test = {
+        data: $scope.modal.test.data,
+        parserOptions: {
+          type: $scope.modal.test.parserOptions.type,
+          pattern: $scope.modal.test.parserOptions.testPattern,
+          pretasks: $scope.modal.test.parserOptions.pretasks
+        }
+      };
+      $http.post('api/sequence/test', test)
         .then(function(resp){
           $scope.result = resp.data;
           $scope.iserror = false;

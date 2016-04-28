@@ -2,7 +2,8 @@
 
 var _ = require('lodash');
 var Sequence = require('./sequence.model');
-var J = require('node-jsonizer');
+//var J = require('node-jsonizer');
+var J = require('../../jsonizer-dev/jsonizer');
 
 function checkUser(req, res){
   var check = (req.user && req.user._id);
@@ -22,14 +23,11 @@ function onSequence(id, cb) {
 
 function evalSequence(sequence, res) {
   J.eval(sequence, function (err, result) {
-    if (err) return J.util.error(res, err);
-    return J.util.ok(res, result);
-  }, {
-    type: 'htmltable',
-    pattern: sequence.selector
-  }, {
-    verbose: true
-  });
+      if (err) return J.util.error(res, err);
+      return J.util.ok(res, result);
+    },
+    sequence.parserOptions ,
+    { verbose: true });
 }
 
 
@@ -83,6 +81,7 @@ exports.update = function(req, res) {
       return _.isArray(a) ? b : undefined;
     });
     updated.markModified('result');
+    updated.markModified('parserOptions');
     updated.save(function (err) {
       if (err) { return J.util.error(res, err); }
       return J.util.ok(res, sequence);
@@ -117,13 +116,13 @@ exports.play = function(req,res) {
 };
 
 exports.parse = function(req, res) {
-  var data = req.body;
-  if (!data || !data.pattern || !data.html)
+  var options = req.body;
+  if (!options || !options.parserOptions || !options.data)
     return J.util.error(res, 'Not available data passed!');
 
-  J.parser.parseHtmlTable(data.html, data.pattern, function(err, json){
+  J.parser.parse(options.data, options.parserOptions, function (err, json) {
     if (err)
-      return J.util.error(res, 'Error on parsing data:'+err.message);
+      return J.util.error(res, 'Error on parsing data:' + err.message);
     if (!json)
       return J.util.error(res, 'No data');
     return J.util.ok(res, json);

@@ -1,9 +1,9 @@
 <div ng-controller="TestCtrl" class="modal-test">
-  <label>HTML of last page where looking for data</label>
-  <pre class="test-content" ng-if="modal.test.html">{{modal.test.html}}</pre>
-  <div class="test-no-content" ng-if="!modal.test.html">Take the test at least once</div>
-  <label>JS/jQuery script </label>
-  <textarea class="form-control input-sm vertical" ng-model="modal.test.pattern" rows="2"></textarea>
+  <label>Content of last page where looking for data</label>
+  <pre class="test-content" ng-if="modal.test.data">{{modal.test.data}}</pre>
+  <div class="test-no-content" ng-if="!modal.test.data">Take the test at least once</div>
+  <label>Pattern </label>
+  <textarea class="form-control input-sm vertical" ng-model="modal.test.parserOptions.testPattern" rows="2"></textarea>
   <div class="center-text">
     <i ng-hide="evaluating" class="fa fa-2x aslink fa-refresh" ng-click="refresh()"></i>
     <i ng-show="evaluating" class="fa fa-2x fa-cog fa-spin"></i>

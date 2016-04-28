@@ -9,7 +9,7 @@ angular.module('webjsonizerApp')
       restrict: 'E',
       scope: {item: '=ngModel', last:'=', index:'=', collapsed:'='},
       templateUrl: 'app/editor/sequence-item.html',
-      link: function (scope, elm, atr) {
+      link: function (scope, ele, atr) {
         scope.items = ["Ciccio","Bubo","Stallio"];
         scope.buttons = [{
           icon: 'fa-remove',
@@ -50,7 +50,10 @@ angular.module('webjsonizerApp')
           name:'referer'
         }];
 
-        scope.changed = function() { $rootScope.$broadcast('MODIFIED'); };
+        scope.changed = function() {
+          if (atr['ngChange'])
+            ele.scope().$eval(atr['ngChange']);
+        };
 
         scope.addHeader = function() {
           scope.item.headers.push({name:'',value:'',hidden:false});

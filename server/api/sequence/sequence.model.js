@@ -44,7 +44,7 @@ var SequenceSchema = new Schema({
   parameters: [NameValueSchema],
   items: [SequenceItemSchema],
   keepers: [SequenceJSSchema],
-  selector: String
+  parserOptions: Schema.Types.Mixed
 });
 
 module.exports = mongoose.model('Sequence', SequenceSchema);

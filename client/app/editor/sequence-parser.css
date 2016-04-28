@@ -1,0 +1,16 @@
+.data-parser {
+  padding: 10px;
+  background-color: #fff;
+  color: #222;
+  margin: 40px 0;
+  border: #fff 6px solid;
+}
+.data-parser .col > div {
+  position: relative;
+}
+.data-parser .editor-row .btn-right {
+  right: -14px;
+  display: inline-block;
+  position: absolute;
+  top: 0;
+}
