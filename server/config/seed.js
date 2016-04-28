@@ -92,6 +92,30 @@ Sequence.find({}).remove(function() {
       "data": []
     }],
     selector: '$(\'.tabular\').eq(0)'
+  }, {
+    title: 'HQ2',
+    SSL: false,
+    owner: '54b3e04cde6279a8211b42fe',
+    star: true,
+    enabled: true,
+    parameters: [],
+    items: [{
+      title: 'step 1',
+      host: 'earthquake.usgs.gov',
+      method: 'get',
+      path: '/monitoring/operations/network.php?network=GSN',
+      prejs: [],
+      postjs: [],
+      headers: [{
+        "name": "Accept",
+        "value": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"
+      }, {
+        "name": "User-Agent",
+        "value": "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.130 Safari/537.36"
+      }],
+      "data": []
+    }],
+    selector: '$(\'.network-table\')'
   }, function() {
     console.log('finished populating sequences');
   });

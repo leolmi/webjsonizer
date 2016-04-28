@@ -27,3 +27,7 @@
 .btn-left {
   float: left;
 }
+
+.modal-body .error {
+  color: red;
+}

@@ -5,6 +5,10 @@
   <p>You can select a Network-data file (xml for Explorer; har for Chrome) to auto generate sequence steps.</p>
   <button class="btn btn-info" ng-click="selectFile()">Open Network Data</button>
   <div ng-show="modal.idle" class="working-frame"><i class="fa fa-2x fa-cog fa-spin"></i> building sequence....</div>
+  <div ng-show="!modal.idle && modal.info.items.length" class="working-frame">Founded {{modal.info.items.length}} valid steps.</div>
+  <div ng-show="!modal.idle && sequenceError" class="working-frame error">{{sequenceError}}</div>
   <label class="top-margin">Exclusion list for requests urls</label>
   <tag-editor tags="exclusion" alltags="allexclusion"></tag-editor>
+  <label class="top-margin">Included mime types (* = all)</label>
+  <tag-editor tags="includeMimeTypes" alltags="allMimeTypes"></tag-editor>
 </div>

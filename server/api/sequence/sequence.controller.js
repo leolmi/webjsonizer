@@ -28,7 +28,7 @@ function evalSequence(sequence, res) {
     type: 'htmltable',
     pattern: sequence.selector
   }, {
-    verbose: false
+    verbose: true
   });
 }
 
@@ -118,7 +118,6 @@ exports.play = function(req,res) {
 
 exports.parse = function(req, res) {
   var data = req.body;
-  //console.log('[PARSER] - dati ricevuti:'+JSON.stringify(data));
   if (!data || !data.pattern || !data.html)
     return J.util.error(res, 'Not available data passed!');
 
