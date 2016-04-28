@@ -17,7 +17,9 @@
   border-radius: 10px;
   color: yellowgreen;
   padding: 10px;
-  margin: 20px;
+  /*margin: 20px;*/
+  margin: 20px auto;
+  width: 300px;
 }
 .new-sequence:hover {
   background-color: #111;
@@ -38,6 +40,7 @@
   color: yellowgreen;
   margin: 10px;
   font-weight: bold;
+  font-size: 24px;
 }
 
 .contextual-menu {
@@ -133,4 +136,8 @@
   margin: auto;
   right: 100px;
   font-size: 100px;
+}
+
+.editor-container textarea {
+  margin-bottom: 4px;
 }

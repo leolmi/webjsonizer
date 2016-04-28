@@ -20,8 +20,13 @@ exports.types = [{
 function execTasks(tasks, content) {
   if (tasks.length>0) {
     tasks.forEach(function (t) {
-      var data = content;
-      content = eval(t);
+      try {
+        var data = content;
+        content = eval(t.pattern);
+      }
+      catch(err) {
+        console.log('TASK = ' + JSON.stringify(t) + '  ERROR: '+ JSON.stringify(err));
+      }
     });
   }
   return content;
@@ -52,6 +57,9 @@ function parseJsonContent(content, options, cb) {
     if (options.pattern) {
       var data = JSON.parse(res);
       res = eval(options.pattern);
+      if (res && !_.isArray(res)) {
+        res = JSON.stringify(res);
+      }
     }
     return cb(null, res);
   } catch(err) {

@@ -1,22 +1,22 @@
 <div class="data-parser">
   <div class="row editor-row">
-    <div class="col-md-4">
+    <div class="col-md-5">
       <label>Source</label>
       <p>Define source type.</p>
     </div>
-    <div class="col-md-8">
+    <div class="col-md-7">
       <select class="form-control" ng-model="sequence.parserOptions.type" ng-change="changed()">
         <option ng-repeat="t in parserTypes" value="{{t.name}}">{{t.desc}}</option>
       </select>
     </div>
   </div>
   <div class="row editor-row">
-    <div class="col-md-4">
+    <div class="col-md-5">
       <label class="control-label">Tasks</label>
       <i class="jsz-fa-btn fa fa-fw fa-plus-circle" ng-click="addTask()"></i>
       <p>Tasks can modify data before parse it.</p>
     </div>
-    <div class="col col-md-8">
+    <div class="col col-md-7">
       <div ng-repeat="task in sequence.parserOptions.pretasks track by $index">
         <textarea class="form-control input-sm vertical" ng-model="task.pattern" ng-change="changed()"></textarea>
         <i class="jsz-fa-btn btn-right fa fa-remove" ng-click="removeTask($index)"></i>
@@ -24,7 +24,7 @@
     </div>
   </div>
   <div class="row editor-row">
-    <div class="col-md-4">
+    <div class="col-md-5">
       <label>Selector</label>
       <div ng-switch="sequence.parserOptions.type">
         <p ng-switch-when="htmltable">Type js/jQuery selector for table data.<br>To select a table with id="mytable", type: $('#mytable') </p>
@@ -35,7 +35,7 @@
       <i class="fa fa-2x fa-pencil-square aslink" ng-click="test()"></i>
       <a ng-show="sequence.parserOptions.type=='htmltable'" href="https://github.com/cheeriojs/cheerio/blob/master/Readme.md" target="_black"><i class="fa fa-2x fa-question-circle aslink"></i></a>
     </div>
-    <div class="col-md-8">
+    <div class="col-md-7">
       <textarea class="form-control input-sm vertical" ng-model="sequence.parserOptions.pattern" ng-change="changed()" rows="4"></textarea>
     </div>
   </div>
