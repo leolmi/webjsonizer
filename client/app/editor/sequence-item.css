@@ -8,6 +8,20 @@
 .sequence-item:hover {
   background-color: #111;
 }
+.sequence-item .item-desc {
+  font-family: monospace;
+}
+.sequence-item .item-desc .item-method {
+  color: steelblue;
+  text-transform: uppercase;
+}
+.sequence-item .item-desc .item-host-name {
+  color: yellowgreen;
+}
+.sequence-item .item-desc .item-path {
+
+}
+
 .item-line {
   position: absolute;
   background-color: #fff;

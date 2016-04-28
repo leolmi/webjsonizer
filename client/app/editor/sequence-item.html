@@ -10,7 +10,11 @@
   <div class="item-line item-line-up"></div>
   <div class="item-point" ng-click="toggle()">{{index+1}}</div>
   <div class="item-line item-line-down" ng-class="{'last':last}"></div>
-  <div ng-show="collapsed">{{getShortDesc()}}</div>
+  <div ng-show="collapsed" class="item-desc">
+    <span class="item-method">{{item.method}} </span>
+    <span class="item-host-name">{{item.host}}</span>
+    <span class="item-path">{{item.path}}</span>
+  </div>
   <div ng-hide="collapsed">
     <div class="row editor-row">
       <div class="col-md-5">
