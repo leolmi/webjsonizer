@@ -234,21 +234,24 @@ var jsonizer = function() {
    * valorizza il target secondo il tipo e se il valore esiste
    * @param {object} sequence
    * @param {object} item
-   * @param {object} sequencejs
+   * @param {object} keeper
    */
-  function setTarget(sequence, item, sequencejs) {
-    if (sequencejs.value) {
-      if (sequencejs.ttype=='parameter') {
-        var p = _.find(sequence.parameters, function(p) { return p.name==sequencejs.target; });
-        if (p) p.value = sequencejs.value;
+  function setTarget(sequence, item, keeper) {
+    if (keeper.value) {
+      if (keeper.ttype == 'parameter') {
+        var p = _.find(sequence.parameters, function (p) {
+          return p.name == keeper.target;
+        });
+        if (p) p.value = keeper.value;
       }
       else {
         if (!item.data)
           item.data = {};
-        item.data[sequencejs.name] = sequencejs.value;
+        item.data[keeper.name] = keeper.value;
       }
     }
   }
+
   function evalKeepers(sequence, item){
     if (sequence.keepers && sequence.keepers.length){
       sequence.keepers.forEach(function(k){
@@ -315,6 +318,27 @@ var jsonizer = function() {
       options.headers['host'] = options.host;
   }
 
+  function getItem(sequence, options, index, cb) {
+    if (sequence && sequence.items && sequence.items.length > index) {
+      while (sequence.items.length > index && sequence.items[index].skip) {
+        if (options.verbose) console.log('['+sequence.items[index].title+']- n°'+index+1+' SKIPPED');
+        index++;
+      }
+      if (sequence.items.length <= index)
+        return cb(new Error('Wrong sequence!'));
+      cb(null, sequence.items[index], index);
+    } else {
+      cb(new Error('No available items!'));
+    }
+  }
+
+  function isLast(sequence, index) {
+    while (sequence.items.length > index && sequence.items[index].skip) {
+      index++;
+    }
+    return sequence.items.length <= index;
+  }
+
   /**
    * Effettua una catena di chiamate sequenziali
    * @param sequence
@@ -324,57 +348,54 @@ var jsonizer = function() {
    * @param {number} [i]
    */
   function evalSequence(sequence, cb, parseroptions, options, i) {
-    options = options || { headers: {} };
-    //il merging con il prototipo garantisce la correttezza della classe
+    options = options || {};
     options = _.merge(options, opt_prototype);
     i = i || 0;
 
     console.log('OPTIONS: '+JSON.stringify(options));
-    if (!sequence || !sequence.items || sequence.items.length <= i)
-      return cb(new Error('Sequence is empty or undefined!'));
-    if (sequence.items.length < i + 1)
-      return cb(new Error('Wrong sequence!'));
-    var item = sequence.items[i];
+    getItem(sequence, options, i, function(err, item, index){
+      if (err) return cb(err);
 
-    if (options.verbose) console.log('['+item.title+']-OPTIONS: (before check): ' + JSON.stringify(options));
-    check(options);
-    if (options.verbose) console.log('['+item.title+']-OPTIONS: (after check & before keep)' + JSON.stringify(options));
-    keep(options, item, sequence, i);
-    if (options.verbose) console.log('['+item.title+']-OPTIONS: (after keep & before keepers)' + JSON.stringify(options));
-    evalKeepers(sequence, item);
-    if (options.verbose) console.log('['+item.title+']-OPTIONS: (after keepers)' + JSON.stringify(options));
+      if (options.verbose) console.log('['+item.title+']-OPTIONS: (before check): ' + JSON.stringify(options));
+      check(options);
+      if (options.verbose) console.log('['+item.title+']-OPTIONS: (after check & before keep)' + JSON.stringify(options));
+      keep(options, item, sequence, index);
+      if (options.verbose) console.log('['+item.title+']-OPTIONS: (after keep & before keepers)' + JSON.stringify(options));
+      evalKeepers(sequence, item);
+      if (options.verbose) console.log('['+item.title+']-OPTIONS: (after keepers)' + JSON.stringify(options));
 
-    evalSequenceJS(item.prejs, sequence, item);
+      evalSequenceJS(item.prejs, sequence, item);
 
-    var data = getData(item.data);
-    validateHeaders(options, item, data);
+      var data = getData(item.data);
+      validateHeaders(options, item, data);
 
-    if (options.verbose) console.log('['+item.title+']-REQUEST BODY: '+data);
-    doRequest(item.title, options, data, undefined, function (err, o, r, c) {
-      if (err)
-        return cb(err);
+      if (options.verbose) console.log('['+item.title+']-REQUEST BODY: '+data);
+      doRequest(item.title, options, data, undefined, function (err, o, r, c) {
+        if (err)
+          return cb(err);
 
-      if (options.verbose) console.log('['+(i+1)+' '+item.title+'] - RICHIESTA EFFETTUATA CON SUCCESSO, CONTENT: '+c);
+        if (options.verbose) console.log('['+(index+1)+' '+item.title+'] - RICHIESTA EFFETTUATA CON SUCCESSO, CONTENT: '+c);
 
-      checkCookies(r, options);
+        checkCookies(r, options);
 
-      if (i >= sequence.items.length - 1) {
-        parser.parse(c, parseroptions, function(err, data) {
-          var result = new ResultData();
-          result.type = parseroptions.type;
-          result.data = data;
-          result.content = c;
-          return cb(err, result);
-        });
-      }
-      else {
-        if (c) {
-          checkKeepers(sequence.keepers, c);
-          evalSequenceJS(item.postjs, sequence, item, c);
+        if (isLast(sequence, index)) {
+          parser.parse(c, parseroptions, function(err, data) {
+            var result = new ResultData();
+            result.type = parseroptions.type;
+            result.data = data;
+            result.content = c;
+            return cb(err, result);
+          });
         }
+        else {
+          if (c) {
+            checkKeepers(sequence.keepers, c);
+            evalSequenceJS(item.postjs, sequence, item, c);
+          }
 
-        evalSequence(sequence, cb, parseroptions, options, i + 1);
-      }
+          evalSequence(sequence, cb, parseroptions, options, index + 1);
+        }
+      });
     });
   }
 

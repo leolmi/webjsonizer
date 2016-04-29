@@ -4,23 +4,12 @@
 'use strict';
 
 angular.module('webjsonizerApp')
-  .controller('EditorCtrl', ['$scope','$rootScope','$http','$timeout','$location','Auth','Logger','Modal',
-    function ($scope,$rootScope,$http,$timeout,$location,Auth,Logger,Modal) {
+  .controller('EditorCtrl', ['$scope','$rootScope','$http','$timeout','$location','Auth','Logger','Modal','util','Sequence','Parameter',
+    function ($scope,$rootScope,$http,$timeout,$location,Auth,Logger,Modal,util,Sequence,Parameter) {
       $scope.sequence = undefined;
       $scope.user = Auth.getCurrentUser();
       $scope.modified = false;
       $scope.debug = false;
-
-      //$scope.newSequence = function() {
-      //  $http.post('/api/sequence', { title: 'New Sequence', enabled: true })
-      //    .success(function(seq){
-      //      refreshAllSequences();
-      //      $scope.open(seq);
-      //    })
-      //    .error(function(err) {
-      //      Logger.error("Error creating new sequence", JSON.stringify(err));
-      //    });
-      //};
 
       $scope.toggleDebug = function () {
         $scope.debug = !$scope.debug;
@@ -38,29 +27,28 @@ angular.module('webjsonizerApp')
         var i = $scope.sequence.items;
         index = index == undefined ? i.length : index;
         var prev = index > 0 ? i[index - 1] : undefined;
+        var host = prev ? prev.host : '';
+        var item = new SequenceItem({host:host});
 
-        $scope.sequence.items.splice(index, 0, {
-          title: 'New Item',
-          host: prev ? prev.host : '',
-          method: 'get',
-          path: '',
-          referer: 'auto',
-          data: '',
-          prejs: [],
-          postjs: [],
-          headers: [],
-          selector: ''
-        });
+        $scope.sequence.items.splice(index, 0, item);
         notifyModifies();
         $timeout(function () {
           $scope.$broadcast('open-item', {item: i[index]});
         }, 30);
       };
 
-      $scope.removeItem = function (index) {
-        $scope.sequence.items.splice(index, 1);
-        notifyModifies();
-      };
+      $rootScope.$on('NEW-SEQUENCE-ITEM-REQUEST', function(e, data){
+        $scope.newSequenceItem(data.index);
+      });
+
+      $rootScope.$on('REMOVE-SEQUENCE-ITEM', function(e, data){
+        if (data) util.remove($scope.sequence.items, data.item, notifyModifies);
+      });
+
+      $rootScope.$on('REMOVE-SEQUENCE-ITEM-KEEPER', function(e, data){
+        if (data && data.item)
+          util.remove(data.item.keepers, data.keeper, notifyModifies);
+      });
 
       var modalDelete = Modal.confirm.ask(function (seq) {
         $http.delete('/api/sequence/' + seq._id)
@@ -133,15 +121,8 @@ angular.module('webjsonizerApp')
       });
 
       $scope.newSequence = function () {
-        var info = {
-          title: 'New Sequence',
-          parserOptions: {
-            type: 'htmltable',
-            pattern: '$(\'#TABLEID\')'
-          },
-          items: []
-        };
-        modalCreate(info);
+        var sequence = new Sequence();
+        modalCreate(sequence);
       };
 
       $scope.closeSequence = function () {
@@ -263,10 +244,10 @@ angular.module('webjsonizerApp')
         modalSaveChanges(opt, seq, cb);
       }
 
-      $scope.open = function (sequence) {
-        if ($scope.sequence && sequence._id == $scope.sequence._id) return;
+      $scope.open = function (raw) {
+        if ($scope.sequence && raw._id == $scope.sequence._id) return;
         checkToUpdateSequence(function () {
-          $scope.sequence = sequence;
+          $scope.sequence = new Sequence(raw);
           $scope.address = getSequenceAddress();
           notifyModifies(false);
         })
@@ -274,7 +255,7 @@ angular.module('webjsonizerApp')
 
       $scope.addParameter = function () {
         if (!$scope.sequence) return;
-        $scope.sequence.parameters.push({name: '', value: '', hidden: false});
+        $scope.sequence.parameters.push(new Parameter());
         notifyModifies();
       };
 
@@ -298,7 +279,7 @@ angular.module('webjsonizerApp')
       });
 
       $scope.profile = function() {
-
+        //TODO: impostazioni utente (cambio password, nome utente)
       };
 
       refreshAllSequences();

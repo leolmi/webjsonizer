@@ -1,4 +1,4 @@
-<div class="sequence-item">
+<div class="sequence-item" ng-class="{'skipped':item.skip}">
   <div class="add-here"><i class="fa fa-2x fa-plus-circle" ng-click="addnew()"></i></div>
   <div class="contextual-menu item-menu">
     <div ng-repeat="b in buttons" ng-click="b.action()"
@@ -10,12 +10,13 @@
   <div class="item-line item-line-up"></div>
   <div class="item-point" ng-click="toggle()">{{index+1}}</div>
   <div class="item-line item-line-down" ng-class="{'last':last}"></div>
-  <div ng-show="collapsed" class="item-desc">
+  <div ng-show="collapsed" class="item-desc" ng-class="{'skipped':item.skip}">
     <span class="item-method">{{item.method}} </span>
     <span class="item-host-name">{{item.host}}</span>
     <span class="item-path">{{item.path}}</span>
   </div>
   <div ng-hide="collapsed">
+    <!-- TITLE -->
     <div class="row editor-row">
       <div class="col-md-5">
         <label class="control-label" for="inputTitle">Title</label>
@@ -25,6 +26,15 @@
         <div class="form-group">
           <input type="text" class="form-control input-sm" id="inputTitle" ng-model="item.title" ng-change="changed()">
         </div>
+        <label><input type="checkbox" ng-model="item.skip" ng-change="changed()"> Skip this item </label>
+      </div>
+    </div>
+
+    <!-- PROPERTIES -->
+    <div class="row editor-row-flat">
+      <div class="col-md-12">
+        <label class="control-label">Properties</label>
+        <p>Properties can contains parameters references: [paramname] will be replaced with paramname's value.</p>
       </div>
     </div>
     <div class="row editor-row-flat" ng-repeat="prp in properties">
@@ -34,11 +44,13 @@
       </div></div>
     </div>
 
+    <!-- HEADERS -->
     <div class="row editor-row-flat">
       <div class="col-md-5">
         <label class="control-label" for="inputTitle">Headers</label>
         <i class="jsz-fa-btn fa fa-fw fa-plus-circle" ng-click="addHeader()"></i>
         <p>Headers are defined once: all subsequent requests will use this value until it is redefined.</p>
+        <p>Header values can contains parameters references: [paramname] will be replaced with paramname's value.</p>
       </div>
       <div class="col-md-7">
         <div class="row parameter-row" ng-show="item.headers.length">
@@ -49,6 +61,7 @@
       </div>
     </div>
 
+    <!-- DATA -->
     <div class="row editor-row-flat">
       <div class="col-md-5">
         <label class="control-label">Data</label>
@@ -66,18 +79,22 @@
           </div>
           <div class="col col-md-6">
             <input type="text" class="form-control input-sm" ng-model="d.value" ng-change="changed()">
-            <i class="jsz-fa-btn btn-right fa fa-remove" ng-click="removeDataItem()"></i>
+            <i class="jsz-fa-btn btn-right fa fa-remove" ng-click="removeDataItem($index)"></i>
           </div>
         </div>
       </div>
     </div>
 
-
-    <!--<div class="form-group has-feedback">-->
-    <!--<label class="control-label" for="inputTitle">Code</label>-->
-    <!--<input type="text" class="form-control" id="inputCode" aria-describedby="inputTitleStatus" ng-model="sequence.title">-->
-    <!--<span ng-show="true" class="fa fa-check form-control-feedback" aria-hidden="true"></span>-->
-    <!--<span ng-show="false" class="fa fa-warning form-control-feedback" aria-hidden="true"></span>-->
-    <!--</div>-->
+    <!-- MILKERS -->
+    <div class="row editor-row-flat">
+      <div class="col-md-5">
+        <label class="control-label">Milkers</label>
+        <i class="jsz-fa-btn fa fa-fw fa-plus-circle" ng-click="addMilker()"></i>
+        <p>Milkers can retrieve values from response and put them in sequence's parameters.</p>
+      </div>
+      <div class="col-md-7">
+        <sequence-keeper ng-repeat="k in item.keepers" ng-model="k" sequence="sequence" item="item" index="$index"></sequence-keeper>
+      </div>
+    </div>
   </div>
 </div>

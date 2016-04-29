@@ -1,0 +1,51 @@
+<div class="sequence-keeper">
+
+  <!-- TARGET -->
+  <div class="row parameter-row">
+    <div class="col col-md-6">
+      <label class="control-label">Target</label>
+    </div>
+    <div class="col col-md-6">
+      <select class="form-control input-sm" ng-model="keeper.target" ng-change="changed()">
+        <option value="">-none-</option>
+        <option ng-repeat="p in sequence.parameters" value="{{p.id}}">{{p.name}}</option>
+      </select>
+      <i class="jsz-fa-btn btn-right fa fa-remove" ng-click="removeKeeper($event)"></i>
+    </div>
+  </div>
+
+  <!-- RESPONCE SOURCE TYPE -->
+  <div class="row parameter-row">
+    <div class="col col-md-6">
+      <label class="control-label">Response Source Type</label>
+    </div>
+    <div class="col col-md-6">
+      <select class="form-control input-sm" ng-model="keeper.sourceType" ng-change="changed()">
+        <option ng-repeat="s in sources" value="{{s.name}}">{{s.desc}}</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- RESPONCE SOURCE TYPE -->
+  <div class="row parameter-row" ng-if="keeper.sourceType!='body'">
+    <div class="col col-md-6">
+      <label class="control-label">Name</label>
+    </div>
+    <div class="col col-md-6">
+      <input type="text" class="form-control input-sm" ng-model="keeper.name" ng-change="changed()">
+    </div>
+  </div>
+
+  <!-- REGEX -->
+  <div class="row parameter-row">
+    <div class="col col-md-6">
+      <select class="form-control input-sm as-label" ng-model="keeper.logicType" ng-change="changeLogicType()">
+        <option ng-repeat="t in logicTypes" value="{{t.name}}">{{t.desc}}</option>
+      </select>
+    </div>
+    <div class="col col-md-6">
+      <textarea class="form-control input-sm vertical" ng-model="keeper.logic" ng-change="changed()" ng-disabled="!keeper.logicType"></textarea>
+    </div>
+  </div>
+
+</div>

@@ -72,6 +72,9 @@
 .parameter-row {
   padding: 0 10px 2px;
 }
+.parameter-row.internal input {
+  background-color: #eee;
+}
 .parameter-row > .col {
   padding: 0 4px;
 }
@@ -140,4 +143,10 @@
 
 .editor-container textarea {
   margin-bottom: 4px;
+}
+
+select.as-label {
+  background-color: transparent;
+  font-weight: bold;
+  color: #ccc;
 }

@@ -7,15 +7,19 @@ var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
 var SequenceJSSchema = new Schema({
-  name: String,    // nome della logica di validazione (può individuare la funzione)
-  //func: Function // non è persistita, ma passata dall'utilizzatore a run-time
-  content: String, // corpo del metodo js che accetta come parametri 'content' e 'params' per restituire il valore di un parametro
-  mode: String,    // modalità
-  target: String,  // target del valore calcolato
-  ttype: String    // tipologia del target: 'parameter' o 'data'
+  id: String,         // identificativo
+  target: String,     // parametro target     era://target del valore calcolato
+  sourceType: String, // tipo di risorsa
+  name: String,       // nome property        era://nome della logica di validazione (può individuare la funzione)
+  content: String,    // [OBSOLETA]           era://corpo del metodo js che accetta come parametri 'content' e 'params' per restituire il valore di un parametro
+  logic: String,      // logica
+  logicType: String,  // tipo logica (none, javascript, regex)
+  mode: String,       // [OBSOLETA]           era://modalità
+  ttype: String       // [OBSOLETA]           era://tipologia del target: 'parameter' o 'data'
 });
 
 var NameValueSchema = new Schema({
+  id: String,
   name: String,
   value: String,
   hidden: Boolean
@@ -23,6 +27,7 @@ var NameValueSchema = new Schema({
 
 var SequenceItemSchema = new Schema({
   title: String,
+  skip: Boolean,
   host: String,
   method: String,
   path: String,
@@ -31,7 +36,8 @@ var SequenceItemSchema = new Schema({
   datatype: String,
   prejs: [SequenceJSSchema],
   postjs: [SequenceJSSchema],
-  headers: [NameValueSchema]
+  headers: [NameValueSchema],
+  keepers: [SequenceJSSchema]
 });
 
 var SequenceSchema = new Schema({
@@ -43,7 +49,6 @@ var SequenceSchema = new Schema({
   result: Schema.Types.Mixed,
   parameters: [NameValueSchema],
   items: [SequenceItemSchema],
-  keepers: [SequenceJSSchema],
   parserOptions: Schema.Types.Mixed
 });
 

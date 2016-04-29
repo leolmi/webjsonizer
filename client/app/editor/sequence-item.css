@@ -11,11 +11,15 @@
 .sequence-item .item-desc {
   font-family: monospace;
 }
-.sequence-item .item-desc .item-method {
+.sequence-item .item-desc.skipped {
+  color: #555; !Important
+}
+
+.sequence-item .item-desc:not(.skipped) .item-method {
   color: steelblue;
   text-transform: uppercase;
 }
-.sequence-item .item-desc .item-host-name {
+.sequence-item .item-desc:not(.skipped) .item-host-name {
   color: yellowgreen;
 }
 .sequence-item .item-desc .item-path {
@@ -58,9 +62,15 @@
   text-align: center;
 }
 
+.sequence-item.skipped .item-point {
+  background-color: #333;
+  border-color: #fff;
+  color: #777;
+}
+
 .item-point:hover {
-  background-color: #444;
-  color:#999;
+  background-color: darkorange;
+  color:#222;
   cursor: pointer;
 }
 

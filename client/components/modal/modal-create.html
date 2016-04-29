@@ -8,7 +8,7 @@
   <div ng-show="!modal.idle && modal.info.items.length" class="working-frame">Founded {{modal.info.items.length}} valid steps.</div>
   <div ng-show="!modal.idle && sequenceError" class="working-frame error">{{sequenceError}}</div>
   <label class="top-margin">Exclusion list for requests urls</label>
-  <tag-editor tags="exclusion" alltags="allexclusion"></tag-editor>
+  <tag-editor tags="parserOptions.exclusion" alltags="parserOptions.allexclusion"></tag-editor>
   <label class="top-margin">Included mime types (* = all)</label>
-  <tag-editor tags="includeMimeTypes" alltags="allMimeTypes"></tag-editor>
+  <tag-editor tags="parserOptions.includeMimeTypes" alltags="parserOptions.allMimeTypes"></tag-editor>
 </div>

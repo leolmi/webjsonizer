@@ -1,2 +1,2 @@
-- main-menu float
--
+- export/import su file json
+- skip su item di sequenza

@@ -46,6 +46,7 @@
       </div>
       <div class="sequence">
         <header class="sequence-header">
+          <!-- TITLE -->
           <div class="row editor-row">
             <div class="col-md-5">
               <label class="control-label" for="inputTitle">Title</label>
@@ -57,18 +58,21 @@
               </div>
             </div>
           </div>
+          <!-- ENABLED -->
           <div class="row editor-row">
             <div class="col-md-12">
               <label><input type="checkbox" ng-model="sequence.enabled" ng-change="changed()"> Enabled </label>
               <p>If the sequence is disabled web request will fail.</p>
             </div>
           </div>
+          <!-- SSL -->
           <div class="row editor-row">
             <div class="col-md-12">
               <label> <input type="checkbox" ng-model="sequence.SSL" ng-change="changed()"> SSL </label>
               <p>Make only https requests.</p>
             </div>
           </div>
+          <!-- PARAMETERS -->
           <div class="row editor-row">
             <div class="col-md-5">
               <label class="control-label" for="inputTitle">Parameters</label>
@@ -81,7 +85,7 @@
                 <div class="col col-md-6 parameter-row-label">Name</div>
                 <div class="col col-md-6 parameter-row-label">Value</div>
               </div>
-              <div class="row parameter-row" ng-repeat="p in sequence.parameters">
+              <div class="row parameter-row" ng-repeat="p in sequence.parameters"  ng-class="{'internal':p.hidden}">
                 <div class="col col-md-6">
                   <i class="jsz-fa-btn btn-left fa" ng-class="{'fa-eye-slash':p.hidden,'fa-eye':!p.hidden}"  ng-click="togglePublic(p)"></i>
                   <input type="text" class="form-control input-sm" ng-model="p.name" ng-change="changed()">
@@ -101,8 +105,9 @@
           </div>
         </header>
         <sequence-item ng-repeat="i in sequence.items" data-ng-model="i"
+                       sequence="sequence" index="$index" collapsed="true"
                        last="($index==sequence.items.length-1)"
-                       index="$index" collapsed="true" ng-change="changed()"></sequence-item>
+                       ng-change="changed()"></sequence-item>
         <div class="new-sequence aslink" ng-click="newSequenceItem()">
           <i class="fa fa-fw fa-plus-circle"></i> Append new sequence item
         </div>
