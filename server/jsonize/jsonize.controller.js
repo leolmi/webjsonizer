@@ -7,7 +7,7 @@ exports.schema = function(req, res) {
   Sequence.schema(req, res);
 };
 
-// Esegue la sequenza restituendo i risultati
+// Esegue la sequenza
 exports.jsonize = function(req, res) {
   Sequence.milk(req, res);
 };

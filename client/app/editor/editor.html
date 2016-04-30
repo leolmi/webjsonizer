@@ -58,20 +58,26 @@
               </div>
             </div>
           </div>
-          <!-- ENABLED -->
+
+          <!-- OPTIONS -->
           <div class="row editor-row">
-            <div class="col-md-12">
+            <!-- ENABLED -->
+            <div class="col-md-4">
               <label><input type="checkbox" ng-model="sequence.enabled" ng-change="changed()"> Enabled </label>
               <p>If the sequence is disabled web request will fail.</p>
             </div>
-          </div>
-          <!-- SSL -->
-          <div class="row editor-row">
-            <div class="col-md-12">
+            <!-- SSL -->
+            <div class="col-md-4">
               <label> <input type="checkbox" ng-model="sequence.SSL" ng-change="changed()"> SSL </label>
               <p>Make only https requests.</p>
             </div>
+            <!-- GET -->
+            <div class="col-md-4">
+              <label> <input type="checkbox" ng-model="sequence.GET" ng-change="changed()"> GET </label>
+              <p>Enabled get request with parameters query on url.</p>
+            </div>
           </div>
+
           <!-- PARAMETERS -->
           <div class="row editor-row">
             <div class="col-md-5">
@@ -97,6 +103,8 @@
               </div>
             </div>
           </div>
+
+          <!-- WEB ADDRESS -->
           <div class="row editor-row editor-row-simply">
             <div class="col-md-12">
               <label>web address to obtain JSON results by sequence</label>

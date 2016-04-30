@@ -3,7 +3,7 @@
   <!-- TARGET -->
   <div class="row parameter-row">
     <div class="col col-md-6">
-      <label class="control-label">Target</label>
+      <label class="control-label">Target Parameter</label>
     </div>
     <div class="col col-md-6">
       <select class="form-control input-sm" ng-model="keeper.target" ng-change="changed()">
@@ -44,7 +44,7 @@
       </select>
     </div>
     <div class="col col-md-6">
-      <textarea class="form-control input-sm vertical" ng-model="keeper.logic" ng-change="changed()" ng-disabled="!keeper.logicType"></textarea>
+      <textarea class="form-control input-sm vertical" ng-model="keeper.logic" ng-change="changed()" ng-show="keeper.logicType"></textarea>
     </div>
   </div>
 

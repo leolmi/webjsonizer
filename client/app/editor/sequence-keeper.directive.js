@@ -25,7 +25,7 @@ angular.module('webjsonizerApp')
             {name: 'headers', desc: 'Headers'}];
 
           scope.logicTypes = [
-            {name: '', desc: '-none-' },
+            {name: '', desc: 'no logic' },
             {name: 'regex', desc: 'Regex'},
             {name: 'javascript', desc: 'JavaScript'}];
 

@@ -156,3 +156,7 @@ pre {
 textarea[disabled] {
   background-color: #ccc;
 }
+
+label {
+  line-height: 24px;
+}

@@ -27,6 +27,7 @@ angular.module('webjsonizerApp')
       Sequence.prototype = {
         title: '',
         SSL: false,
+        GET: false,
         star: false,
         enabled: true,
         result: '',

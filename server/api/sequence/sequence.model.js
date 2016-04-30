@@ -43,6 +43,7 @@ var SequenceItemSchema = new Schema({
 var SequenceSchema = new Schema({
   title: String,
   SSL: Boolean,
+  GET: Boolean,
   owner: String,
   star: Boolean,
   enabled: Boolean,

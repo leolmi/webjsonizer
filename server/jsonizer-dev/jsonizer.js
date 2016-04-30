@@ -216,69 +216,71 @@ var jsonizer = function() {
       options.headers = {};
   }
 
-  function checkKeepers(keepers, content) {
-    if (keepers && keepers.length && content){
-      keepers.forEach(function(k){
-        if (k.mode && k.mode=='onetime' && k.value) {
-          //skip keeper
-        } else if (k.content) {
-          var rgx = new RegExp(k.content, 'g');
-          var v = rgx.exec(content);
-          if (v && v.length) k.value = v[1];
-        }
-      });
-    }
-  }
+  //function checkKeepers(keepers, content) {
+  //  if (keepers && keepers.length && content){
+  //    keepers.forEach(function(k){
+  //      if (k.mode && k.mode=='onetime' && k.value) {
+  //        //skip keeper
+  //      } else if (k.content) {
+  //        var rgx = new RegExp(k.content, 'g');
+  //        var v = rgx.exec(content);
+  //        if (v && v.length) k.value = v[1];
+  //      }
+  //    });
+  //  }
+  //}
 
-  /**
-   * valorizza il target secondo il tipo e se il valore esiste
-   * @param {object} sequence
-   * @param {object} item
-   * @param {object} keeper
-   */
-  function setTarget(sequence, item, keeper) {
-    if (keeper.value) {
-      if (keeper.ttype == 'parameter') {
-        var p = _.find(sequence.parameters, function (p) {
-          return p.name == keeper.target;
-        });
-        if (p) p.value = keeper.value;
-      }
-      else {
-        if (!item.data)
-          item.data = {};
-        item.data[keeper.name] = keeper.value;
-      }
-    }
-  }
+  ///**
+  // * valorizza il target secondo il tipo e se il valore esiste
+  // * @param {object} sequence
+  // * @param {object} item
+  // * @param {object} keeper
+  // */
+  //function setTarget(sequence, item, keeper) {
+  //  if (keeper.value) {
+  //    if (keeper.ttype == 'parameter') {
+  //      var p = _.find(sequence.parameters, function (p) {
+  //        return p.name == keeper.target;
+  //      });
+  //      if (p) p.value = keeper.value;
+  //    }
+  //    else {
+  //      if (!item.data)
+  //        item.data = {};
+  //      item.data[keeper.name] = keeper.value;
+  //    }
+  //  }
+  //}
 
-  function evalKeepers(sequence, item){
-    if (sequence.keepers && sequence.keepers.length){
-      sequence.keepers.forEach(function(k){
-        setTarget(sequence, item, k);
-      });
-    }
-  }
+  //function evalKeepers(sequence, item){
+  //  if (sequence.keepers && sequence.keepers.length){
+  //    sequence.keepers.forEach(function(k){
+  //      setTarget(sequence, item, k);
+  //    });
+  //  }
+  //}
 
-  /**
-   * Esegue le azioni sul content
-   * @param actions
-   * @param sequence
-   * @param item
-   * @param [content]
-   */
-  function evalSequenceJS(actions, sequence, item, content){
-    if (actions && actions.length){
-      content = content || item.data;
-      actions.forEach(function(a){
-        if (a.content) {
-          var f = new Function('content', 'params', a.content);
-          var value = f(content, sequence.parameters);
-          setTarget(sequence, item, value);
-        }
-      });
-    }
-  }
+  ///**
+  // * Esegue le azioni sul content
+  // * @param actions
+  // * @param sequence
+  // * @param item
+  // * @param [content]
+  // */
+  //function evalSequenceJS(actions, sequence, item, content){
+  //  if (actions && actions.length){
+  //    content = content || item.data;
+  //    actions.forEach(function(a){
+  //      if (a.content) {
+  //        var f = new Function('content', 'params', a.content);
+  //        var value = f(content, sequence.parameters);
+  //        setTarget(sequence, item, value);
+  //      }
+  //    });
+  //  }
+  //}
+
+
 
   function getUrl(o, item) {
     return o.host + item.path;
@@ -290,24 +292,37 @@ var jsonizer = function() {
     return url;
   }
 
+  /**
+   * Preleva i valori degli headers e del referer
+   * @param o
+   * @param item
+   * @param sequence
+   * @param index
+   */
   function keep(o, item, sequence, index) {
-    item.headers.forEach(function(h){
+    item.headers.forEach(function (h) {
       o.headers[h.name.toLowerCase()] = h.value;
     });
-    u.keep(o, item, ['method','path'], true);
+    u.keep(o, item, ['method', 'path'], true);
     if (item.host) o.host = checkHost(item.host);
 
     //item precedente
-    var preitem = (index>0) ? sequence.items[index-1] : null;
+    var preitem = (index > 0) ? sequence.items[index - 1] : null;
 
     if (item.referer) {
-      if (item.referer.toLowerCase()=='auto'){
+      if (item.referer.toLowerCase() == 'auto') {
         o.headers.referer = (preitem) ? getUrl(o, preitem) : undefined;
       }
       else o.headers.referer = item.referer;
     }
   }
 
+  /**
+   * verifica gli headers
+   * @param options
+   * @param item
+   * @param data
+   */
   function validateHeaders(options, item, data) {
     if (data && data.length)
       options.headers['content-length'] = data.length;
@@ -340,6 +355,116 @@ var jsonizer = function() {
   }
 
   /**
+   * Scrive i valori dei parametri nei replacers
+   * @param sequence
+   * @param options
+   * @param data
+   */
+  function replaceData(sequence, options, data) {
+    var seq_prop = ['host','path'];
+    sequence.parameters.forEach(function(p){
+      var rgx = new RegExp('\\['+ p.name+'\\]', 'gmi');
+      //properties
+      seq_prop.forEach(function(pn){
+        options[pn] = options[pn].replace(rgx, p.value);
+      });
+      //data
+      data = data.replace(rgx, p.value);
+      //headers
+      _.keys(options.headers, function(h) {
+        options.headers[h] = options.headers[h].replace(rgx, p.value);
+      });
+    });
+    return data;
+  }
+
+  function isValid(r) {
+    return r != null && r != undefined;
+  }
+
+  function evalKeeperLogic(keeper, arg) {
+    if (!keeper.logic)
+      return arg;
+    switch(keeper.logicType) {
+      case 'regex':
+        var rgx = new RegExp(keeper.logic);
+        return rgx.exec(arg);
+      case 'javascript':
+        var f = new Function('data', '_', keeper.logic);
+        return f(arg, _);
+      default:
+        return arg;
+    }
+  }
+
+  function getCookie(cookie, name) {
+    if (cookie) {
+      var cookies = cookie.split(';');
+      var pos = 0;
+      cookie = _.find(cookies, function (c) {
+        pos = c.indexOf(name + '=');
+        return pos > -1;
+      });
+      if (cookie)
+        return cookie.substr(pos + 1);
+    }
+  }
+
+  /**
+   * Esegue il singolo estrattore
+   * @param sequence
+   * @param options
+   * @param content
+   */
+  function evalKeeper(sequence, keeper, options, content) {
+    var target = _.find(sequence.parameters, function(p){
+      return p.id == keeper.target;
+    });
+    if (!target) return;
+    var value = null;
+    switch(keeper.sourceType) {
+      case 'body':
+        value = evalKeeperLogic(keeper, content);
+        break;
+      case 'cookies':
+        var cookie = options.headers['cookie'] || options.headers['Cookie'];
+        if (cookie) {
+          if (keeper.name)
+            cookie = getCookie(cookie, name);
+          value = evalKeeperLogic(keeper, cookie);
+        }
+        break;
+      case 'headers':
+        if (keeper.name) {
+          var header = options.headers[name];
+          if (header)
+            value = evalKeeperLogic(keeper, options.headers[k]);
+        } else {
+          value = _.find(_.keys(options.headers), function (k) {
+            return isValid(evalKeeperLogic(keeper, options.headers[k]));
+          });
+        }
+        break;
+    }
+    if (value)
+      target.value = value;
+  }
+
+  /**
+   * Esegue gli estrattori a livello di item
+   * @param item
+   * @param content
+   * @param options
+   */
+  function evalKeepers(sequence, item, options, content) {
+    if (item.keepers.length) {
+      item.keepers.forEach(function(k){
+        evalKeeper(sequence, k, options, content);
+      });
+    }
+  }
+
+  /**
    * Effettua una catena di chiamate sequenziali
    * @param sequence
    * @param {function} cb  //cb(err, content)
@@ -360,14 +485,11 @@ var jsonizer = function() {
       check(options);
       if (options.verbose) console.log('['+item.title+']-OPTIONS: (after check & before keep)' + JSON.stringify(options));
       keep(options, item, sequence, index);
-      if (options.verbose) console.log('['+item.title+']-OPTIONS: (after keep & before keepers)' + JSON.stringify(options));
-      evalKeepers(sequence, item);
-      if (options.verbose) console.log('['+item.title+']-OPTIONS: (after keepers)' + JSON.stringify(options));
-
-      evalSequenceJS(item.prejs, sequence, item);
+      if (options.verbose) console.log('['+item.title+']-OPTIONS: (after keep)' + JSON.stringify(options));
 
       var data = getData(item.data);
       validateHeaders(options, item, data);
+      replaceData(sequence, options, data);
 
       if (options.verbose) console.log('['+item.title+']-REQUEST BODY: '+data);
       doRequest(item.title, options, data, undefined, function (err, o, r, c) {
@@ -388,11 +510,7 @@ var jsonizer = function() {
           });
         }
         else {
-          if (c) {
-            checkKeepers(sequence.keepers, c);
-            evalSequenceJS(item.postjs, sequence, item, c);
-          }
-
+          evalKeepers(sequence, item, options, c);
           evalSequence(sequence, cb, parseroptions, options, index + 1);
         }
       });

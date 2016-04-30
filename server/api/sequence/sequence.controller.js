@@ -21,13 +21,23 @@ function onSequence(id, cb) {
   });
 }
 
-function evalSequence(sequence, res) {
+function evalSequence(sequence, res, options) {
   J.eval(sequence, function (err, result) {
       if (err) return J.util.error(res, err);
       return J.util.ok(res, result);
     },
     sequence.parserOptions ,
-    { verbose: true });
+    options);
+}
+
+function loadParameterValues(source, sequence) {
+  if (!source) return;
+  _.keys(source).forEach(function (k) {
+    var p = _.find(sequence.parameters, function (p) {
+      return p.name == k && !p.hidden;
+    });
+    if (p) p.value = source[k];
+  });
 }
 
 
@@ -100,19 +110,33 @@ exports.destroy = function(req, res) {
   });
 };
 
-// Esegue la sequenza restituendo i risultati
+
+// Esegue la sequenza ricercandola per id
 exports.milk = function(req, res) {
-  onSequence(req.params.id, function(err, sequence) {
+  var GET = req.method.toLowerCase() == 'get';
+  onSequence(req.params.id, function (err, sequence) {
     if (err) return J.util.error(res, err);
-    evalSequence(sequence, res);
+    if (GET && !sequence.GET)
+      return J.util.error(res, new Error('Sequence not available!'));
+    var options = {verbose: true};
+    var source = GET ? req.params : req.body;
+    loadParameterValues(source, sequence);
+    evalSequence(sequence, res, options);
   });
 };
 
-
+// Esegue la sequenza passata
 exports.play = function(req,res) {
   var sequence = req.body;
   if (!sequence) return J.util.error(res, 'No sequence specified!');
-  evalSequence(sequence, res);
+  var options = {
+    verbose: true,
+    parameters: {}
+  };
+  sequence.parameters.forEach(function(p){
+    options.parameters[p.name] = p.value;
+  });
+  evalSequence(sequence, res, options);
 };
 
 exports.parse = function(req, res) {
