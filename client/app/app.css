@@ -160,3 +160,7 @@ textarea[disabled] {
 label {
   line-height: 24px;
 }
+
+.on-right {
+  float: right;
+}

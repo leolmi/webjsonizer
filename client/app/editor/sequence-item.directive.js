@@ -82,6 +82,10 @@ angular.module('webjsonizerApp')
           scope.addMilker = function () {
             scope.item.keepers.push(new Keeper());
           };
+
+          scope.setAsLast = function() {
+            $rootScope.$broadcast('SEQUENCE-ITEM-AS-LAST', {item: scope.item});
+          };
         }
       }
     }]);

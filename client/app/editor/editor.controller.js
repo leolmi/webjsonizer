@@ -50,6 +50,16 @@ angular.module('webjsonizerApp')
           util.remove(data.item.keepers, data.keeper, notifyModifies);
       });
 
+      $rootScope.$on('SEQUENCE-ITEM-AS-LAST', function(e, data) {
+        if (data && data.item) {
+          var found = false;
+          $scope.sequence.items.forEach(function (i) {
+            i.skip = found;
+            if (i === data.item) found = true;
+          });
+        }
+      });
+
       var modalDelete = Modal.confirm.ask(function (seq) {
         $http.delete('/api/sequence/' + seq._id)
           .success(function () {

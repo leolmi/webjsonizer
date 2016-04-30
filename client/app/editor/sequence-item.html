@@ -27,6 +27,7 @@
           <input type="text" class="form-control input-sm" id="inputTitle" ng-model="item.title" ng-change="changed()">
         </div>
         <label><input type="checkbox" ng-model="item.skip" ng-change="changed()"> Skip this item </label>
+        <button type="button" class="btn btn-warning btn-xs on-right" ng-click="setAsLast()">The last</button>
       </div>
     </div>
 
