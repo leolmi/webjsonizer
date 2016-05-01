@@ -19,13 +19,11 @@ angular.module('webjsonizerApp')
           };
 
           scope.sources = [
-            {name: '', desc: '-none-'},
             {name: 'body', desc: 'Body'},
             {name: 'cookies', desc: 'Cookies'},
             {name: 'headers', desc: 'Headers'}];
 
           scope.logicTypes = [
-            {name: '', desc: 'no logic' },
             {name: 'regex', desc: 'Regex'},
             {name: 'javascript', desc: 'JavaScript'}];
 

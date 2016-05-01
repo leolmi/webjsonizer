@@ -94,7 +94,7 @@
         <p>Milkers can retrieve values from response and put them in sequence's parameters.</p>
       </div>
       <div class="col-md-7">
-        <sequence-keeper ng-repeat="k in item.keepers" ng-model="k" sequence="sequence" item="item" index="$index"></sequence-keeper>
+        <sequence-keeper ng-repeat="keeper in item.keepers" ng-model="keeper" sequence="sequence" item="item" index="$index" ng-change="changed()"></sequence-keeper>
       </div>
     </div>
   </div>

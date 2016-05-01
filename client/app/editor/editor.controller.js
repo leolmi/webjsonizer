@@ -4,8 +4,8 @@
 'use strict';
 
 angular.module('webjsonizerApp')
-  .controller('EditorCtrl', ['$scope','$rootScope','$http','$timeout','$location','Auth','Logger','Modal','util','Sequence','Parameter',
-    function ($scope,$rootScope,$http,$timeout,$location,Auth,Logger,Modal,util,Sequence,Parameter) {
+  .controller('EditorCtrl', ['$scope','$rootScope','$http','$timeout','$location','Auth','Logger','Modal','util','Sequence','SequenceItem','Parameter',
+    function ($scope,$rootScope,$http,$timeout,$location,Auth,Logger,Modal,util,Sequence,SequenceItem,Parameter) {
       $scope.sequence = undefined;
       $scope.user = Auth.getCurrentUser();
       $scope.modified = false;
@@ -36,29 +36,6 @@ angular.module('webjsonizerApp')
           $scope.$broadcast('open-item', {item: i[index]});
         }, 30);
       };
-
-      $rootScope.$on('NEW-SEQUENCE-ITEM-REQUEST', function(e, data){
-        $scope.newSequenceItem(data.index);
-      });
-
-      $rootScope.$on('REMOVE-SEQUENCE-ITEM', function(e, data){
-        if (data) util.remove($scope.sequence.items, data.item, notifyModifies);
-      });
-
-      $rootScope.$on('REMOVE-SEQUENCE-ITEM-KEEPER', function(e, data){
-        if (data && data.item)
-          util.remove(data.item.keepers, data.keeper, notifyModifies);
-      });
-
-      $rootScope.$on('SEQUENCE-ITEM-AS-LAST', function(e, data) {
-        if (data && data.item) {
-          var found = false;
-          $scope.sequence.items.forEach(function (i) {
-            i.skip = found;
-            if (i === data.item) found = true;
-          });
-        }
-      });
 
       var modalDelete = Modal.confirm.ask(function (seq) {
         $http.delete('/api/sequence/' + seq._id)
@@ -284,13 +261,40 @@ angular.module('webjsonizerApp')
         notifyModifies();
       };
 
+      $scope.profile = function() {
+        //TODO: impostazioni utente (cambio password, nome utente)
+      };
+
+
+
       $scope.$on('MODIFIED', function () {
         notifyModifies();
       });
 
-      $scope.profile = function() {
-        //TODO: impostazioni utente (cambio password, nome utente)
-      };
+      $rootScope.$on('NEW-SEQUENCE-ITEM-REQUEST', function(e, data){
+        $scope.newSequenceItem(data.index);
+      });
+
+      $rootScope.$on('REMOVE-SEQUENCE-ITEM', function(e, data){
+        if (data) util.remove($scope.sequence.items, data.item, notifyModifies);
+      });
+
+      $rootScope.$on('REMOVE-SEQUENCE-ITEM-KEEPER', function(e, data){
+        if (data && data.item)
+          util.remove(data.item.keepers, data.keeper, notifyModifies);
+      });
+
+      $rootScope.$on('SEQUENCE-ITEM-AS-LAST', function(e, data) {
+        if (data && data.item) {
+          var found = false;
+          $scope.sequence.items.forEach(function (i) {
+            i.skip = found;
+            if (i === data.item) found = true;
+          });
+        }
+      });
+
+
 
       refreshAllSequences();
     }]);

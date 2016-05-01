@@ -164,3 +164,9 @@ label {
 .on-right {
   float: right;
 }
+
+.script {
+  font-family: monospace;
+  font-size: 11px;
+  white-space: pre;
+}

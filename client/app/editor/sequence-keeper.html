@@ -6,10 +6,8 @@
       <label class="control-label">Target Parameter</label>
     </div>
     <div class="col col-md-6">
-      <select class="form-control input-sm" ng-model="keeper.target" ng-change="changed()">
-        <option value="">-none-</option>
-        <option ng-repeat="p in sequence.parameters" value="{{p.id}}">{{p.name}}</option>
-      </select>
+      <select class="form-control input-sm" data-ng-model="keeper.target" ng-change="changed()"
+              ng-options="p.id as p.name for p in sequence.parameters"></select>
       <i class="jsz-fa-btn btn-right fa fa-remove" ng-click="removeKeeper($event)"></i>
     </div>
   </div>
@@ -20,13 +18,12 @@
       <label class="control-label">Response Source Type</label>
     </div>
     <div class="col col-md-6">
-      <select class="form-control input-sm" ng-model="keeper.sourceType" ng-change="changed()">
-        <option ng-repeat="s in sources" value="{{s.name}}">{{s.desc}}</option>
-      </select>
+      <select class="form-control input-sm" data-ng-model="keeper.sourceType" ng-change="changed()"
+              ng-options="s.name as s.desc for s in sources"></select>
     </div>
   </div>
 
-  <!-- RESPONCE SOURCE TYPE -->
+  <!-- RESPONCE SOURCE NAME -->
   <div class="row parameter-row" ng-if="keeper.sourceType!='body'">
     <div class="col col-md-6">
       <label class="control-label">Name</label>
@@ -39,13 +36,12 @@
   <!-- REGEX -->
   <div class="row parameter-row">
     <div class="col col-md-6">
-      <select class="form-control input-sm as-label" ng-model="keeper.logicType" ng-change="changeLogicType()">
-        <option ng-repeat="t in logicTypes" value="{{t.name}}">{{t.desc}}</option>
-      </select>
+      <select class="form-control input-sm as-label" data-ng-model="keeper.logicType" ng-change="changeLogicType()"
+              ng-options="t.name as t.desc for t in logicTypes"></select>
     </div>
     <div class="col col-md-6">
-      <textarea class="form-control input-sm vertical" ng-model="keeper.logic" ng-change="changed()" ng-show="keeper.logicType"></textarea>
+      <textarea class="form-control input-sm vertical script" ng-model="keeper.logic"
+                ng-change="changed()" ng-show="keeper.logicType" rows="3"></textarea>
     </div>
   </div>
-
 </div>

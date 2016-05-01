@@ -7,11 +7,6 @@ angular.module('webjsonizerApp')
 
       var Keeper = function (info) {
         this.id = util.guid();
-        this.target = '';
-        this.sourceType = '';
-        this.name = '';
-        this.logicType = '';
-        this.logic = '';
         if (info)
           _.extend(this, info);
       };

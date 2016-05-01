@@ -33,7 +33,7 @@
   text-align: right;
   width: calc(100% - 270px);
   background-color: #222;
-  z-index: 10;
+  z-index: 100;
 }
 .top-menu > .title {
   position: absolute;
