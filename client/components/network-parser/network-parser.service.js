@@ -24,6 +24,21 @@ angular.module('webjsonizerApp')
         return result ? true : false;
       }
 
+      function isHar(jsondata) {
+        return (jsondata &&
+                jsondata.log &&
+                jsondata.log.creator &&
+                jsondata.log.creator.name &&
+                jsondata.log.creator.name.toLowerCase() == 'webinspector');
+      }
+
+      function isPostman(jsondata) {
+        return (jsondata &&
+                jsondata.order &&
+                _.isArray(jsondata.order) &&
+                jsondata.requests &&
+                _.isArray(jsondata.requests));
+      }
 
       function parsePostman(jsondata, cb) {
         var items = [];
@@ -132,9 +147,9 @@ angular.module('webjsonizerApp')
       function parseJson(jsn, cb) {
         try {
           var jsondata = JSON.parse(jsn);
-          if (jsondata && jsondata.log && jsondata.log.creator && jsondata.creator.name && jsondata.creator.name.toLowerCase()=='webinspector') {
+          if (isHar(jsondata)) {
             parseHar(jsondata, cb);
-          } else if (jsondata && jsondata.order && _.isArray(jsondata.order) && jsondata.requests && _.isArray(jsondata.requests)) {
+          } else if (isPostman(jsondata)) {
             parsePostman(jsondata, cb);
           } else {
             cb(new Error('json content not recognized!'));

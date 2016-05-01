@@ -97,6 +97,7 @@ var jsonizer = function() {
   }
 
   function checkCookies(res, o) {
+
     if (_.has(res.headers, 'set-cookie'))
       o.headers.cookie = res.headers['set-cookie'];
   }
@@ -119,12 +120,16 @@ var jsonizer = function() {
     var protocol = options.https ? 'https://' : 'http://';
 
     var req_opt = {
-      host: process.env.PROXY_HOST || options.host,
-      port: process.env.PROXY_PORT || options.port,
       path: protocol + options.host + options.path,
       method: options.method,
-      headers: options.headers
+      headers: options.headers,
+      host: options.host
     };
+
+    if (process.env.PROXY_HOST) {
+      req_opt.host = process.env.PROXY_HOST;
+      req_opt.port = process.env.PROXY_PORT;
+    }
 
     if (options.verbose) console.log('['+title+']-REQ OPT: ' + JSON.stringify(req_opt, null, 2));
 
@@ -216,72 +221,6 @@ var jsonizer = function() {
       options.headers = {};
   }
 
-  //function checkKeepers(keepers, content) {
-  //  if (keepers && keepers.length && content){
-  //    keepers.forEach(function(k){
-  //      if (k.mode && k.mode=='onetime' && k.value) {
-  //        //skip keeper
-  //      } else if (k.content) {
-  //        var rgx = new RegExp(k.content, 'g');
-  //        var v = rgx.exec(content);
-  //        if (v && v.length) k.value = v[1];
-  //      }
-  //    });
-  //  }
-  //}
-
-  ///**
-  // * valorizza il target secondo il tipo e se il valore esiste
-  // * @param {object} sequence
-  // * @param {object} item
-  // * @param {object} keeper
-  // */
-  //function setTarget(sequence, item, keeper) {
-  //  if (keeper.value) {
-  //    if (keeper.ttype == 'parameter') {
-  //      var p = _.find(sequence.parameters, function (p) {
-  //        return p.name == keeper.target;
-  //      });
-  //      if (p) p.value = keeper.value;
-  //    }
-  //    else {
-  //      if (!item.data)
-  //        item.data = {};
-  //      item.data[keeper.name] = keeper.value;
-  //    }
-  //  }
-  //}
-
-  //function evalKeepers(sequence, item){
-  //  if (sequence.keepers && sequence.keepers.length){
-  //    sequence.keepers.forEach(function(k){
-  //      setTarget(sequence, item, k);
-  //    });
-  //  }
-  //}
-
-  ///**
-  // * Esegue le azioni sul content
-  // * @param actions
-  // * @param sequence
-  // * @param item
-  // * @param [content]
-  // */
-  //function evalSequenceJS(actions, sequence, item, content){
-  //  if (actions && actions.length){
-  //    content = content || item.data;
-  //    actions.forEach(function(a){
-  //      if (a.content) {
-  //        var f = new Function('content', 'params', a.content);
-  //        var value = f(content, sequence.parameters);
-  //        setTarget(sequence, item, value);
-  //      }
-  //    });
-  //  }
-  //}
-
-
-
   function getUrl(o, item) {
     return o.host + item.path;
   }
@@ -311,7 +250,8 @@ var jsonizer = function() {
 
     if (item.referer) {
       if (item.referer.toLowerCase() == 'auto') {
-        o.headers.referer = (preitem) ? getUrl(o, preitem) : undefined;
+        if (preitem)
+          o.headers.referer = getUrl(o, preitem);
       }
       else o.headers.referer = item.referer;
     }
@@ -349,9 +289,9 @@ var jsonizer = function() {
 
   function isLast(sequence, index) {
     while (sequence.items.length > index && sequence.items[index].skip) {
-      index++;
+      index = index + 1;
     }
-    return sequence.items.length <= index;
+    return sequence.items.length >= index;
   }
 
   /**
@@ -369,7 +309,8 @@ var jsonizer = function() {
         options[pn] = options[pn].replace(rgx, p.value);
       });
       //data
-      data = data.replace(rgx, p.value);
+      if (data)
+        data = data.replace(rgx, p.value);
       //headers
       _.keys(options.headers, function(h) {
         options.headers[h] = options.headers[h].replace(rgx, p.value);
@@ -481,6 +422,7 @@ var jsonizer = function() {
     getItem(sequence, options, i, function(err, item, index){
       if (err) return cb(err);
 
+      options.https = sequence.SSL;
       if (options.verbose) console.log('['+item.title+']-OPTIONS: (before check): ' + JSON.stringify(options));
       check(options);
       if (options.verbose) console.log('['+item.title+']-OPTIONS: (after check & before keep)' + JSON.stringify(options));
@@ -489,7 +431,7 @@ var jsonizer = function() {
 
       var data = getData(item.data);
       validateHeaders(options, item, data);
-      replaceData(sequence, options, data);
+      data = replaceData(sequence, options, data);
 
       if (options.verbose) console.log('['+item.title+']-REQUEST BODY: '+data);
       doRequest(item.title, options, data, undefined, function (err, o, r, c) {
@@ -498,10 +440,11 @@ var jsonizer = function() {
 
         if (options.verbose) console.log('['+(index+1)+' '+item.title+'] - RICHIESTA EFFETTUATA CON SUCCESSO, CONTENT: '+c);
 
-        checkCookies(r, options);
+        //checkCookies(r, options);
 
         if (isLast(sequence, index)) {
           parser.parse(c, parseroptions, function(err, data) {
+            if (err) return cb(err);
             var result = new ResultData();
             result.type = parseroptions.type;
             result.data = data;

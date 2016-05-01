@@ -237,6 +237,7 @@ angular.module('webjsonizerApp')
           $scope.sequence = new Sequence(raw);
           $scope.address = getSequenceAddress();
           notifyModifies(false);
+          $scope.closeOverlay();
         })
       };
 

@@ -84,9 +84,10 @@ exports.parseCustomContent = parseCustomContent;
 
 
 function parse(content, options, cb){
+  console.log('[PARSER] - start');
   cb = cb || noop;
   options = new Options.instance(options);
-
+  console.log('[PARSER] - pretasks');
   try {
     content = execTasks(options.pretasks, content);
   }
@@ -94,9 +95,11 @@ function parse(content, options, cb){
     return cb(err);
   }
 
+  console.log('[PARSER] - type: '+options.type);
   switch (options.type){
     //PARSER HTML
     case 'htmltable':
+
       return parseHtmlTable(content, options, cb);
     //PARSER JSON
     case 'json':
