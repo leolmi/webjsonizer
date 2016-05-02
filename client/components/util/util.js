@@ -29,8 +29,19 @@ angular.module('webjsonizerApp')
         }
       }
 
+      function depure(o) {
+        if (_.isArray(o)) {
+          o.forEach(function(io){
+            depure(io);
+          });
+        } else if (_.isObject(o)) {
+          delete o._id;
+          delete o.$$hashKey;
+        }
+      }
 
       return {
+        depure: depure,
         remove: remove,
         guid: guid
       }

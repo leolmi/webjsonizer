@@ -138,19 +138,18 @@ angular.module('webjsonizerApp')
         });
       };
 
-      $scope.setFile = function() {
-        var e = $(':file')[0];
-        if (e) {
+      $scope.setFile = function(args) {
+        if (args.files[0]) {
           var reader = new FileReader();
-          reader.onload = function (ev) {
+          reader.onload = function (e) {
             try {
-              var sequence = JSON.parse(ev.target.result);
+              var sequence = JSON.parse(e.target.result);
               createSequence(sequence);
             } catch(err){
               Logger.error("Error loading file", JSON.stringify(err));
             }
           };
-          reader.readAsText($scope.file);
+          reader.readAsText(args.files[0]);
         }
       };
 
@@ -158,30 +157,21 @@ angular.module('webjsonizerApp')
         $timeout(function() { $(':file').trigger('click'); }, 0);
       }
 
-      function depure(o) {
-        if (_.isArray(o)) {
-          o.forEach(function(io){
-            depure(io);
-          });
-        } else if (_.isObject(o)) {
-          delete o._id;
-          delete o.$$hashKey;
-        }
-      }
+
 
       function exportSequence() {
         var clone = _.cloneDeep($scope.sequence);
         delete clone.result;
         delete clone.__v;
-        depure(clone.items);
+        util.depure(clone.items);
         clone.items.forEach(function(i){
-          depure(i.headers);
-          depure(i.keepers);
-          depure(i.data);
+          util.depure(i.headers);
+          util.depure(i.keepers);
+          util.depure(i.data);
         });
-        depure(clone.parameters);
+        util.depure(clone.parameters);
         delete clone.owner;
-        depure(clone);
+        util.depure(clone);
         var json = JSON.stringify(clone, null, 2);
         var data = new Blob([json], { type: 'text/plain;charset=utf-8' });
         saveAs(data, clone.title+'.json');
