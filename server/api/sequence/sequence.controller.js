@@ -2,8 +2,8 @@
 
 var _ = require('lodash');
 var Sequence = require('./sequence.model');
-//var J = require('node-jsonizer');
-var J = require('../../jsonizer-dev/jsonizer');
+var J = require('node-jsonizer');
+//var J = require('../../jsonizer-dev/jsonizer');
 
 function checkUser(req, res){
   var check = (req.user && req.user._id);
