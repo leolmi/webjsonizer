@@ -40,7 +40,7 @@
               ng-options="t.name as t.desc for t in logicTypes"></select>
     </div>
     <div class="col col-md-6">
-      <textarea class="form-control input-sm vertical script" ng-model="keeper.logic"
+      <textarea class="form-control input-sm vertical script" ng-model="keeper.logic" spellcheck="false"
                 ng-change="changed()" ng-show="keeper.logicType" rows="3"></textarea>
     </div>
   </div>

@@ -22,7 +22,8 @@ var NameValueSchema = new Schema({
   id: String,
   name: String,
   value: String,
-  hidden: Boolean
+  hidden: Boolean,
+  logicType: String
 });
 
 var SequenceItemSchema = new Schema({
@@ -50,7 +51,8 @@ var SequenceSchema = new Schema({
   result: Schema.Types.Mixed,
   parameters: [NameValueSchema],
   items: [SequenceItemSchema],
-  parserOptions: Schema.Types.Mixed
+  parserOptions: Schema.Types.Mixed,
+  jsutil: String
 },{ versionKey: false });
 
 module.exports = mongoose.model('Sequence', SequenceSchema);

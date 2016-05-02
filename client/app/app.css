@@ -45,6 +45,7 @@ body {
 
 pre {
   white-space: pre-wrap;
+  text-align: left;
 }
 
 .blur {

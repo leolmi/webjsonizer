@@ -2,7 +2,6 @@
   <header class="editor-menu-header">
     <i class="jsz-fa-btn jsz-fa-btn-big fa fa-fw fa-power-off" ng-click="logout()"></i>
     <span class="font-awesome"><i class="fa fa-fw jsz-fa-btn jsz-fa-btn-big fa-user" ng-click="profile()"></i> {{user.email}}</span>
-    <!--<i class="jsz-fa-btn fa fa-fw fa-bug onright" ng-click="toggleDebug()" ng-class="{checked:debug}"></i>-->
   </header>
   <article class="editor-menu-body">
     <div class="sequences-star">
@@ -32,9 +31,6 @@
   <div class="editor-body">
     <div ng-hide="sequence" ng-include="'app/editor/splash.html'"></div>
     <i ng-hide="sequence" class="fa fa-magic aslink new-sequence-button" ng-click="newSequence()"></i>
-    <!--<div ng-hide="sequence" class="new-sequence new-sequence-evident aslink" ng-click="newSequence()">-->
-      <!--<i class="fa fa-fw fa-plus-circle"></i> Create new sequence-->
-    <!--</div>-->
     <div ng-show="sequence" class="sequence-editor">
       <div class="top-menu">
         <div class="title">{{sequence.title}}</div>
@@ -101,6 +97,18 @@
                   <i class="jsz-fa-btn btn-right fa fa-remove" ng-click="removeParameter($index)"></i>
                 </div>
               </div>
+            </div>
+          </div>
+
+          <!-- JS UTILITIES -->
+          <div class="row editor-row editor-row-simply">
+            <div class="col-md-5">
+              <label>JavaScript utilities</label>
+              <p>Define the javascript utilities you can use in all fields.</p>
+            </div>
+            <div class="col-md-7">
+              <textarea class="form-control input-sm vertical script" ng-model="sequence.jsutil"
+                        ng-change="changed()" spellcheck="false" rows="3"></textarea>
             </div>
           </div>
 

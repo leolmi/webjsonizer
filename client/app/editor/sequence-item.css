@@ -22,8 +22,10 @@
 .sequence-item .item-desc:not(.skipped) .item-host-name {
   color: yellowgreen;
 }
-.sequence-item .item-desc .item-path {
 
+.sequence-item .item-desc .item-title {
+  margin-right: 30px;
+  color: #888;
 }
 
 .item-line {

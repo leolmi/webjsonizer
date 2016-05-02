@@ -17,6 +17,8 @@ var _ = require('lodash'),
   querystring = require('querystring'),
   zlib = require("zlib");
 
+var PREFIX_JS = 'JS=';
+var PREFIX_RGX = 'RGX=';
 
 'use strict';
 var jsonizer = function() {
@@ -39,52 +41,18 @@ var jsonizer = function() {
     content: ''
   };
 
-  /**
-   *
-   * @param {[]} o
-   * @param {boolean,function} [encode]
-   * @returns {*}
-   */
-  function getObjectData(o, encode) {
-    var eo = {};
-    if (typeof encode==='function') {
-      for (var p in o)
-        eo[p] = encode(o[p]);
+  function getData(sequence, data) {
+    if (data && _.isArray(data) && data.length > 0) {
+      var eo = {};
+      data.forEach(function (item) {
+        if (_.isFunction(item.value.indexOf) && item.value.indexOf(PREFIX_JS) == 0) {
+          var logic = item.value.substr(PREFIX_JS.length);
+          eo[item.name] = evalJSLogic(logic, null, sequence.jsutil);
+        } else {
+          eo[item.name] = item.value;
+        }
+      });
       return querystring.stringify(eo);
-    } else if (encode) {
-      for (var p in o)
-        eo[p] = u.encodeToEsa(o[p]);
-      return querystring.stringify(eo);
-    }
-    else {
-      return querystring.stringify(o);
-    }
-  }
-
-  function getArrayData(a, encode) {
-    if (!a || !a.length) return undefined;
-    var eo = {};
-    if (typeof encode==='function') {
-      a.forEach(function(i){ eo[i.name] = encode(i.value); });
-    } else if (encode) {
-      a.forEach(function(i){ eo[i.name] = u.encodeToEsa(i.value); });
-    } else {
-      a.forEach(function(i){ eo[i.name] = i.value; });
-    }
-    return querystring.stringify(eo);
-  }
-
-  function getData(data, encode) {
-    if (data) {
-      if (_.isString(data))
-        return data;
-      if (_.isArray(data)) {
-        if (data.length <= 0)
-          return undefined;
-        return getArrayData(data, encode);
-      }
-      if (_.isObject(data))
-        return getObjectData(data, encode);
     }
     return undefined;
   }
@@ -97,7 +65,6 @@ var jsonizer = function() {
   }
 
   function checkCookies(res, o) {
-
     if (_.has(res.headers, 'set-cookie'))
       o.headers.cookie = res.headers['set-cookie'];
   }
@@ -288,10 +255,27 @@ var jsonizer = function() {
   }
 
   function isLast(sequence, index) {
-    while (sequence.items.length > index && sequence.items[index].skip) {
+    while (index < sequence.items.length && sequence.items[index].skip) {
       index = index + 1;
     }
-    return sequence.items.length >= index;
+    return index + 1 >= sequence.items.length;
+  }
+
+  function replaceSingleData(obj, prp, rgx, value) {
+    if (!obj) return;
+    if (_.isArray(obj)) {
+      var pn = prp || 'value';
+      obj.forEach(function (item) {
+        if (item[pn] && _.isFunction(item[pn].replace))
+          item[pn] = item[pn].replace(rgx, value);
+      });
+    } else {
+      var driver = (prp) ? prp : _.keys(obj);
+      driver.forEach(function (k) {
+        if (_.isFunction(obj[k].replace))
+          obj[k] = obj[k].replace(rgx, value);
+      });
+    }
   }
 
   /**
@@ -305,34 +289,38 @@ var jsonizer = function() {
     sequence.parameters.forEach(function(p){
       var rgx = new RegExp('\\['+ p.name+'\\]', 'gmi');
       //properties
-      seq_prop.forEach(function(pn){
-        options[pn] = options[pn].replace(rgx, p.value);
-      });
+      replaceSingleData(options, seq_prop, rgx, p.value);
       //data
-      if (data)
-        data = data.replace(rgx, p.value);
+      replaceSingleData(data, null, rgx, p.value);
       //headers
-      _.keys(options.headers, function(h) {
-        options.headers[h] = options.headers[h].replace(rgx, p.value);
-      });
+      replaceSingleData(options.headers, null, rgx, p.value);
     });
-    return data;
   }
 
   function isValid(r) {
     return r != null && r != undefined;
   }
 
-  function evalKeeperLogic(keeper, arg) {
+  function evalJSLogic(logic, arg, util) {
+    if (util)
+      logic = util + '\n\n' + logic;
+    var f = new Function('data', '_', logic);
+    return f(arg, _, util);
+  }
+
+  function evalRgxLogic(logic, arg) {
+    var rgx = new RegExp(logic);
+    return rgx.exec(arg);
+  }
+
+  function evalKeeperLogic(keeper, arg, util) {
     if (!keeper.logic)
       return arg;
     switch(keeper.logicType) {
       case 'regex':
-        var rgx = new RegExp(keeper.logic);
-        return rgx.exec(arg);
+        return evalRgxLogic(keeper.logic, arg);
       case 'javascript':
-        var f = new Function('data', '_', keeper.logic);
-        return f(arg, _);
+        return evalJSLogic(keeper.logic, arg, util);
       default:
         return arg;
     }
@@ -351,6 +339,16 @@ var jsonizer = function() {
     }
   }
 
+  function evalHeadersLogic(sequence, options) {
+    _.keys(options.headers).forEach(function (k) {
+      var value = options.headers[k] || '';
+      if (_.isFunction(value.indexOf) && value.indexOf(PREFIX_JS) == 0) {
+        var logic = value.substr(PREFIX_JS.length);
+        options.headers[k] = evalJSLogic(logic, null, sequence.jsutil);
+      }
+    });
+  }
+
   /**
    * Esegue il singolo estrattore
    * @param sequence
@@ -365,24 +363,24 @@ var jsonizer = function() {
     var value = null;
     switch(keeper.sourceType) {
       case 'body':
-        value = evalKeeperLogic(keeper, content);
+        value = evalKeeperLogic(keeper, content, sequence.jsutil);
         break;
       case 'cookies':
         var cookie = options.headers['cookie'] || options.headers['Cookie'];
         if (cookie) {
           if (keeper.name)
             cookie = getCookie(cookie, name);
-          value = evalKeeperLogic(keeper, cookie);
+          value = evalKeeperLogic(keeper, cookie, sequence.jsutil);
         }
         break;
       case 'headers':
         if (keeper.name) {
           var header = options.headers[name];
           if (header)
-            value = evalKeeperLogic(keeper, options.headers[k]);
+            value = evalKeeperLogic(keeper, options.headers[k], sequence.jsutil);
         } else {
           value = _.find(_.keys(options.headers), function (k) {
-            return isValid(evalKeeperLogic(keeper, options.headers[k]));
+            return isValid(evalKeeperLogic(keeper, options.headers[k], sequence.jsutil));
           });
         }
         break;
@@ -429,22 +427,24 @@ var jsonizer = function() {
       keep(options, item, sequence, index);
       if (options.verbose) console.log('['+item.title+']-OPTIONS: (after keep)' + JSON.stringify(options));
 
-      var data = getData(item.data);
+      if (options.verbose) console.log('['+item.title+']-PRE DATA OBJECT: '+JSON.stringify(item.data));
+      replaceData(sequence, options, item.data);
+      var data = getData(sequence, item.data);
       validateHeaders(options, item, data);
-      data = replaceData(sequence, options, data);
+      evalHeadersLogic(sequence, options);
 
       if (options.verbose) console.log('['+item.title+']-REQUEST BODY: '+data);
       doRequest(item.title, options, data, undefined, function (err, o, r, c) {
         if (err)
           return cb(err);
 
-        if (options.verbose) console.log('['+(index+1)+' '+item.title+'] - RICHIESTA EFFETTUATA CON SUCCESSO, CONTENT: '+c);
-
-        //checkCookies(r, options);
+        if (options.verbose) console.log('['+item.title+'] - RICHIESTA EFFETTUATA SENZA ERRORI step='+index);
 
         if (isLast(sequence, index)) {
+          if (options.verbose) console.log('['+item.title+'] - LAST ITEM ('+index+') START PARSER...');
           parser.parse(c, parseroptions, function(err, data) {
             if (err) return cb(err);
+            if (options.verbose) console.log('['+item.title+'] - PARSER RESULT ('+index+') START PARSER...');
             var result = new ResultData();
             result.type = parseroptions.type;
             result.data = data;
@@ -453,6 +453,7 @@ var jsonizer = function() {
           });
         }
         else {
+          if (options.verbose) console.log('['+item.title+'] - NEXT ITEM ('+index+' -> '+(index+1)+'?)');
           evalKeepers(sequence, item, options, c);
           evalSequence(sequence, cb, parseroptions, options, index + 1);
         }

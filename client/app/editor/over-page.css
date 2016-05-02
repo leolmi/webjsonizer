@@ -29,8 +29,10 @@
 }
 
 .overlay-times {
-  margin: 20px;
   opacity: .2;
+  position: fixed;
+  top: 20px;
+  right: 20px;
 }
 .overlay-times:hover {
   opacity: 1;
