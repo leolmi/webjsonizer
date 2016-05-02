@@ -8,14 +8,11 @@ var mongoose = require('mongoose'),
 
 var SequenceJSSchema = new Schema({
   id: String,         // identificativo
-  target: String,     // parametro target     era://target del valore calcolato
+  target: String,     // parametro target
   sourceType: String, // tipo di risorsa
-  name: String,       // nome property        era://nome della logica di validazione (può individuare la funzione)
-  content: String,    // [OBSOLETA]           era://corpo del metodo js che accetta come parametri 'content' e 'params' per restituire il valore di un parametro
+  name: String,       // nome property
   logic: String,      // logica
-  logicType: String,  // tipo logica (none, javascript, regex)
-  mode: String,       // [OBSOLETA]           era://modalità
-  ttype: String       // [OBSOLETA]           era://tipologia del target: 'parameter' o 'data'
+  logicType: String   // tipo logica (none, javascript, regex)
 });
 
 var NameValueSchema = new Schema({
@@ -35,8 +32,6 @@ var SequenceItemSchema = new Schema({
   referer: String,  //se='auto' viene preso il precedente path
   data: [NameValueSchema],
   datatype: String,
-  prejs: [SequenceJSSchema],
-  postjs: [SequenceJSSchema],
   headers: [NameValueSchema],
   keepers: [SequenceJSSchema]
 });

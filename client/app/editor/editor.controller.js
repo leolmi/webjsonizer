@@ -111,7 +111,8 @@ angular.module('webjsonizerApp')
         $scope.overpage = undefined;
       };
 
-      var modalCreate = Modal.confirm.create(function (seqinfo) {
+
+      function createSequence(seqinfo) {
         $http.post('/api/sequence', seqinfo)
           .success(function (seq) {
             refreshAllSequences();
@@ -120,6 +121,10 @@ angular.module('webjsonizerApp')
           .error(function (err) {
             Logger.error("Error creating new sequence", JSON.stringify(err));
           });
+      }
+
+      var modalCreate = Modal.confirm.create(function (seqinfo) {
+        createSequence(seqinfo);
       });
 
       $scope.newSequence = function () {
@@ -133,6 +138,55 @@ angular.module('webjsonizerApp')
         });
       };
 
+      $scope.setFile = function() {
+        var e = $(':file')[0];
+        if (e) {
+          var reader = new FileReader();
+          reader.onload = function (ev) {
+            try {
+              var sequence = JSON.parse(ev.target.result);
+              createSequence(sequence);
+            } catch(err){
+              Logger.error("Error loading file", JSON.stringify(err));
+            }
+          };
+          reader.readAsText($scope.file);
+        }
+      };
+
+      function importSequence() {
+        $timeout(function() { $(':file').trigger('click'); }, 0);
+      }
+
+      function depure(o) {
+        if (_.isArray(o)) {
+          o.forEach(function(io){
+            depure(io);
+          });
+        } else if (_.isObject(o)) {
+          delete o._id;
+          delete o.$$hashKey;
+        }
+      }
+
+      function exportSequence() {
+        var clone = _.cloneDeep($scope.sequence);
+        delete clone.result;
+        delete clone.__v;
+        depure(clone.items);
+        clone.items.forEach(function(i){
+          depure(i.headers);
+          depure(i.keepers);
+          depure(i.data);
+        });
+        depure(clone.parameters);
+        delete clone.owner;
+        depure(clone);
+        var json = JSON.stringify(clone, null, 2);
+        var data = new Blob([json], { type: 'text/plain;charset=utf-8' });
+        saveAs(data, clone.title+'.json');
+      }
+
       $scope.buttons = [{
         icon: 'fa-times',
         action: $scope.closeSequence,
@@ -144,6 +198,16 @@ angular.module('webjsonizerApp')
         icon: 'fa-magic',
         action: $scope.newSequence,
         tooltip: 'Build new sequence'
+      }, {
+        separator: true
+      }, {
+        icon: 'fa-download',
+        action: exportSequence,
+        tooltip: 'Export current sequence'
+      }, {
+        icon: 'fa-cloud-upload',
+        action: importSequence,
+        tooltip: 'Import sequence'
       }, {
         separator: true
       }, {

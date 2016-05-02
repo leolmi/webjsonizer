@@ -27,6 +27,7 @@
   </article>
 </div>
 <div class="editor-container" ng-class="{'blur':overpage}">
+  <input class="hidden" type="file" id="uploader-input" ng-model-instant onchange="angular.element(this).scope().setFile(this)">
   <div class="menu-hidden"></div>
   <div class="editor-body">
     <div ng-hide="sequence" ng-include="'app/editor/splash.html'"></div>
