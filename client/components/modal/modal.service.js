@@ -207,6 +207,45 @@ angular.module('webjsonizerApp')
               cb.apply(event, args);
             });
           }
+        },
+
+        /**
+         * Apre il form per la valorizzazione di N parametri
+         * @param cb
+         */
+        parameters: function(cb) {
+          cb = cb || angular.noop;
+
+          return function() {
+            var args = Array.prototype.slice.call(arguments);
+
+            var parametersModal = openModal({
+              modal: {
+                parameters: args[0],
+                dismissable: true,
+                idle: false,
+                title: 'Parameters',
+                template: 'components/modal/modal-parameters.html',
+                buttons: [{
+                  classes: 'btn-success',
+                  text: 'Ok',
+                  click: function(e) {
+                    parametersModal.close(e);
+                  }
+                },{
+                  classes: 'btn-warning',
+                  text: 'Cancel',
+                  click: function(e) {
+                    parametersModal.dismiss(e);
+                  }
+                }]
+              }
+            }, 'modal-warning');
+
+            parametersModal.result.then(function(event) {
+              cb.apply(event, args);
+            });
+          }
         }
       }
     };

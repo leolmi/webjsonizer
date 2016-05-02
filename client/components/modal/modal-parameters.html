@@ -1,0 +1,10 @@
+<div class="modal-parameters" ng-controller="ModalParametersCtrl">
+  <div class="row editor-row editor-row-simply" ng-repeat="p in modal.parameters">
+    <div class="col-md-4">
+      <label class="control-label">{{p.name}}</label>
+    </div>
+    <div class="col-md-8">
+      <input type="text" class="form-control input-sm" ng-model="p.value">
+    </div>
+  </div>
+</div>

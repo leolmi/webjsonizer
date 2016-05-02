@@ -78,6 +78,21 @@ angular.module('webjsonizerApp')
           });
       };
 
+      var modalParameters = Modal.confirm.parameters(function (info) {
+        $scope.play();
+      });
+
+      $scope.checkPlay = function() {
+        var ps = _.filter($scope.sequence.parameters, function(p) {
+          return !p.hidden;
+        });
+        if (ps.length>0) {
+          modalParameters(ps);
+        } else {
+          $scope.play();
+        }
+      };
+
       $scope.save = function () {
         var seq = $scope.sequence;
         if (!seq || !$scope.modified) return;
@@ -140,7 +155,7 @@ angular.module('webjsonizerApp')
         }
       }, {
         icon: 'fa-bolt', //'fa-play-circle',
-        action: $scope.play,
+        action: $scope.checkPlay,
         tooltip: 'Test current sequence'
       }, {
         icon: 'fa-trash',
