@@ -31,7 +31,8 @@
   <div class="menu-hidden"></div>
   <div class="editor-body">
     <div ng-hide="sequence" ng-include="'app/editor/splash.html'"></div>
-    <i ng-hide="sequence" class="fa fa-magic aslink new-sequence-button" ng-click="newSequence()"></i>
+    <i ng-hide="sequence" class="fa fa-magic aslink big-button big-button-right" ng-click="newSequence()"></i>
+    <i ng-hide="sequence" class="fa fa-cloud-upload aslink big-button big-button-left" ng-click="importSequence()"></i>
     <div ng-show="sequence" class="sequence-editor">
       <div class="top-menu">
         <div class="title">{{sequence.title}}</div>

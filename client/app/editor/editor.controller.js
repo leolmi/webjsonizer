@@ -153,9 +153,9 @@ angular.module('webjsonizerApp')
         }
       };
 
-      function importSequence() {
+      $scope.importSequence = function() {
         $timeout(function() { $(':file').trigger('click'); }, 0);
-      }
+      };
 
 
 
@@ -196,7 +196,7 @@ angular.module('webjsonizerApp')
         tooltip: 'Export current sequence'
       }, {
         icon: 'fa-cloud-upload',
-        action: importSequence,
+        action: $scope.importSequence,
         tooltip: 'Import sequence'
       }, {
         separator: true
