@@ -156,3 +156,9 @@ select.as-label {
   font-weight: bold;
   color: #ccc;
 }
+
+.sequence-sample-btn {
+  position: absolute;
+  right: 24px;
+  top: 34px;
+}

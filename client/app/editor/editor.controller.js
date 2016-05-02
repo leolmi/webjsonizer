@@ -78,6 +78,21 @@ angular.module('webjsonizerApp')
           });
       };
 
+      $scope.sample = function() {
+        var js = [
+          'var url = '+getSequenceAddress(),
+          'var data = {',
+          '  p1 = p1.value,',
+          '  p2 = p2.value',
+          '}'];
+        $scope.overpage = {
+          template: 'app/editor/overpage-sample.html',
+          running: true,
+          title: $scope.sequence.title,
+          sample: js.join('\n')
+        };
+      };
+
       var modalParameters = Modal.confirm.parameters(function (info) {
         $scope.play();
       });

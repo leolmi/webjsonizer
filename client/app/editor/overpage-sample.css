@@ -1,0 +1,8 @@
+.overpage-sample {
+  text-align: center;
+  padding-bottom: 50px;
+}
+
+.overpage-sample > h1 {
+  color: yellowgreen;
+}

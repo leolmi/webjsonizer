@@ -26,6 +26,7 @@
   height: 100%;
   z-index: 210;
   overflow: auto;
+  padding: 20px;
 }
 
 .overlay-times {
