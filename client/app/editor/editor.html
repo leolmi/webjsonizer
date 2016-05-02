@@ -58,19 +58,24 @@
           <!-- OPTIONS -->
           <div class="row editor-row">
             <!-- ENABLED -->
-            <div class="col-md-4">
+            <div class="col-md-3">
               <label><input type="checkbox" ng-model="sequence.enabled" ng-change="changed()"> Enabled </label>
               <p>If the sequence is disabled web request will fail.</p>
             </div>
             <!-- SSL -->
-            <div class="col-md-4">
+            <div class="col-md-3">
               <label> <input type="checkbox" ng-model="sequence.SSL" ng-change="changed()"> SSL </label>
               <p>Make only https requests.</p>
             </div>
             <!-- GET -->
-            <div class="col-md-4">
+            <div class="col-md-3">
               <label> <input type="checkbox" ng-model="sequence.GET" ng-change="changed()"> GET </label>
               <p>Enabled get request with parameters query on url.</p>
+            </div>
+            <!-- PROXY -->
+            <div class="col-md-3">
+              <label> <input type="checkbox" ng-model="sequence.proxy" ng-change="changed()"> Proxy </label>
+              <p>Activate request under proxy.</p>
             </div>
           </div>
 

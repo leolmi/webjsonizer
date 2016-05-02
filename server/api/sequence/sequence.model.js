@@ -45,6 +45,7 @@ var SequenceSchema = new Schema({
   title: String,
   SSL: Boolean,
   GET: Boolean,
+  proxy: Boolean,
   owner: String,
   star: Boolean,
   enabled: Boolean,
