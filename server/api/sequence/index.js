@@ -10,6 +10,7 @@ var auth = require('../../auth/auth.service');
 var router = express.Router();
 
 router.get('/', auth.isAuthenticated(), controller.index);
+router.get('/publish/:id', auth.isAuthenticated(), controller.publish);
 router.get('/:id', auth.isAuthenticated(), controller.show);
 router.post('/', auth.isAuthenticated(), controller.create);
 router.post('/star', auth.isAuthenticated(), controller.toggle);

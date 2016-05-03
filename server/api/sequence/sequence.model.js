@@ -38,12 +38,15 @@ var SequenceItemSchema = new Schema({
 
 var SequenceSchema = new Schema({
   title: String,
+  desc: String,
+  enabled: Boolean,
+  vote: Number,
+  version: Number,
   SSL: Boolean,
   GET: Boolean,
   proxy: Boolean,
   owner: String,
   star: Boolean,
-  enabled: Boolean,
   result: Schema.Types.Mixed,
   parameters: [NameValueSchema],
   items: [SequenceItemSchema],

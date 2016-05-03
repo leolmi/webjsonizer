@@ -2,8 +2,10 @@
 
 var _ = require('lodash');
 var Sequence = require('./sequence.model');
+var Release = require('../release/release.controller');
 var J = require('node-jsonizer');
 //var J = require('../../jsonizer-dev/jsonizer');
+
 
 function checkUser(req, res){
   var check = (req.user && req.user._id);
@@ -11,14 +13,22 @@ function checkUser(req, res){
   return check;
 }
 
+
 function onSequence(id, cb) {
   if (!id)
     return cb(new Error('No sequence identity specified!'));
-  Sequence.findById(id, function (err, sequence) {
+
+  function handler(err, sequence) {
     if (err) return cb(err);
     if (!sequence) return cb(new Error('Sequence not found!'));
     cb(null, sequence);
-  });
+  }
+
+  if (Release.isRelease(id)) {
+    Release.show(id, handler);
+  } else {
+    Sequence.findById(id, handler);
+  }
 }
 
 function evalSequence(sequence, res, options) {
@@ -32,12 +42,22 @@ function evalSequence(sequence, res, options) {
 
 function loadParameterValues(source, sequence) {
   if (!source) return;
-  _.keys(source).forEach(function (k) {
-    var p = _.find(sequence.parameters, function (p) {
-      return p.name == k && !p.hidden;
+  if (_.isArray(source)) {
+    source.forEach(function (sp) {
+      var p = _.find(sequence.parameters, function (p) {
+        return (p.name || p.key) == sp.name && !p.hidden;
+      });
+      if (p) p.value = sp.value;
     });
-    if (p) p.value = source[k];
-  });
+  }
+  else if (_.isObject(source)) {
+    _.keys(source).forEach(function (k) {
+      var p = _.find(sequence.parameters, function (p) {
+        return p.name == k && !p.hidden;
+      });
+      if (p) p.value = source[k];
+    });
+  }
 }
 
 
@@ -85,6 +105,8 @@ exports.toggle = function(req, res) {
 // Updates an existing sequence in the DB.
 exports.update = function(req, res) {
   if(req.body._id) { delete req.body._id; }
+  delete req.body.version;
+  delete req.body.vote;
   onSequence(req.params.id, function(err, sequence) {
     if (err) return J.util.error(res, err);
     var updated = _.merge(sequence, req.body, function(a,b){
@@ -156,12 +178,28 @@ exports.parse = function(req, res) {
 exports.schema = function(req, res) {
   onSequence(req.params.id, function(err, sequence) {
     if (err) return J.util.error(res, err);
-    var schema = {};
-    sequence.parameters.forEach(function(p){
-      if (!p.hidden) {
-        schema[p.name] = '';
-      }
-    });
+    var schema = {
+      title: sequence.title,
+      desc: sequence.desc,
+      parameters: _(sequence.parameters)
+        .filter(function(p){
+          return !p.hidden;
+        })
+        .map(function(p){
+          return {name: p.name, value:''};
+        })
+        .value()
+    };
     return J.util.ok(res, schema);
+  });
+};
+
+exports.publish = function(req, res) {
+  onSequence(req.params.id, function(err, sequence) {
+    if (err) return J.util.error(res, err);
+    Releases.publish(sequence, function(err){
+      if (err) return J.util.error(res, err);
+      return J.util.ok(res);
+    });
   });
 };

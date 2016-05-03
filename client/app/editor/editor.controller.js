@@ -10,7 +10,6 @@ angular.module('webjsonizerApp')
       $scope.user = Auth.getCurrentUser();
       $scope.modified = false;
       $scope.debug = false;
-
       $scope.toggleDebug = function () {
         $scope.debug = !$scope.debug;
       };
@@ -19,8 +18,8 @@ angular.module('webjsonizerApp')
         $scope.modified = modified == undefined ? true : modified;
       }
 
-      function getSequenceAddress() {
-        return $scope.sequence ? "https://jsonizer.herokuapp.com/jsonize/" + $scope.sequence._id : '<undefined>';
+      function getSequenceAddress(postfix) {
+        return $scope.sequence ? "https://jsonizer.herokuapp.com/jsonize/" + postfix + $scope.sequence._id : '<undefined>';
       }
 
       $scope.newSequenceItem = function (index) {
@@ -79,17 +78,43 @@ angular.module('webjsonizerApp')
       };
 
       $scope.sample = function() {
-        var js = [
-          'var url = '+getSequenceAddress(),
-          'var data = {',
-          '  p1 = p1.value,',
-          '  p2 = p2.value',
-          '}'];
+        var jsExec = [
+          'var url = \''+getSequenceAddress()+'\';'];
+        if ($scope.sequence.parameters.length) {
+          jsExec.push('var data = {');
+          $scope.sequence.parameters.forEach(function (p, i) {
+            if (!p.hidden)
+              jsExec.push('  ' + p.name + ': \'value_of_' + p.name + '\'');
+          });
+          jsExec.push.apply(jsExec, ['};','$http.post(url, data)']);
+        } else {
+          jsExec.push.apply(jsExec, ['$http.post(url)']);
+        }
+        jsExec.push.apply(jsExec, [
+          '  .then(function(resp){',
+          '    //use resp.data as json',
+          '  }, function(err) {',
+          '    //handle errors',
+          '  });']);
+
+        var jsSchema = [
+          'var url = \''+getSequenceAddress('schema/')+'\';',
+          '$http.get(url)',
+          '  .then(function(resp){',
+          '    var schema = resp.data;',
+          '    // schema.title: title of the jsonize',
+          '    // schema.desc: description of the jsonize',
+          '    // schema.parameters: public parameters of the jsonize',
+          '  }, function(err) {',
+          '    //handle errors',
+          '  });'];
+
         $scope.overpage = {
           template: 'app/editor/overpage-sample.html',
           running: true,
           title: $scope.sequence.title,
-          sample: js.join('\n')
+          sampleSchema: jsSchema.join('\n'),
+          sampleExec: jsExec.join('\n')
         };
       };
 
@@ -350,11 +375,11 @@ angular.module('webjsonizerApp')
         //TODO: impostazioni utente (cambio password, nome utente)
       };
 
-
-
       $scope.$on('MODIFIED', function () {
         notifyModifies();
       });
+
+
 
       $rootScope.$on('NEW-SEQUENCE-ITEM-REQUEST', function(e, data){
         $scope.newSequenceItem(data.index);

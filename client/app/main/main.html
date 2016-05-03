@@ -73,9 +73,46 @@
   </div>
 </div>
 
+<div class="test-jsonizer">
+  <div class="container">
+    <h1>Test jesonizer</h1>
+    <div class="test-url row">
+      https://jsonizer.herokuapp.com/jsonize/
+      <input type="text" class="form-control input-sm test-id" ng-model="testJ.id" ng-change="testChanged()">
+      <i class="jsz-fa-btn btn-right fa fa-remove" ng-click="clearTest()"></i>
+    </div>
+    <div class="test-message" ng-show="!testJ.ok && testJ.message">{{testJ.message}}</div>
+    <div class="test-info" ng-show="testJ.ok">
+      <h1>{{testJ.title}}</h1>
+      <p>{{testJ.desc}}</p>
+    </div>
+    <div class="row">
+      <div class="col-md-4"></div>
+      <div class="col-md-4">
+        <div class="test-parameters" ng-show="testJ.parameters">
+          <div class="row test-parameter" ng-repeat="p in testJ.parameters">
+            <div class="col-md-5">
+              <label class="control-label">{{p.name}}</label>
+            </div>
+            <div class="col-md-7">
+              <input type="text" class="form-control input-sm" ng-model="p.value">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="test-info" ng-show="testJ.ok">
+      <button class="btn btn-primary" ng-click="runTest()">jesonize!</button>
+    </div>
+    <pre class="test-result" ng-show="testJ.result">{{testJ.result}}</pre>
+  </div>
+</div>
+
 <footer class="footer">
   <div class="container">
-      <p>Web-Jsonizer v{{version}} |
-         <a href="https://github.com/leolmi/webjsonizer/issues?state=open">Issues</a></p>
+    <p>Web-Jsonizer v{{version}} |
+      <i class="fa fa-fw fa-github"></i><a href="https://github.com/leolmi/webjsonizer">code</a> |
+      <a href="https://github.com/leolmi/webjsonizer/issues?state=open">issues</a></p>
   </div>
 </footer>
