@@ -6,6 +6,8 @@ var mongoose = require('mongoose'),
 
 var ReleaseSchema = new Schema({
   _id: String,
+  title: String,
+  desc: String,
   sequence: Schema.Types.Mixed
 },{ versionKey: false });
 

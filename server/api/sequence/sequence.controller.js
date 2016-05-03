@@ -65,7 +65,7 @@ function loadParameterValues(source, sequence) {
 // Get list of sequences
 exports.index = function(req, res) {
   if (!checkUser(req, res)) return;
-  Sequence.find({owner: req.user._id}, function (err, sequences) {
+  Sequence.find({owner: req.user._id}, '-vote -owner -result', function (err, sequences) {
     if(err) { return J.util.error(res, err); }
     return J.util.ok(res, sequences);
   });
@@ -140,7 +140,7 @@ exports.milk = function(req, res) {
     if (err) return J.util.error(res, err);
     if (GET && !sequence.GET)
       return J.util.error(res, new Error('Sequence not available!'));
-    var options = {verbose: true};
+    var options = {verbose: false};
     var source = GET ? req.params : req.body;
     loadParameterValues(source, sequence);
     evalSequence(sequence, res, options);
@@ -191,6 +191,20 @@ exports.schema = function(req, res) {
         .value()
     };
     return J.util.ok(res, schema);
+  });
+};
+
+exports.search = function(req, res) {
+  if (!req.body.text || !req.body.text.trim())
+    return J.util.ok(res, []);
+  Releases.index(req.body.text, function(err, releases) {
+    if (err) return J.util.error(res, err);
+    if (!releases || releases.length<=0)
+      return J.util.ok(res, []);
+    var sequences = _.map(releases, function(r){
+      return r.sequence;
+    });
+    return J.util.ok(res, sequences);
   });
 };
 

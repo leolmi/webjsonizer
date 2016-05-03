@@ -1,0 +1,18 @@
+<div class="jsonizer-finder">
+  <div class="jsonizer-container">
+    <h1>Find Jsonizer</h1>
+    <div class="search-input">
+      <input type="text" class="form-control input-lg" ng-model="searchText" placeholder="search for jsonizer..." ng-change="searchChanged()">
+      <i class="fa fa-close fa-2x jsz-fa-btn" ng-click="resetSearch()"></i>
+    </div>
+    <div class="test-idle">
+      <i ng-show="searchIdle" class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i>
+    </div>
+    <div class="search-message">
+      <div ng-show="!searchIdle && searchMessage">{{searchMessage}}</div>
+    </div>
+    <div class="search-result">
+      <div class="search-item" ng-repeat="release in releases">{{release.title}}</div>
+    </div>
+  </div>
+</div>

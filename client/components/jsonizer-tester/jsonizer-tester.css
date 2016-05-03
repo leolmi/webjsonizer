@@ -1,0 +1,30 @@
+.jsonizer-tester {
+  text-align: center;
+  background-color: #333;
+  padding: 50px 0;
+  min-height: 400px;
+}
+.jsonizer-tester .test-url {
+  /*margin-top: 50px;*/
+}
+.jsonizer-tester .test-idle {
+  height: 60px;
+}
+.jsonizer-tester .test-id {
+  display: inline-block;
+  width: 200px;
+}
+.jsonizer-tester .test-message {
+  color: #888;
+  margin: 20px 0;
+}
+.jsonizer-tester .test-parameters {
+  margin: 20px 0;
+}
+.jsonizer-tester .test-parameter {
+  margin-bottom: 4px;
+}
+.jsonizer-tester .test-result {
+  margin-top: 50px;
+  max-height: 400px;
+}

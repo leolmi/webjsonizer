@@ -1,0 +1,37 @@
+<div class="jsonizer-tester">
+  <div class="jsonizer-container">
+    <h1>Test Jsonizer</h1>
+    <div class="test-idle">
+      <i ng-show="testIdle" class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i>
+    </div>
+    <div class="test-url row">
+      https://jsonizer.herokuapp.com/jsonize/
+      <input type="text" class="form-control input-sm test-id" ng-model="testJ.id" ng-change="testChanged()" placeholder="insert code...">
+      <i class="jsz-fa-btn btn-right fa fa-remove" ng-click="clearTest()"></i>
+    </div>
+    <div class="test-message" ng-show="!testJ.ok && testJ.message">{{testJ.message}}</div>
+    <div class="test-info" ng-show="testJ.ok">
+      <h1>{{testJ.title}}</h1>
+      <p>{{testJ.desc}}</p>
+    </div>
+    <div class="row">
+      <div class="col-md-4"></div>
+      <div class="col-md-4">
+        <div class="test-parameters" ng-show="testJ.parameters">
+          <div class="row test-parameter" ng-repeat="p in testJ.parameters">
+            <div class="col-md-5">
+              <label class="control-label">{{p.name}}</label>
+            </div>
+            <div class="col-md-7">
+              <input type="text" class="form-control input-sm" ng-model="p.value">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="test-info" ng-show="testJ.ok">
+      <button class="btn btn-primary" ng-click="runTest()" ng-disabled="testIdle">jsonize!</button>
+    </div>
+    <pre class="test-result" ng-show="testJ.result">{{testJ.result}}</pre>
+  </div>
+</div>

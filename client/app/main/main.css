@@ -1,18 +1,3 @@
-.thing-form {
-  margin: 20px 0;
-}
-
-#banner {
-  border-bottom: none;
-  margin-top: -20px;
-}
-
-#banner h1 {
-  font-size: 50px;
-  /*line-height: 1;*/
-  /*letter-spacing: -1px;*/
-}
-
 .hero-unit {
   position: relative;
   padding: 30px 15px;
@@ -34,6 +19,10 @@
 }
 .hero-unit i {
   vertical-align: middle;
+}
+
+.main-container {
+  margin-bottom: 50px;
 }
 
 .navbar-inverse {

@@ -46,6 +46,8 @@ body {
 pre {
   white-space: pre-wrap;
   text-align: left;
+  background-color: rgba(200,200,200,.7);
+  border: none;
 }
 
 .blur {
@@ -152,6 +154,18 @@ pre {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+}
+
+.jsonizer-container {
+  text-align: center;
+}
+
+.jsonizer-container > h1 {
+  color: yellowgreen;
+}
+.jsonizer-container .row {
+  margin-right: 0;
+  margin-left: 0;
 }
 
 textarea[disabled] {

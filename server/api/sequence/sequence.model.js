@@ -40,7 +40,7 @@ var SequenceSchema = new Schema({
   title: String,
   desc: String,
   enabled: Boolean,
-  vote: Number,
+  vote: [String],
   version: Number,
   SSL: Boolean,
   GET: Boolean,

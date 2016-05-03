@@ -8,6 +8,15 @@ exports.isRelease = function(id) {
   return /^.*?v\d+$/.test(id);
 };
 
+exports.index = function(text, cb) {
+  var rgx = new RegExp(text, 'i');
+  Release.find()
+    .or([{ 'title': { $regex: rgx }}, { 'desc': { $regex: rgx }}])
+    .sort('title', 1)
+    .exec(function(err, releases) {
+      cb(err, releases);
+    });
+};
 
 exports.show = function(id, cb) {
   Release.findById(id, function (err, release) {
@@ -25,6 +34,8 @@ exports.publish = function(sequence, cb) {
     if (err) return cb(err);
     var data = {
       _id: sequence._id + 'v' + sequence.version,
+      title: sequence.title,
+      desc: sequence.desc,
       sequence: sequence
     };
     Release.create(data, function (err, release) {

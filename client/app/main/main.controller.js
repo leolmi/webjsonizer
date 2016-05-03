@@ -23,8 +23,6 @@ angular.module('webjsonizerApp')
     function ($scope,$rootScope,$http,$location,$timeout,socket,Auth,Logger) {
       $scope.version = '1.0.3';
       $scope.loginform = true;
-      $scope.testJ = {id: ''};
-      var _testTimeout = null;
 
       $http.get('assets/data/headers.json')
         .then(function (res) {
@@ -98,49 +96,4 @@ angular.module('webjsonizerApp')
       $scope.recover = function () {
         Logger.info('[TODO] - Recover password tool...');
       };
-
-      function loadTestSchema() {
-        $scope.testIdle = true;
-        if (!$scope.testJ.id)
-          return $scope.clearTest();
-        $http.get('/jsonize/schema/' + $scope.testJ.id)
-          .then(function (resp) {
-            $scope.testJ.ok = true;
-            _.extend($scope.testJ, resp.data);
-            $scope.testIdle = false;
-          }, function () {
-            $scope.testJ = {
-              id: $scope.testJ.id,
-              message: 'no jesonizer founded!'
-            };
-            $scope.testIdle = false;
-          });
-      }
-
-      $scope.testChanged = function () {
-        $scope.testIdle = true;
-        if (_testTimeout)
-          $timeout.cancel(_testTimeout);
-        _testTimeout = $timeout(function () {
-          loadTestSchema();
-        }, 1000);
-      };
-
-      $scope.runTest = function() {
-        $scope.testIdle = true;
-        $http.post('/jsonize/' + $scope.testJ.id, $scope.testJ.parameters)
-          .then(function(resp){
-            $scope.testJ.result = resp.data;
-            $scope.testIdle = false;
-          }, function(err){
-            Logger.error("Error jsonizing!", JSON.stringify(err));
-            $scope.testIdle = false;
-          });
-      };
-
-      $scope.clearTest = function() {
-        $scope.testJ = { id: '' };
-        $scope.testIdle = false;
-      };
-
     }]);
