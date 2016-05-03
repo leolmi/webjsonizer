@@ -2,7 +2,7 @@
 
 var _ = require('lodash');
 var Sequence = require('./sequence.model');
-var Release = require('../release/release.controller');
+var Release = require('../deploy/release.controller');
 var J = require('node-jsonizer');
 //var J = require('../../jsonizer-dev/jsonizer');
 
