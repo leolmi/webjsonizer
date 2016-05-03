@@ -19,7 +19,7 @@ angular.module('webjsonizerApp')
       }
 
       function getSequenceAddress(postfix) {
-        return $scope.sequence ? "https://jsonizer.herokuapp.com/jsonize/" + postfix + $scope.sequence._id : '<undefined>';
+        return $scope.sequence ? "https://jsonizer.herokuapp.com/jsonize/" + (postfix || '') + $scope.sequence._id : '<undefined>';
       }
 
       $scope.newSequenceItem = function (index) {
