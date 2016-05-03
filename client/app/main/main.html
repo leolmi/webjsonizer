@@ -76,9 +76,12 @@
 <div class="test-jsonizer">
   <div class="container">
     <h1>Test jesonizer</h1>
+    <div class="test-idle">
+      <i ng-show="testIdle" class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i>
+    </div>
     <div class="test-url row">
       https://jsonizer.herokuapp.com/jsonize/
-      <input type="text" class="form-control input-sm test-id" ng-model="testJ.id" ng-change="testChanged()">
+      <input type="text" class="form-control input-sm test-id" ng-model="testJ.id" ng-change="testChanged()" placeholder="insert code...">
       <i class="jsz-fa-btn btn-right fa fa-remove" ng-click="clearTest()"></i>
     </div>
     <div class="test-message" ng-show="!testJ.ok && testJ.message">{{testJ.message}}</div>
@@ -101,9 +104,8 @@
         </div>
       </div>
     </div>
-
     <div class="test-info" ng-show="testJ.ok">
-      <button class="btn btn-primary" ng-click="runTest()">jesonize!</button>
+      <button class="btn btn-primary" ng-click="runTest()" ng-disabled="testIdle">jesonize!</button>
     </div>
     <pre class="test-result" ng-show="testJ.result">{{testJ.result}}</pre>
   </div>

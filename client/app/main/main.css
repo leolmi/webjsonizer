@@ -87,11 +87,14 @@
   background-color: #333;
   padding: 50px 0;
   margin-top: 50px;
+  min-height: 400px;
 }
 .test-jsonizer .test-url {
-  margin-top: 50px;
+  /*margin-top: 50px;*/
 }
-
+.test-jsonizer .test-idle {
+  height: 60px;
+}
 .test-jsonizer .test-id {
   display: inline-block;
   width: 200px;

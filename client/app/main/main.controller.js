@@ -100,20 +100,25 @@ angular.module('webjsonizerApp')
       };
 
       function loadTestSchema() {
+        $scope.testIdle = true;
+        if (!$scope.testJ.id)
+          return $scope.clearTest();
         $http.get('/jsonize/schema/' + $scope.testJ.id)
-          .success(function (schema) {
+          .then(function (resp) {
             $scope.testJ.ok = true;
-            _.extend($scope.testJ, schema);
-          })
-          .error(function () {
+            _.extend($scope.testJ, resp.data);
+            $scope.testIdle = false;
+          }, function () {
             $scope.testJ = {
               id: $scope.testJ.id,
               message: 'no jesonizer founded!'
             };
+            $scope.testIdle = false;
           });
       }
 
       $scope.testChanged = function () {
+        $scope.testIdle = true;
         if (_testTimeout)
           $timeout.cancel(_testTimeout);
         _testTimeout = $timeout(function () {
@@ -122,16 +127,20 @@ angular.module('webjsonizerApp')
       };
 
       $scope.runTest = function() {
+        $scope.testIdle = true;
         $http.post('/jsonize/' + $scope.testJ.id, $scope.testJ.parameters)
           .then(function(resp){
             $scope.testJ.result = resp.data;
+            $scope.testIdle = false;
           }, function(err){
             Logger.error("Error jsonizing!", JSON.stringify(err));
+            $scope.testIdle = false;
           });
       };
 
       $scope.clearTest = function() {
         $scope.testJ = { id: '' };
+        $scope.testIdle = false;
       };
 
     }]);
