@@ -31,8 +31,8 @@ angular.module('webjsonizerApp')
 
       if (!$rootScope.user) {
         $rootScope.user = {
-          email: 'test@test.com',
-          password: 'test'
+          email: '',
+          password: ''
         };
       }
       $scope.user = $rootScope.user;
