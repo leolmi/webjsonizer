@@ -4,6 +4,7 @@ angular.module('webjsonizerApp')
   .factory('Modal', function ($rootScope, $modal) {
     var modal_DELETE = 'delete';
     var modal_YESNOCANCEL = 'yesnocancel';
+    var modal_PUBLISH = 'publish';
     /**
      * Opens a modal
      * @param  {Object} scope      - an object to be merged with modal's scope
@@ -29,6 +30,7 @@ angular.module('webjsonizerApp')
     return {
       MODAL_DELETE:modal_DELETE,
       MODAL_YESNOCANCEL:modal_YESNOCANCEL,
+      MODAL_PUBLISH: modal_PUBLISH,
       /* Confirmation modals */
       confirm: {
         /**
@@ -52,14 +54,21 @@ angular.module('webjsonizerApp')
             modalClass: 'modal-warning'
           };
           switch(type) {
-            case(modal_DELETE):
+            case modal_DELETE:
               opt.title = 'Confirm Delete';
-              opt.body = '<p>Are you sure you want to delete <strong>' + args[0] + '</strong> ?</p>';
+              opt.body = '<p>Are you sure you want to delete "<strong>' + args[0] + '</strong>" ?</p>';
               opt.ok = 'Delete';
               opt.okClass = 'btn-danger';
               opt.modalClass = 'modal-danger';
               break;
-            case(modal_YESNOCANCEL):
+            case modal_PUBLISH:
+              opt.title = 'Confirm Publish';
+              opt.body = '<p>Are you sure you want to publish a new version of "<strong>' + args[0] + '</strong>" ?</p>';
+              opt.ok = 'Publish';
+              opt.okClass = 'btn-danger';
+              opt.modalClass = 'modal-warning';
+              break;
+            case modal_YESNOCANCEL:
               opt.ok = 'Yes';
               opt.no = 'No';
               break;

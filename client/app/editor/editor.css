@@ -55,6 +55,7 @@
 }
 .editor-row-simply {
   border-bottom: none;
+  margin-bottom: 0;
 }
 .editor-row-flat {
   margin: 0 10px;

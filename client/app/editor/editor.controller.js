@@ -378,13 +378,18 @@ angular.module('webjsonizerApp')
         notifyModifies();
       });
 
-      $scope.publish = function() {
+      var modalPublish = Modal.confirm.ask(function () {
         $http.get('/api/sequence/publish/'+$scope.sequence._id)
-          .then(function(resp){
+          .then(function(){
             reload($scope.sequence._id);
           }, function(err){
             Logger.error('Error on publish sequence', JSON.stringify(err));
           })
+      });
+
+      $scope.publish = function() {
+        var opt = Modal.confirm.getAskOptions(Modal.MODAL_PUBLISH, $scope.sequence.title);
+        modalPublish(opt);
       };
 
 

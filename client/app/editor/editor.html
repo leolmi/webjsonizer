@@ -45,7 +45,7 @@
       <div class="sequence">
         <header class="sequence-header">
           <!-- TITLE -->
-          <div class="row editor-row">
+          <div class="row editor-row editor-row-simply">
             <div class="col-md-5">
               <label class="control-label" for="inputTitle">Title</label>
               <p>Set the sequence title to find it simply and fast.</p>
@@ -54,6 +54,17 @@
               <div class="form-group">
                 <input type="text" class="form-control input-sm" id="inputTitle" ng-model="sequence.title" ng-change="changed()">
               </div>
+            </div>
+          </div>
+
+          <!-- DESCRIPTION -->
+          <div class="row editor-row">
+            <div class="col-md-5">
+              <label>Description</label>
+            </div>
+            <div class="col-md-7">
+              <textarea class="form-control input-sm vertical script" ng-model="sequence.desc"
+                        ng-change="changed()" spellcheck="false" rows="2"></textarea>
             </div>
           </div>
 
@@ -122,7 +133,7 @@
           <!-- WEB ADDRESS -->
           <div class="row editor-row editor-row-simply">
             <div class="col-md-12">
-              <label>Web address to obtain JSON results by sequence</label>
+              <label>Public address</label>
               <pre class="sequence-address">{{address}}</pre>
               <i class="fa fa-2x fa-pencil-square aslink sequence-sample-btn" ng-click="sample()"></i>
             </div>

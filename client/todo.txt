@@ -1,3 +1,2 @@
-- publish sequence
-- search release in main page
-- vote on main page (need authentication?)
+- vote sequence (need authentication)
+- manage releases (delete/obsolete own releases)
