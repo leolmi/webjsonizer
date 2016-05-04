@@ -35,6 +35,9 @@
   margin: 4px 50px;
   position: relative;
 }
+.search-result .search-item:hover {
+  background-color: #333;
+}
 .search-result .search-item .search-item-title {
   color: yellowgreen;
   font-weight: bold;

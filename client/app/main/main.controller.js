@@ -94,6 +94,7 @@ angular.module('webjsonizerApp')
       };
 
       $scope.recover = function () {
+        //TODO: recupero password
         Logger.info('[TODO] - Recover password tool...');
       };
     }]);

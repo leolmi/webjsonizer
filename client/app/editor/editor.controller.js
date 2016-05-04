@@ -372,6 +372,7 @@ angular.module('webjsonizerApp')
 
       $scope.profile = function() {
         //TODO: impostazioni utente (cambio password, nome utente)
+        Logger.info('[TODO] - Profile settings tool...');
       };
 
       $scope.$on('MODIFIED', function () {

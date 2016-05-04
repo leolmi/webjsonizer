@@ -25,6 +25,7 @@
   margin-bottom: 4px;
 }
 .jsonizer-tester .test-result {
-  margin-top: 50px;
   max-height: 400px;
+  background-color: white;
+  margin: 50px 50px 0;
 }
