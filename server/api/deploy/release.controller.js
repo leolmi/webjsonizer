@@ -10,9 +10,9 @@ exports.isRelease = function(id) {
 
 exports.index = function(text, cb) {
   var rgx = new RegExp(text, 'i');
-  Release.find()
+  Release.find({}, '-sequence')
     .or([{ 'title': { $regex: rgx }}, { 'desc': { $regex: rgx }}])
-    .sort('title', 1)
+    .sort({title: 1, version: -1})
     .exec(function(err, releases) {
       cb(err, releases);
     });
@@ -27,7 +27,7 @@ exports.show = function(id, cb) {
 };
 
 exports.publish = function(sequence, cb) {
-  if (!_.has(sequence, 'version'))
+  if (!_.isNumber(sequence.version))
     sequence.version = 0;
   sequence.version++;
   sequence.save(function (err) {
@@ -36,11 +36,12 @@ exports.publish = function(sequence, cb) {
       _id: sequence._id + 'v' + sequence.version,
       title: sequence.title,
       desc: sequence.desc,
+      version: sequence.version,
       sequence: sequence
     };
     Release.create(data, function (err, release) {
       if (err) return cb(err);
-      return cb(null, release);
+      return cb(null, sequence);
     });
   });
 };

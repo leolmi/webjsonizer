@@ -20,3 +20,44 @@
   height: 60px;
   margin-top: 40px;
 }
+
+.search-message {
+  color: #666;
+  padding: 20px 0;
+}
+
+/*.search-result {*/
+/*}*/
+.search-result .search-item {
+  background-color: #222;
+  padding: 4px;
+  text-align: left;
+  margin: 4px 50px;
+  position: relative;
+}
+.search-result .search-item .search-item-title {
+  color: yellowgreen;
+  font-weight: bold;
+}
+.search-result .search-item .search-item-title .version {
+  font-size: 10px;
+  color: #888;
+}
+.search-result .search-item .search-item-title .identity {
+  font-size: 14px;
+  color: #888;
+  margin-left: 20px;
+}
+.search-result .search-item .search-item-desc {
+  font-size: 12px;
+  color: #aaa;
+}
+.search-result .search-item .search-item-action {
+  font-size: 16px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 6px 14px;
+}
+/*.search-result .search-item .search-item-action > i {*/
+/*}*/

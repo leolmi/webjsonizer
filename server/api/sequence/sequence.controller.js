@@ -197,23 +197,20 @@ exports.schema = function(req, res) {
 exports.search = function(req, res) {
   if (!req.body.text || !req.body.text.trim())
     return J.util.ok(res, []);
-  Releases.index(req.body.text, function(err, releases) {
+  Release.index(req.body.text, function(err, releases) {
     if (err) return J.util.error(res, err);
     if (!releases || releases.length<=0)
       return J.util.ok(res, []);
-    var sequences = _.map(releases, function(r){
-      return r.sequence;
-    });
-    return J.util.ok(res, sequences);
+    return J.util.ok(res, releases);
   });
 };
 
 exports.publish = function(req, res) {
   onSequence(req.params.id, function(err, sequence) {
     if (err) return J.util.error(res, err);
-    Releases.publish(sequence, function(err){
+    Release.publish(sequence, function(err, seq){
       if (err) return J.util.error(res, err);
-      return J.util.ok(res);
+      return J.util.ok(res, seq);
     });
   });
 };

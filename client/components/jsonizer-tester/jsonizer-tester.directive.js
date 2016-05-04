@@ -2,8 +2,8 @@
 'use strict';
 
 angular.module('webjsonizerApp')
-  .directive('jsonizerTester', ['$http','$timeout','Logger',
-    function ($http, $timeout,Logger) {
+  .directive('jsonizerTester', ['$http','$timeout','$rootScope','Logger',
+    function ($http, $timeout, $rootScope, Logger) {
       return {
         restrict: 'E',
         scope: { },
@@ -56,6 +56,10 @@ angular.module('webjsonizerApp')
             scope.testIdle = false;
           };
 
+          $rootScope.$on('TEST-THIS-SEQUENCE', function(e, data){
+            scope.testJ.id = data.id;
+            scope.testChanged();
+          });
         }
       }
     }]);

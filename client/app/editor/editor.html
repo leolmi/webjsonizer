@@ -122,11 +122,22 @@
           <!-- WEB ADDRESS -->
           <div class="row editor-row editor-row-simply">
             <div class="col-md-12">
-              <label>web address to obtain JSON results by sequence</label>
+              <label>Web address to obtain JSON results by sequence</label>
               <pre class="sequence-address">{{address}}</pre>
               <i class="fa fa-2x fa-pencil-square aslink sequence-sample-btn" ng-click="sample()"></i>
             </div>
           </div>
+
+          <!-- PUBLISH -->
+          <div class="row editor-row editor-row-simply">
+            <div class="col-md-12">
+              <label class="width-100">Last published version:
+                <span class="last-version">{{sequence.version ? sequence.version : 'none'}}</span>
+                <button class="btn btn-danger on-right" ng-disabled="modified" ng-click="publish()">Publish</button>
+              </label>
+            </div>
+          </div>
+
         </header>
         <sequence-item ng-repeat="i in sequence.items" data-ng-model="i"
                        sequence="sequence" index="$index" collapsed="true"

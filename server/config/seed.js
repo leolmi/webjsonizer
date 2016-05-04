@@ -6,8 +6,6 @@
 'use strict';
 
 var User = require('../api/user/user.model');
-var Sequence = require('../api/sequence/sequence.model');
-
 User.find({}).remove(function() {
   User.create({
     _id: '54b3e04cde6279a8211b42fe',
@@ -27,7 +25,7 @@ User.find({}).remove(function() {
   });
 });
 
-
+var Sequence = require('../api/sequence/sequence.model');
 Sequence.find({}).remove(function() {
   Sequence.create({
     title: 'Repubblica',
@@ -128,4 +126,9 @@ Sequence.find({}).remove(function() {
   }, function() {
     console.log('finished populating sequences');
   });
+});
+
+var Release = require('../api/deploy/release.model');
+Release.find({}).remove(function() {
+  console.log('finished deleting releases');
 });

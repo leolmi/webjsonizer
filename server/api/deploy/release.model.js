@@ -8,6 +8,7 @@ var ReleaseSchema = new Schema({
   _id: String,
   title: String,
   desc: String,
+  version: Number,
   sequence: Schema.Types.Mixed
 },{ versionKey: false });
 

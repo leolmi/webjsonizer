@@ -140,7 +140,7 @@ angular.module('webjsonizerApp')
           .success(function () {
             notifyModifies(false);
             Logger.ok('Sequence ' + seq.title + ' updated');
-            refreshDocument(seq._id);
+            reload(seq._id);
           })
           .error(function (err) {
             Logger.error('Error updating sequence ' + seq.title, JSON.stringify(err));
@@ -266,29 +266,28 @@ angular.module('webjsonizerApp')
         $scope.sequences.splice(index, 1);
       }
 
-      function refreshDocument(id) {
-        var result = $.grep($scope.sequences, function (s) {
-          return s._id == id;
-        });
-        if (!result || result.length <= 0) return;
-        var index = $scope.sequences.indexOf(result[0]);
-        $http.get('/api/sequence/' + id)
-          .success(function (seq) {
-            $scope.sequences[index] = seq;
-          })
-          .error(function (err) {
-            Logger.error('Error loading sequence', JSON.stringify(err));
-          });
-      }
 
-      function refreshAllSequences() {
+      function refreshAllSequences(cb) {
         $http.get('/api/sequence')
           .success(function (sequences) {
             $scope.sequences = sequences;
+            if (cb) cb();
           })
           .error(function (err) {
             Logger.error('Error loading sequences', JSON.stringify(err));
+            if (cb) cb();
           });
+      }
+
+      function reload(id) {
+        refreshAllSequences(function () {
+          $scope.sequence = null;
+          var seq = _.find($scope.sequences, function (s) {
+            return s._id == id;
+          });
+          if (seq)
+            $scope.open(seq);
+        });
       }
 
       $scope.logout = function () {
@@ -317,13 +316,13 @@ angular.module('webjsonizerApp')
 
       var modalSaveChanges = Modal.confirm.ask(function (seq, cb, res) {
         if (res == 'no') {
-          refreshDocument(seq._id);
+          reload(seq._id);
           return cb();
         }
         $http.put('/api/sequence/' + seq._id, seq)
           .success(function () {
             Logger.ok('Sequence "' + seq.title + '" updated!');
-            refreshDocument(seq._id);
+            reload(seq._id);
             cb();
           })
           .error(function (err) {
@@ -379,6 +378,14 @@ angular.module('webjsonizerApp')
         notifyModifies();
       });
 
+      $scope.publish = function() {
+        $http.get('/api/sequence/publish/'+$scope.sequence._id)
+          .then(function(resp){
+            reload($scope.sequence._id);
+          }, function(err){
+            Logger.error('Error on publish sequence', JSON.stringify(err));
+          })
+      };
 
 
       $rootScope.$on('NEW-SEQUENCE-ITEM-REQUEST', function(e, data){

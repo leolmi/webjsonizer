@@ -5,14 +5,23 @@
       <input type="text" class="form-control input-lg" ng-model="searchText" placeholder="search for jsonizer..." ng-change="searchChanged()">
       <i class="fa fa-close fa-2x jsz-fa-btn" ng-click="resetSearch()"></i>
     </div>
-    <div class="test-idle">
-      <i ng-show="searchIdle" class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i>
+    <div class="test-idle" ng-show="searchIdle">
+      <i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i>
     </div>
     <div class="search-message">
       <div ng-show="!searchIdle && searchMessage">{{searchMessage}}</div>
     </div>
     <div class="search-result">
-      <div class="search-item" ng-repeat="release in releases">{{release.title}}</div>
+      <div class="search-item" ng-repeat="rel in releases">
+        <div class="search-item-title">{{rel.title}}
+          <span class="version">v.{{rel.version}}</span>
+          <span class="identity">{{rel._id}}v{{rel.version}}</span>
+        </div>
+        <div class="search-item-desc">{{rel.desc ? rel.desc : 'no description'}}</div>
+        <div class="search-item-action on-right">
+          <i class="fa fa-eye jsz-fa-btn" ng-click="testThis(rel)"></i>
+        </div>
+      </div>
     </div>
   </div>
 </div>

@@ -108,6 +108,10 @@
   font-weight: bold;
 }
 
+.last-version {
+  font-weight: normal;
+}
+
 .my-star-sequence {
   padding: 4px;
   margin: 4px;

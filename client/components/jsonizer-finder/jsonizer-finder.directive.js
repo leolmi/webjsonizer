@@ -2,8 +2,8 @@
 'use strict';
 
 angular.module('webjsonizerApp')
-  .directive('jsonizerFinder', ['$http','$timeout','Logger',
-    function ($http, $timeout,Logger) {
+  .directive('jsonizerFinder', ['$http','$timeout','$rootScope',
+    function ($http, $timeout,$rootScope) {
       return {
         restrict: 'E',
         scope: { },
@@ -19,18 +19,18 @@ angular.module('webjsonizerApp')
             scope.searchText = '';
             scope.releases = [];
             scope.searchMessage = '';
+            scope.searchIdle = false;
           };
 
           function search() {
             scope.searchIdle = true;
             scope.searchMessage = '';
-            if (!scope.searchText || !scope.searchText.trim()) {
-              scope.searchIdle = false;
-              return;
-            }
+            if (!scope.searchText || !scope.searchText.trim())
+              return scope.resetSearch();
+
             $http.post('/api/sequence/search', {text: scope.searchText})
               .then(function (resp) {
-                scope.releases = resp.data;
+                scope.releases = resp.data || [];
                 scope.searchIdle = false;
                 scope.searchMessage = (!scope.releases || scope.releases.length <= 0) ? 'no items' : 'founded ' + scope.releases.length + ' items';
               }, function (err) {
@@ -47,6 +47,10 @@ angular.module('webjsonizerApp')
             _findTimeout = $timeout(function () {
               search();
             }, 1000);
+          };
+
+          scope.testThis = function(release) {
+            $rootScope.$broadcast('TEST-THIS-SEQUENCE', {id:release._id})
           };
         }
       }
