@@ -2,8 +2,10 @@
   "name": "webjsonizer",
   "version": "1.0.3",
   "main": "server/app.js",
+  "author": "Leo",
   "dependencies": {
     "body-parser": "~1.5.0",
+    "bower": "~1.6.5",
     "cheerio": "^0.19.0",
     "composable-middleware": "^0.3.0",
     "compression": "~1.0.1",
@@ -85,12 +87,12 @@
     "should": "~3.3.1"
   },
   "engines": {
-    "node": ">=0.10.0"
+    "node": "4.3.0",
+    "npm": "3.8.7"
   },
   "scripts": {
     "start": "node server/app.js",
-    "test": "grunt test",
-    "update-webdriver": "node node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update"
+    "postinstall": "./node_modules/bower/bin/bower install"
   },
   "private": true
 }
