@@ -30,10 +30,11 @@
 /*}*/
 .search-result .search-item {
   background-color: #222;
-  padding: 4px;
+  padding: 8px 16px;
   text-align: left;
   margin: 4px 50px;
   position: relative;
+  border-radius: 6px;
 }
 .search-result .search-item:hover {
   background-color: #333;
@@ -62,5 +63,6 @@
   right: 0;
   padding: 6px 14px;
 }
-/*.search-result .search-item .search-item-action > i {*/
-/*}*/
+.search-result .search-item .search-item-action > i {
+  font-size: 1.5em;
+}
