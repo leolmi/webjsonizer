@@ -23,16 +23,17 @@
       <!-- injector:css -->
       <link rel="stylesheet" href="app/admin/admin.css">
       <link rel="stylesheet" href="app/app.css">
+      <link rel="stylesheet" href="app/editor/controls/sequence-item.css">
+      <link rel="stylesheet" href="app/editor/controls/sequence-keeper.css">
+      <link rel="stylesheet" href="app/editor/controls/sequence-parser.css">
       <link rel="stylesheet" href="app/editor/editor.css">
       <link rel="stylesheet" href="app/editor/menu.css">
-      <link rel="stylesheet" href="app/editor/over-page.css">
-      <link rel="stylesheet" href="app/editor/overpage-play.css">
-      <link rel="stylesheet" href="app/editor/overpage-sample.css">
-      <link rel="stylesheet" href="app/editor/sequence-item.css">
-      <link rel="stylesheet" href="app/editor/sequence-keeper.css">
-      <link rel="stylesheet" href="app/editor/sequence-parser.css">
       <link rel="stylesheet" href="app/editor/spalsh.css">
       <link rel="stylesheet" href="app/main/main.css">
+      <link rel="stylesheet" href="app/overpages/over-page.css">
+      <link rel="stylesheet" href="app/overpages/overpage-play.css">
+      <link rel="stylesheet" href="app/overpages/overpage-releases.css">
+      <link rel="stylesheet" href="app/overpages/overpage-sample.css">
       <link rel="stylesheet" href="app/test/test.css">
       <link rel="stylesheet" href="components/jsonizer-finder/jsonizer-finder.css">
       <link rel="stylesheet" href="components/jsonizer-tester/jsonizer-tester.css">
@@ -44,7 +45,7 @@
       <!-- endinjector -->
     <!-- endbuild -->
   </head>
-  <body ng-app="webjsonizerApp">
+  <body ng-app="webjsonizerApp" ng-class="{'overpage':overpageOn}">
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -89,12 +90,12 @@
           <!-- injector:js -->
           <script src="app/admin/admin.controller.js"></script>
           <script src="app/admin/admin.js"></script>
+          <script src="app/editor/controls/header-item.directive.js"></script>
+          <script src="app/editor/controls/sequence-item.directive.js"></script>
+          <script src="app/editor/controls/sequence-keeper.directive.js"></script>
+          <script src="app/editor/controls/sequence-parser.directive.js"></script>
           <script src="app/editor/editor.controller.js"></script>
           <script src="app/editor/editor.js"></script>
-          <script src="app/editor/header-item.directive.js"></script>
-          <script src="app/editor/sequence-item.directive.js"></script>
-          <script src="app/editor/sequence-keeper.directive.js"></script>
-          <script src="app/editor/sequence-parser.directive.js"></script>
           <script src="app/main/main.controller.js"></script>
           <script src="app/main/main.js"></script>
           <script src="app/prototypes/Keeper.prototype.js"></script>

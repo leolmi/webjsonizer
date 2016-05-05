@@ -21,21 +21,21 @@ angular.module('webjsonizerApp')
   })
   .controller('MainCtrl', ['$scope','$rootScope','$http','$location','$timeout','socket','Auth','Logger',
     function ($scope,$rootScope,$http,$location,$timeout,socket,Auth,Logger) {
-      $scope.version = '1.0.3';
       $scope.loginform = true;
+      $rootScope.product = {};
 
       $http.get('assets/data/headers.json')
         .then(function (res) {
           $rootScope.headers = res.data;
         });
+      $http.get('assets/data/product.json')
+        .then(function (res) {
+          _.extend($rootScope.product, res.data);
+        });
 
       if (!$rootScope.user) {
-        $rootScope.user = {
-          email: '',
-          password: ''
-        };
+        $rootScope.user = { email: '', password: '' };
       }
-      $scope.user = $rootScope.user;
 
       function resetErrors(skipsub) {
         if (!skipsub)
@@ -56,8 +56,8 @@ angular.module('webjsonizerApp')
         $scope.submitted = true;
         if (form.$valid) {
           Auth.login({
-              email: $scope.user.email,
-              password: $scope.user.password
+              email: $rootScope.user.email,
+              password: $rootScope.user.password
             })
             .then(function () {
               resetErrors();
@@ -73,9 +73,9 @@ angular.module('webjsonizerApp')
         $scope.submitted = true;
         if (form.$valid) {
           Auth.createUser({
-              name: $scope.user.name,
-              email: $scope.user.email,
-              password: $scope.user.password
+              name: $rootScope.user.name,
+              email: $rootScope.user.email,
+              password: $rootScope.user.password
             })
             .then(function () {
               resetErrors();

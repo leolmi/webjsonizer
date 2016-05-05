@@ -22,7 +22,7 @@ exports.show = function(id, cb) {
   Release.findById(id, function (err, release) {
     if (err) return cb(err);
     if (!release) return cb(new Error('Release not found!'));
-    cb(null, release.sequence);
+    cb(null, release);
   });
 };
 
@@ -44,4 +44,13 @@ exports.publish = function(sequence, cb) {
       return cb(null, sequence);
     });
   });
+};
+
+exports.releases = function(id, cb) {
+  var rgx = new RegExp('^'+id+'v', 'i');
+  Release.find({'_id': { $regex: rgx }}, '-sequence')
+    .sort({version: -1})
+    .exec(function(err, releases) {
+      cb(err, releases);
+    });
 };

@@ -8,7 +8,7 @@ angular.module('webjsonizerApp')
         return {
             restrict: 'E',
             scope: {header: '=ngModel', index:'='},
-            templateUrl: 'app/editor/header-item.html',
+            templateUrl: 'app/editor/controls/header-item.html',
             link: function (scope, elm, atr) {
               if ($rootScope.headers) {
                 var names = [];

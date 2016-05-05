@@ -142,9 +142,10 @@
           <!-- PUBLISH -->
           <div class="row editor-row editor-row-simply">
             <div class="col-md-12">
-              <label class="width-100">Last published version:
+              <label class="sequence-publish width-100">Last published version:
                 <span class="last-version">{{sequence.version ? sequence.version : 'none'}}</span>
                 <button class="btn btn-danger on-right" ng-disabled="modified" ng-click="publish()">Publish</button>
+                <button class="btn btn-warning on-right" ng-disabled="!sequence.version || sequence.version<=0" ng-click="manageReleases()">Manage Releases</button>
               </label>
             </div>
           </div>

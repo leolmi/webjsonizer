@@ -59,7 +59,7 @@ angular.module('webjsonizerApp')
        */
       $scope.play = function () {
         $scope.overpage = {
-          template: 'app/editor/overpage-play.html',
+          template: 'app/overpages/overpage-play.html',
           running: true,
           title: $scope.sequence.title
         };
@@ -110,7 +110,7 @@ angular.module('webjsonizerApp')
           '  });'];
 
         $scope.overpage = {
-          template: 'app/editor/overpage-sample.html',
+          template: 'app/overpages/overpage-sample.html',
           running: true,
           title: $scope.sequence.title,
           sampleSchema: jsSchema.join('\n'),
@@ -394,6 +394,47 @@ angular.module('webjsonizerApp')
       };
 
 
+
+      var modalDeleteRelease = Modal.confirm.ask(function (obj) {
+        $http.delete('/api/sequence/'+obj.rel._id)
+          .then(function() {
+            Logger.info('Release Deleted', 'Release v.'+obj.rel.version+' deleted successfully');
+            obj.cb();
+          }, function(err){
+            Logger.error('Error on deleting release', JSON.stringify(err));
+          });
+      });
+
+      $scope.manageReleases = function() {
+        function loadReleases(o) {
+          o.loading = true;
+          $http.get('/api/sequence/releases/'+$scope.sequence._id)
+            .then(function (result) {
+              o.loading = false;
+              o.releases = result.data;
+            }, function(err){
+              o.loading = false;
+              o.error = JSON.stringify(err);
+            });
+        }
+        $scope.overpage = {
+          template: 'app/overpages/overpage-releases.html',
+          loading: true,
+          releases: [],
+          title: 'Releases of ' + $scope.sequence.title,
+          remove: function(rel) {
+            var self = this;
+            var opt = Modal.confirm.getAskOptions(Modal.MODAL_DELETE, 'version ' + rel.version);
+            var obj = {
+              rel: rel,
+              cb: function() { loadReleases(self); }
+            };
+            modalDeleteRelease(opt, obj);
+          }
+        };
+        loadReleases($scope.overpage);
+      };
+
       $rootScope.$on('NEW-SEQUENCE-ITEM-REQUEST', function(e, data){
         $scope.newSequenceItem(data.index);
       });
@@ -417,6 +458,9 @@ angular.module('webjsonizerApp')
         }
       });
 
+      $scope.$watch('overpage', function() {
+        $rootScope.overpageOn = $scope.overpage ? true : false;
+      });
 
 
       refreshAllSequences();

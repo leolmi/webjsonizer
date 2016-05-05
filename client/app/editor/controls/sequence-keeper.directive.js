@@ -7,7 +7,7 @@ angular.module('webjsonizerApp')
       return {
         restrict: 'E',
         scope: {keeper: '=ngModel', item:'=', sequence:'=', index: '='},
-        templateUrl: 'app/editor/sequence-keeper.html',
+        templateUrl: 'app/editor/controls/sequence-keeper.html',
         link: function (scope, ele, atr) {
           scope.removeKeeper = function() {
             $rootScope.$broadcast('REMOVE-SEQUENCE-ITEM-KEEPER', {keeper:scope.keeper, item:scope.item});

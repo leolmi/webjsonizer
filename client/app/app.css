@@ -42,6 +42,9 @@ body {
   background-color: #222;
   color: #ccc;
 }
+body.overpage {
+  overflow: hidden;
+}
 
 pre {
   white-space: pre-wrap;

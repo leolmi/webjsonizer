@@ -11,14 +11,6 @@
   -webkit-transition: all .50s ease-in-out;
   transition: all .50s ease-in-out;
 }
-/*.editor-menu.collapsed {*/
-  /*left: -275px;*/
-  /*overflow: hidden;*/
-  /*-moz-transition: all .50s ease-in-out;*/
-  /*-o-transition: all .50s ease-in-out;*/
-  /*-webkit-transition: all .50s ease-in-out;*/
-  /*transition: all .50s ease-in-out;*/
-/*}*/
 
 
 .editor-button {

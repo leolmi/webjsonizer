@@ -1,0 +1,13 @@
+<div class="overpage-releases">
+  <h1>{{overpage.title}}</h1>
+  <div class="test-idle">
+    <i ng-show="testIdle" class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i>
+  </div>
+  <div class="release-item" ng-repeat="rel in overpage.releases">
+    <span class="title">{{rel.title}} v.</span>
+    <span class="version">{{rel.version}}</span>
+    <div class="desc">{{rel.desc ? rel.desc : 'no description'}}</div>
+    <i class="jsz-fa-btn btn-right fa fa-remove" ng-click="overpage.remove(rel)"></i>
+  </div>
+  <div ng-show="!overpage.releases || overpage.releases.length<=0">no releases</div>
+</div>

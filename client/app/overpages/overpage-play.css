@@ -5,6 +5,7 @@
 
 .overpage-play > h1 {
   color: yellowgreen;
+  margin-bottom: 50px;
 }
 
 .overpage-play > .error {

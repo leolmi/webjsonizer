@@ -13,19 +13,29 @@ function checkUser(req, res){
   return check;
 }
 
-
-function onSequence(id, cb) {
+// mode:
+//  - sequence: solo sequenze (default)
+//  - all: sequenze e releases
+//  - release: solo releases
+function onSequence(id, cb, mode) {
   if (!id)
     return cb(new Error('No sequence identity specified!'));
 
-  function handler(err, sequence) {
+  mode = mode || 'sequence';
+  var release = Release.isRelease(id);
+
+  function handler(err, element) {
     if (err) return cb(err);
-    if (!sequence) return cb(new Error('Sequence not found!'));
-    cb(null, sequence);
+    if (!element) return cb(new Error('Not found!'));
+    cb(null, element, release);
   }
 
-  if (Release.isRelease(id)) {
-    Release.show(id, handler);
+  if (release) {
+    if (mode=='all' || mode=='release') {
+      Release.show(id, handler);
+    } else {
+      cb();
+    }
   } else {
     Sequence.findById(id, handler);
   }
@@ -76,7 +86,7 @@ exports.show = function(req, res) {
   onSequence(req.params.id, function(err, sequence){
     if(err) return J.util.error(res, err);
     return J.util.ok(res, sequence);
-  });
+  }, 'all');
 };
 
 // Creates a new sequence in the DB.
@@ -123,28 +133,29 @@ exports.update = function(req, res) {
 
 // Deletes a sequence from the DB.
 exports.destroy = function(req, res) {
-  onSequence(req.params.id, function(err, sequence) {
+  onSequence(req.params.id, function(err, element) {
     if (err) return J.util.error(res, err);
-    sequence.remove(function(err) {
+    element.remove(function(err) {
       if(err) { return J.util.error(res, err); }
       return J.util.deleted(res);
     });
-  });
+  }, 'all');
 };
 
 
 // Esegue la sequenza ricercandola per id
 exports.milk = function(req, res) {
   var GET = req.method.toLowerCase() == 'get';
-  onSequence(req.params.id, function (err, sequence) {
+  onSequence(req.params.id, function (err, element, release) {
     if (err) return J.util.error(res, err);
+    var sequence = release ? element.sequence : element;
     if (GET && !sequence.GET)
       return J.util.error(res, new Error('Sequence not available!'));
     var options = {verbose: false};
     var source = GET ? req.params : req.body;
     loadParameterValues(source, sequence);
     evalSequence(sequence, res, options);
-  });
+  }, 'all');
 };
 
 // Esegue la sequenza passata
@@ -176,8 +187,9 @@ exports.parse = function(req, res) {
 };
 
 exports.schema = function(req, res) {
-  onSequence(req.params.id, function(err, sequence) {
+  onSequence(req.params.id, function(err, element, release) {
     if (err) return J.util.error(res, err);
+    var sequence = release ? element.sequence : element;
     var schema = {
       title: sequence.title,
       desc: sequence.desc,
@@ -191,7 +203,7 @@ exports.schema = function(req, res) {
         .value()
     };
     return J.util.ok(res, schema);
-  });
+  }, 'all');
 };
 
 exports.search = function(req, res) {
@@ -205,12 +217,24 @@ exports.search = function(req, res) {
   });
 };
 
+// Pubblica una sequenza
 exports.publish = function(req, res) {
   onSequence(req.params.id, function(err, sequence) {
     if (err) return J.util.error(res, err);
     Release.publish(sequence, function(err, seq){
       if (err) return J.util.error(res, err);
       return J.util.ok(res, seq);
+    });
+  });
+};
+
+// Enumera le pubblicazioni di una sequenza
+exports.releases = function(req, res) {
+  onSequence(req.params.id, function(err, sequence) {
+    if (err) return J.util.error(res, err);
+    Release.releases(sequence._id, function(err, releases) {
+      if (err) return J.util.error(res, err);
+      return J.util.ok(res, releases);
     });
   });
 };

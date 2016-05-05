@@ -167,3 +167,6 @@ select.as-label {
   right: 24px;
   top: 34px;
 }
+.sequence-publish button {
+  margin-right: 4px;
+}

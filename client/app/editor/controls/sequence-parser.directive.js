@@ -7,7 +7,7 @@ angular.module('webjsonizerApp')
       return {
         restrict: 'E',
         scope: { sequence: '=ngModel' },
-        templateUrl: 'app/editor/sequence-parser.html',
+        templateUrl: 'app/editor/controls/sequence-parser.html',
         link: function (scope, ele, atr) {
           scope.parserTypes = [{
             name: 'htmltable',

@@ -1,0 +1,33 @@
+.overpage-releases {
+  text-align: center;
+  padding-bottom: 50px;
+}
+
+.overpage-releases > h1 {
+  color: yellowgreen;
+  margin-bottom: 50px;
+}
+
+.release-item {
+  text-align: left;
+  margin: 0 50px 8px;
+  background-color: rgba(1,1,1,.4);
+  padding: 10px;
+  position: relative;
+}
+.release-item > i {
+  position: absolute;
+  right: 16px;
+  top: 6px;
+  font-size: 32px;
+}
+.release-item .title {
+
+}
+.release-item .version {
+  color: yellowgreen;
+  font-weight: bold;
+}
+.release-item .desc {
+  color: #aaa;
+}
