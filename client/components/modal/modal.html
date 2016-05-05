@@ -8,6 +8,6 @@
   <div ng-if="modal.template" ng-include="modal.template"></div>
 </div>
 <div class="modal-footer">
-  <button ng-repeat="b in modal.leftbuttons" ng-class="b.classes" ng-click="b.click($event)" ng-disabled="modal.idle" ng-bind="b.text" class="btn btn-left"></button>
+  <button ng-repeat="b in modal.leftbuttons" ng-class="b.classes" ng-click="b.click($event)" ng-disabled="modal.idle || (b.disabled && b.disabled())" ng-bind="b.text" class="btn btn-left"></button>
   <button ng-repeat="b in modal.buttons" ng-class="b.classes" ng-disabled="modal.idle" ng-click="b.click($event)" ng-bind="b.text" class="btn"></button>
 </div>

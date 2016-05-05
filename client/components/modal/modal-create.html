@@ -1,14 +1,33 @@
 <div class="modal-create" ng-controller="ModalCreateCtrl">
   <label>Sequence Title</label>
-  <input type="text" class="form-control input-sm" ng-model="modal.info.title">
+  <input type="text" id="jsonizer-title" class="form-control input-sm" ng-model="modal.info.title">
   <input id="network-data-file" type="file" class="hidden" ng-model-instant onchange="angular.element(this).scope().setNetworkData(this)"/>
-  <p>You can select a Network-data file (xml for Explorer; har for Chrome) to auto generate sequence steps.</p>
-  <button class="btn btn-info" ng-click="selectFile()">Open Network Data</button>
-  <div ng-show="modal.idle" class="working-frame"><i class="fa fa-2x fa-cog fa-spin"></i> building sequence....</div>
-  <div ng-show="!modal.idle && modal.info.items.length" class="working-frame">Founded {{modal.info.items.length}} valid steps.</div>
-  <div ng-show="!modal.idle && sequenceError" class="working-frame error">{{sequenceError}}</div>
-  <label class="top-margin">Exclusion list for requests urls</label>
-  <tag-editor tags="parserOptions.exclusion" alltags="parserOptions.allexclusion"></tag-editor>
-  <label class="top-margin">Included mime types (* = all)</label>
-  <tag-editor tags="parserOptions.includeMimeTypes" alltags="parserOptions.allMimeTypes"></tag-editor>
+  <div class="create-buttons" ng-hide="mode">
+    <div class="create-btn" ng-click="setMode('network')">
+      <i class="fa fa-btn fa-file-code-o"></i>
+      <div class="btn-caption">by network data</div>
+    </div>
+    <div class="create-btn" ng-click="setMode('url')">
+      <i class="fa fa-btn fa-globe"></i>
+      <div class="btn-caption">by url</div>
+    </div>
+  </div>
+  <div ng-switch="mode">
+    <div ng-switch-when="network">
+      <p>You can select a Network-data file (.xml for Explorer, .har for Chrome, .postman_collection for Postman, ecc..) to auto generate sequence steps.</p>
+      <button class="btn btn-info" ng-click="selectFile()">Open Network Data</button>
+      <div ng-show="modal.idle" class="working-frame"><i class="fa fa-2x fa-cog fa-spin"></i> building sequence....</div>
+      <div ng-show="!modal.idle && modal.info.items.length" class="working-frame">Founded {{modal.info.items.length}} valid steps.</div>
+      <div ng-show="!modal.idle && sequenceError" class="working-frame error">{{sequenceError}}</div>
+      <label class="top-margin">Exclusion list for requests urls</label>
+      <tag-editor tags="parserOptions.exclusion" alltags="parserOptions.allexclusion"></tag-editor>
+      <label class="top-margin">Included mime types (* = all)</label>
+      <tag-editor tags="parserOptions.includeMimeTypes" alltags="parserOptions.allMimeTypes"></tag-editor>
+    </div>
+    <div ng-switch-when="url">
+      <p>Paste/write the url of the page containing the data.</p>
+      <label>URL</label>
+      <input type="text" class="form-control input-sm" ng-model="modal.url">
+    </div>
+  </div>
 </div>

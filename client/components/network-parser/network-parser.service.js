@@ -191,8 +191,24 @@ angular.module('webjsonizerApp')
         }
       }
 
+      function parseUrl(url, cb){
+        var item = {
+          title: 'step 1',
+          method: 'GET',
+          path: '',
+          host: ''
+        };
+        if (url) {
+          var U = new URL(url);
+          item.path = U.pathsearchname;
+          item.host = U.hostname;
+        }
+        cb(null, item);
+      }
+
       return {
         options: _options,
-        parse: parse
+        parse: parse,
+        parseUrl: parseUrl
       }
     }]);

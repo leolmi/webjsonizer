@@ -149,27 +149,31 @@ angular.module('webjsonizerApp')
           return function() {
             var args = Array.prototype.slice.call(arguments);
 
+            var modal = {
+              info: args[0],
+              dismissable: true,
+              idle: false,
+              title: 'Create new Sequence',
+              template: 'components/modal/modal-create.html',
+              buttons: [{
+                classes: 'btn-success',
+                text: 'Ok',
+                click: function(e) {
+                  if (_.isFunction(modal.apply))
+                    modal.apply();
+                  createModal.close(e);
+                }
+              },{
+                classes: 'btn-warning',
+                text: 'Cancel',
+                click: function(e) {
+                  createModal.dismiss(e);
+                }
+              }]
+            };
+
             var createModal = openModal({
-              modal: {
-                info: args[0],
-                dismissable: true,
-                idle: false,
-                title: 'Create new Sequence',
-                template: 'components/modal/modal-create.html',
-                buttons: [{
-                  classes: 'btn-success',
-                  text: 'Ok',
-                  click: function(e) {
-                    createModal.close(e);
-                  }
-                },{
-                  classes: 'btn-warning',
-                  text: 'Cancel',
-                  click: function(e) {
-                    createModal.dismiss(e);
-                  }
-                }]
-              }
+              modal: modal
             }, 'modal-warning');
 
             createModal.result.then(function(event) {

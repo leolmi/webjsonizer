@@ -1,6 +1,3 @@
-- popup create:
-  - da url noto
-  - da network data (come ora)
 - migliorare tool di gestone del test:
   - elenco tabelle trovate:  $('table').each(...)
   - mostrare errori

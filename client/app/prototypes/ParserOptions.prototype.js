@@ -7,7 +7,7 @@ angular.module('webjsonizerApp')
 
       var ParserOptions = function (info) {
         this.type = 'htmltable';
-        this.pattern = '$(\'#TABLEID\')';
+        this.pattern = '$(\'table\')';
         if (info)
           _.extend(this, info);
       };

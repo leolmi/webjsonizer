@@ -12,3 +12,35 @@
   display: block;
   margin-top: 20px;
 }
+
+.modal-create .create-buttons {
+  font-size: 24px;
+  text-align: center;
+  position: relative;
+  margin-bottom: -30px;
+}
+.modal-create .create-buttons > .create-btn {
+  display: inline-block;
+  margin: 20px 40px;
+  min-width: 170px;
+  cursor: pointer;
+  color: #444;
+  text-transform: uppercase;
+  font-size: 14px;
+  background-color: transparent;
+  border-radius: 90px;
+  height: 170px;
+  /*line-height: 120px;*/
+}
+.modal-create .create-buttons > .create-btn:hover {
+  color: darkorange;
+  background-color: #eee;
+}
+.modal-create .create-buttons > .create-btn > i {
+  font-size: 60px;
+  display: block;
+  margin: 24px;
+}
+.modal-create .create-buttons > .create-btn > .btn-caption {
+
+}
