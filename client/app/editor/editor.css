@@ -137,19 +137,32 @@
   /*color: #ff8c00;*/
 }
 
-.big-button {
+.editor-main-menu-btn {
   position: absolute;
   top: 100px;
   margin: auto;
+  height: 120px;
+  text-align: center;
+  text-transform: uppercase;
+}
+.editor-main-menu-btn.btn-right {
+  right: 15%
+}
+.editor-main-menu-btn.btn-left {
+  left: 15%;
+}
+
+.big-button {
   font-size: 100px;
+  display: block;
 }
 
 .big-button-right {
-  right: 100px;
+  right: 15%
 }
 
 .big-button-left {
-  left: 100px;
+  left: 15%;
 }
 
 .editor-container textarea {
@@ -169,4 +182,11 @@ select.as-label {
 }
 .sequence-publish button {
   margin-right: 4px;
+}
+
+.editor-main-menu {
+  position: relative;
+  text-align: center;
+  padding: 50px 0;
+  min-height: 400px;
 }

@@ -14,7 +14,7 @@
       </div>
     </div>
     <accordion close-others="false">
-      <accordion-group heading="All my sequences" is-open="true">
+      <accordion-group heading="All my jsonizers" is-open="true">
         <span ng-show="!sequences || sequences.length<=0">Your sequences...</span>
         <div class="my-sequence" ng-repeat="s in sequences"
              ng-click="open(s)" ng-class="{'current':s._id==sequence._id}">
@@ -30,9 +30,16 @@
   <input class="hidden" type="file" id="uploader-input" ng-model-instant onchange="angular.element(this).scope().setFile(this)">
   <div class="menu-hidden"></div>
   <div class="editor-body">
-    <div ng-hide="sequence" ng-include="'app/editor/splash.html'"></div>
-    <i ng-hide="sequence" class="fa fa-magic aslink big-button big-button-right" ng-click="newSequence()"></i>
-    <i ng-hide="sequence" class="fa fa-cloud-upload aslink big-button big-button-left" ng-click="importSequence()"></i>
+    <div ng-hide="sequence" class="editor-main-menu">
+      <div class="editor-main-menu-btn btn-right col">
+        <i class="fa fa-magic aslink big-button" ng-click="newSequence()"></i>
+        new jsonizer
+      </div>
+      <div class="editor-main-menu-btn btn-left col">
+        <i class="fa fa-cloud-upload aslink big-button" ng-click="importSequence()"></i>
+        import jsonizer
+      </div>
+    </div>
     <div ng-show="sequence" class="sequence-editor">
       <div class="top-menu">
         <div class="title">{{sequence.title}}</div>
