@@ -45,3 +45,9 @@
 .overpage-body {
   overflow: hidden;
 }
+@media (max-width: 768px) {
+  .over-page > .over-page-content {
+    left: 0 !Important;
+    width: 100% !Important;
+  }
+}

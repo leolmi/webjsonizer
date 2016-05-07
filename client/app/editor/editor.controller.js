@@ -10,8 +10,12 @@ angular.module('webjsonizerApp')
       $scope.user = Auth.getCurrentUser();
       $scope.modified = false;
       $scope.debug = false;
+      $scope.menuActive = false;
       $scope.toggleDebug = function () {
         $scope.debug = !$scope.debug;
+      };
+      $scope.toggleMenu = function() {
+        $scope.menuActive = !$scope.menuActive;
       };
 
       function notifyModifies(modified) {
@@ -346,6 +350,7 @@ angular.module('webjsonizerApp')
           $scope.address = getSequenceAddress();
           notifyModifies(false);
           $scope.closeOverlay();
+          $scope.menuActive = false;
         })
       };
 

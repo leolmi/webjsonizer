@@ -1,7 +1,8 @@
-<div class="editor-menu">
+<div class="editor-menu" ng-class="{'active':menuActive}">
   <header class="editor-menu-header">
     <i class="jsz-fa-btn jsz-fa-btn-big fa fa-fw fa-power-off" ng-click="logout()"></i>
     <span class="font-awesome"><i class="fa fa-fw jsz-fa-btn jsz-fa-btn-big fa-user" ng-click="profile()"></i> {{user.email}}</span>
+    <i class="editor-menu-close jsz-fa-btn jsz-fa-btn-big fa fa-fw fa-chevron-left on-right" ng-click="toggleMenu()"></i>
   </header>
   <article class="editor-menu-body">
     <div class="sequences-star">
@@ -26,6 +27,7 @@
     </accordion>
   </article>
 </div>
+<i class="editor-menu-toggler fa fa-bars aslink fa-2x" ng-click="toggleMenu()"></i>
 <div class="editor-container" ng-class="{'blur':overpage}">
   <input class="hidden" type="file" id="uploader-input" ng-model-instant onchange="angular.element(this).scope().setFile(this)">
   <div class="menu-hidden"></div>

@@ -102,3 +102,13 @@
   margin-top: 50px;
   max-height: 400px;
 }
+
+@media (max-width: 450px) {
+  .login-form {
+    width: auto !Important;
+    margin-left: 0 !Important;
+  }
+  .func-desc > p {
+    margin-left: 0 !Important;
+  }
+}

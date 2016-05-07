@@ -170,3 +170,47 @@
   text-decoration: none;
   cursor: pointer;
 }
+
+.editor-menu-toggler {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+}
+.editor-menu-close {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .editor-menu {
+    left: -270px;
+    z-index: 2000;
+  }
+  .editor-menu.active {
+    left: 0;
+  }
+  .editor-menu-close {
+    display: inherit;
+  }
+  .menu-hidden {
+    display: none;
+  }
+  .editor-body {
+    width: 100%;
+  }
+  .editor-menu-toggler {
+    display: inherit;
+    margin: 10px;
+  }
+  .editor-main-menu-btn.btn-left {
+    left: 8%;
+  }
+  .editor-main-menu-btn.btn-right {
+    right: 8%;
+  }
+  .top-menu {
+    width: 100%;
+  }
+  .top-menu > .title {
+    padding-left: 40px;
+  }
+}
