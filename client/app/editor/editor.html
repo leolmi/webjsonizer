@@ -52,6 +52,7 @@
         </div>
       </div>
       <div class="sequence">
+        <!-- HEADER -->
         <header class="sequence-header">
           <!-- TITLE -->
           <div class="row editor-row editor-row-simply">
@@ -150,16 +151,18 @@
 
           <!-- PUBLISH -->
           <div class="row editor-row editor-row-simply">
-            <div class="col-md-12">
+            <div class="col-md-12 publish-commands">
               <label class="sequence-publish width-100">Last published version:
-                <span class="last-version">{{sequence.version ? sequence.version : 'none'}}</span>
-                <button class="btn btn-danger on-right" ng-disabled="modified" ng-click="publish()">Publish</button>
-                <button class="btn btn-warning on-right" ng-disabled="!sequence.version || sequence.version<=0" ng-click="manageReleases()">Manage Releases</button>
+                <span ng-hide="sequence.version" class="text-muted text-normal">none</span>
+                <span ng-show="sequence.version" class="badge darkorange">{{sequence.version}}</span>
               </label>
+              <button class="btn btn-danger on-right" ng-disabled="modified" ng-click="publish()">Publish</button>
+              <button class="btn btn-warning on-right" ng-disabled="!sequence.version || sequence.version<=0" ng-click="manageReleases()">Manage Releases</button>
             </div>
           </div>
-
         </header>
+
+        <!-- SEQUENCE ITEMS -->
         <sequence-item ng-repeat="i in sequence.items" data-ng-model="i"
                        sequence="sequence" index="$index" collapsed="true"
                        last="($index==sequence.items.length-1)"
@@ -167,7 +170,55 @@
         <div class="new-sequence aslink" ng-click="newSequenceItem()">
           <i class="fa fa-fw fa-plus-circle"></i> Append new sequence item
         </div>
+
+        <div class="test-idle">
+          <i ng-show="test.playing" class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i>
+          <i ng-hide="test.playing" class="fa fa-bolt fa-3x fa-fw margin-bottom jsz-fa-btn" ng-click="checkPlay()"></i>
+        </div>
+
+        <!-- HTML -->
+        <div ng-show="sequence.result">
+          <label>HTML result:</label>
+          <pre class="test-content test-result-html test-result-container" >{{sequence.result.content}}</pre>
+        </div>
+
+        <!-- PARSER -->
         <sequence-parser ng-model="sequence" ng-change="changed()"></sequence-parser>
+        <div class="test-idle">
+          <i ng-show="test.parsing" class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i>
+          <i ng-hide="test.parsing" class="fa fa-bolt fa-3x fa-fw margin-bottom jsz-fa-btn" ng-click="checkTest()"></i>
+        </div>
+
+        <!-- TEST -->
+        <div ng-hide="test.parsing || !test.result">
+
+          <!-- TABLES -->
+          <!--<label>Tables founded:</label>-->
+          <!--<div class="tables-list" ng-show="test.tables">-->
+            <!--<div class="table-item" ng-repeat="t in test.tables">-->
+              <!--<div class="table-item-num">{{$index}} </div>-->
+              <!--<div class="table-item-cell"{{t}}</div>-->
+            <!--</div>-->
+          <!--</div>-->
+
+          <!-- JSON -->
+          <label>JSON result:</label>
+          <pre class="test-content test-result-json test-result-container" ng-if="sequence.result">{{test.result}}</pre>
+
+          <!-- TABLE -->
+          <div class="test-table-result" ng-show="test.resultItems && test.resultItems.length">
+            <label>JSON on table result:</label>
+            <div class="result-list">
+              <div class="result-item-row" ng-repeat="i in test.resultItems">
+                <div class="result-item-num">{{$index}} </div>
+                <div class="result-item-cell" ng-repeat="c in i track by $index" title="{{c}}">{{c}}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ERRORS -->
+          <pre class="result-text error" ng-show="test.error && !test.running">{{test.result}}</pre>
+        </div>
       </div>
     </div>
     <jsonizer-tester></jsonizer-tester>

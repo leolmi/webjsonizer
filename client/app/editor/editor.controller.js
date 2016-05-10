@@ -11,6 +11,8 @@ angular.module('webjsonizerApp')
       $scope.modified = false;
       $scope.debug = false;
       $scope.menuActive = false;
+      $scope.test = {};
+
       $scope.toggleDebug = function () {
         $scope.debug = !$scope.debug;
       };
@@ -58,26 +60,59 @@ angular.module('webjsonizerApp')
         modalDelete(opt, $scope.sequence);
       };
 
+      function play() {
+        return $http.post('/api/sequence/play', $scope.sequence);
+      }
+
+      function manageTestResults() {
+        if (_.isArray($scope.test.result)) {
+          $scope.test.resultItems = _.map($scope.test.result, function(r){
+            return _.map(_.keys(r), function(k) { return r[k]; });
+          });
+        }
+      }
+
+      $scope.checkTest = function() {
+        if (!$scope.sequence.result) {
+          $scope.checkPlay();
+        } else {
+          $scope.runTest();
+        }
+      };
+
+      $scope.runTest = function () {
+        $scope.test.parsing = true;
+        $scope.test.resultItems = undefined;
+        var data = {
+          data: $scope.sequence.result ? $scope.sequence.result.content : '',
+          parserOptions: $scope.sequence.parserOptions
+        };
+        $http.post('api/sequence/test', data)
+          .then(function (testres) {
+            $scope.test.result = testres.data;
+            manageTestResults();
+            $scope.test.parsing = false;
+          }, function (err) {
+            $scope.test.error = JSON.stringify(err);
+            $scope.test.parsing = false;
+          });
+      };
+
+
       /**
        * Esegue la sequenza
        */
-      $scope.play = function () {
-        $scope.overpage = {
-          template: 'app/overpages/overpage-play.html',
-          running: true,
-          title: $scope.sequence.title
-        };
-        $http.post('/api/sequence/play', $scope.sequence)
-          .success(function (result) {
-            $scope.overpage.running = false;
-            $scope.overpage.result = 'Sequence OK!';
-            $scope.overpage.content = result.data;
-            $scope.sequence.result = result;
-          })
-          .error(function (err) {
-            $scope.overpage.running = false;
-            $scope.overpage.result = 'Errors!';
-            $scope.overpage.error = JSON.stringify(err);
+      $scope.play = function (cb) {
+        $scope.test.playing = true;
+        $scope.test.resultItems = undefined;
+        play()
+          .then(function(playres){
+            $scope.sequence.result = playres.data;
+            $scope.test.playing = false;
+            if (cb) cb();
+          }, function(err){
+            $scope.test.error = JSON.stringify(err);
+            $scope.test.playing = false;
           });
       };
 
@@ -122,18 +157,18 @@ angular.module('webjsonizerApp')
         };
       };
 
-      var modalParameters = Modal.confirm.parameters(function (info) {
-        $scope.play();
-      });
 
-      $scope.checkPlay = function() {
+      $scope.checkPlay = function(cb) {
         var ps = _.filter($scope.sequence.parameters, function(p) {
           return !p.hidden;
+        });
+        var modalParameters = Modal.confirm.parameters(function (info) {
+          $scope.play(cb);
         });
         if (ps.length>0) {
           modalParameters(ps);
         } else {
-          $scope.play();
+          $scope.play(cb);
         }
       };
 
@@ -182,6 +217,11 @@ angular.module('webjsonizerApp')
         });
       };
 
+      function clearResult() {
+        $scope.sequence.result = null;
+        $scope.test = {};
+      }
+
       $scope.setFile = function(args) {
         if (args.files[0]) {
           var reader = new FileReader();
@@ -200,8 +240,6 @@ angular.module('webjsonizerApp')
       $scope.importSequence = function() {
         $timeout(function() { $(':file').trigger('click'); }, 0);
       };
-
-
 
       function exportSequence() {
         var clone = _.cloneDeep($scope.sequence);
@@ -222,6 +260,13 @@ angular.module('webjsonizerApp')
       }
 
       $scope.buttons = [{
+        icon: 'fa-eraser',
+        action: clearResult,
+        tooltip: 'Clear results',
+        isactive: function () {
+          return $scope.sequence && $scope.sequence.result;
+        }
+      }, {
         icon: 'fa-times',
         action: $scope.closeSequence,
         tooltip: 'Close current sequence',
@@ -251,10 +296,6 @@ angular.module('webjsonizerApp')
         isactive: function () {
           return $scope.modified && $scope.sequence;
         }
-      }, {
-        icon: 'fa-bolt', //'fa-play-circle',
-        action: $scope.checkPlay,
-        tooltip: 'Test current sequence'
       }, {
         icon: 'fa-trash',
         action: $scope.deleteSequence,
@@ -320,8 +361,7 @@ angular.module('webjsonizerApp')
 
       var modalSaveChanges = Modal.confirm.ask(function (seq, cb, res) {
         if (res == 'no') {
-          reload(seq._id);
-          return cb();
+          return refreshAllSequences(cb);
         }
         $http.put('/api/sequence/' + seq._id, seq)
           .success(function () {
@@ -452,6 +492,11 @@ angular.module('webjsonizerApp')
         if (data && data.item)
           util.remove(data.item.keepers, data.keeper, notifyModifies);
       });
+
+      $rootScope.$on('SEQUENCE-TEST-REFRESH', function(){
+        test();
+      });
+
 
       $rootScope.$on('SEQUENCE-ITEM-AS-LAST', function(e, data) {
         if (data && data.item) {

@@ -2,8 +2,8 @@
 'use strict';
 
 angular.module('webjsonizerApp')
-  .directive('sequenceParser', ['Modal',
-    function (Modal) {
+  .directive('sequenceParser', ['$rootScope',
+    function ($rootScope) {
       return {
         restrict: 'E',
         scope: { sequence: '=ngModel' },
@@ -41,18 +41,22 @@ angular.module('webjsonizerApp')
             scope.changed();
           };
 
-          var modalTest = Modal.confirm.test(function() {
-            scope.sequence.parserOptions.pattern = scope.sequence.parserOptions.testPattern;
-            scope.changed();
-          });
-          scope.test = function() {
-            scope.sequence.parserOptions.testPattern = scope.sequence.parserOptions.pattern;
-            var info = {
-              data: scope.sequence.result ? scope.sequence.result.content : '',
-              parserOptions: scope.sequence.parserOptions
-            };
-            modalTest(info);
+          scope.refresh = function() {
+            $rootScope.$broadcast('SEQUENCE-TEST-REFRESH');
           };
+
+          //var modalTest = Modal.confirm.test(function() {
+          //  scope.sequence.parserOptions.pattern = scope.sequence.parserOptions.testPattern;
+          //  scope.changed();
+          //});
+          //scope.test = function() {
+          //  scope.sequence.parserOptions.testPattern = scope.sequence.parserOptions.pattern;
+          //  var info = {
+          //    data: scope.sequence.result ? scope.sequence.result.content : '',
+          //    parserOptions: scope.sequence.parserOptions
+          //  };
+          //  modalTest(info);
+          //};
         }
       }
     }]);

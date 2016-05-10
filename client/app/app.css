@@ -52,6 +52,10 @@ pre {
   background-color: rgba(200,200,200,.7);
   border: none;
 }
+pre.code {
+  background-color: #222;
+  color: #bbb;
+}
 
 .blur {
   -webkit-filter: blur(4px);
@@ -59,6 +63,14 @@ pre {
   -ms-filter: blur(4px);
   -o-filter: blur(4px);
   filter: blur(4px);
+}
+
+.darkorange {
+  background-color: darkorange;
+}
+
+.text-normal {
+  font-weight: normal;
 }
 
 .aslink {

@@ -1,0 +1,35 @@
+.result-text.error {
+  color: red;
+  background-color: #dca7a7;
+  border-color: brown;
+}
+.result-list {
+  text-align: left;
+  font-size: 11px;
+  background-color: rgba(1,1,1,.8);
+  padding: 20px 10px;
+  border-radius: 6px;
+  overflow-x: auto;
+  z-index: 1000;
+}
+
+.result-item-num {
+  display: inline-block;
+  width: 16px;
+  vertical-align: super;
+  color: #888;
+}
+.result-item-row {
+  white-space: nowrap;
+  height: 19px;
+}
+
+.result-item-cell {
+  display: inline-block;
+  width: 100px;
+  padding: 2px 6px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-bottom: #444 1px solid;
+  border-right: #444 1px solid;
+}

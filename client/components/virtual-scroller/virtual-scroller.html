@@ -1,0 +1,14 @@
+<div class="virtual-scroller-container">
+  <div class="scroller-content">
+    <div class="scroller-item" ng-repeat="i in items">
+      <div class="scroller-item-num" ng-show="_options.rowNum">{{($index+1)}}</div>
+      <div class="scroller-item-value">{{i}}</div>
+    </div>
+  </div>
+  <div class="scroller scroller-v">
+    <div id="cursor-v" class="scroller-cursor"></div>
+  </div>
+  <div class="scroller scroller-h">
+    <div id="cursor-h" class="scroller-cursor"></div>
+  </div>
+</div>

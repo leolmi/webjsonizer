@@ -180,8 +180,11 @@ select.as-label {
   right: 24px;
   top: 34px;
 }
-.sequence-publish button {
-  margin-right: 4px;
+.sequence-publish {
+  display: inline;
+}
+.publish-commands button {
+  margin-left: 8px;
 }
 
 .editor-main-menu {
@@ -189,4 +192,30 @@ select.as-label {
   text-align: center;
   padding: 50px 0;
   min-height: 400px;
+}
+
+.test-idle {
+  text-align: center;
+  padding: 10px;
+}
+
+.test-result-json {
+  white-space: pre-wrap !Important;
+  background-color: transparent;
+  color: yellowgreen;
+}
+.test-result-html {
+  white-space: pre-wrap !Important;
+  background-color: transparent;
+  color: cornflowerblue;
+}
+
+.test-result-container {
+  /*border: #555 1px solid;*/
+  max-height: 400px;
+}
+
+.editor-body .result-list {
+  background-color: transparent;
+  /*color: */
 }
