@@ -69,6 +69,7 @@
         <label class="control-label">Data</label>
         <i class="jsz-fa-btn fa fa-fw fa-plus-circle" ng-click="addDataItem()"></i>
         <p>Data item can contains parameters references: [paramname] will be replaced with paramname's value.</p>
+        <label> <input type="checkbox" ng-model="multipart" ng-change="changed()"> multipart</label>
       </div>
       <div class="col-md-7">
         <div class="row parameter-row" ng-show="item.data.length">

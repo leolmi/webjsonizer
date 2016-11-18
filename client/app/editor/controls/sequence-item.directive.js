@@ -25,6 +25,14 @@ angular.module('webjsonizerApp')
             $rootScope.$broadcast('NEW-SEQUENCE-ITEM-REQUEST', {index: scope.index});
           };
 
+          scope.multipart = (scope.item.datatype=='multipart');
+
+          scope.$watch(function() { return scope.multipart; }, function(value) {
+            if (_.isBoolean(value))
+              scope.item.datatype = value ? 'multipart' : '';
+          });
+
+
 
           scope.toggle = function () {
             scope.collapsed = !scope.collapsed;

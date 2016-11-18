@@ -19,6 +19,8 @@ var _ = require('lodash'),
 
 var PREFIX_JS = 'JS=';
 var PREFIX_RGX = 'RGX=';
+var multipart_boundary_prefix = '---------------------------';
+var multipart_body_header = 'Content-Disposition: form-data; name=';
 
 'use strict';
 var jsonizer = function() {
@@ -57,12 +59,28 @@ var jsonizer = function() {
     return undefined;
   }
 
+  function getMultipartData(opt, data) {
+    var body = undefined;
+    if (data && _.isArray(data) && data.length > 0) {
+      var id = u.uuid();
+      var boundary = multipart_boundary_prefix + id;
+      body = '';
+      data.forEach(function (item) {
+        body += '--' + boundary + '\r\n' + multipart_body_header + '"' + item.name + '"\r\n\r\n' + item.value + '\r\n';
+      });
+      body += '--' + boundary + '--';
+
+      if (opt.headers['content-type'])
+        opt.headers['content-type']+=' boundary='+boundary;
+    }
+    return body;
+  }
 
   function getRedirectPath(opt, nxt) {
     var prev = opt.path.split('/');
     var next = nxt.split('/');
-    console.log('[REDIRECT]: prv=' + opt.path + '   prev='+JSON.stringify(prev));
-    console.log('[REDIRECT]: nxt=' + nxt + '   next='+JSON.stringify(next));
+    if (opt.verbose) console.log('[REDIRECT]: prv=' + opt.path + '   prev='+JSON.stringify(prev));
+    if (opt.verbose) console.log('[REDIRECT]: nxt=' + nxt + '   next='+JSON.stringify(next));
 
     if (prev.length) prev.pop();
     while(next.length && next[0]=='..') {
@@ -73,7 +91,7 @@ var jsonizer = function() {
     prev.push.apply(prev, next);
 
     nxt = prev.join('/');
-    console.log('[REDIRECT]: res=' + nxt + '   result='+JSON.stringify(prev));
+    if (opt.verbose) console.log('[REDIRECT]: res=' + nxt + '   result='+JSON.stringify(prev));
     return nxt;
   }
 
@@ -460,7 +478,16 @@ var jsonizer = function() {
 
       if (options.verbose) console.log('['+item.title+']-PRE DATA OBJECT: '+JSON.stringify(item.data));
       replaceData(sequence, options, item.data);
-      var data = getData(sequence, item.data);
+      var data = undefined;
+      switch(item.datatype) {
+        case 'multipart':
+          data = getMultipartData(options, item.data);
+          break;
+        default:
+          data = getData(sequence, item.data);
+          break;
+      }
+
       validateHeaders(options, item, data);
       evalHeadersLogic(sequence, options);
 
