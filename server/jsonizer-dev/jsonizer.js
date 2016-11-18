@@ -59,8 +59,16 @@ var jsonizer = function() {
 
 
   function getRedirectPath(opt, nxt) {
-    if (nxt.indexOf(opt.host)<0)
-      return opt.host + nxt;
+    var prev = opt.path.split('/');
+    var next = nxt.split('/');
+    if (prev.length) prev.pop();
+    while(next.length && next[0]=='..') {
+      next.splice(0,1);
+      prev.pop();
+    }
+
+    prev.push.apply(prev, next);
+    nxt = prev.join('/');
     return nxt;
   }
 
@@ -208,7 +216,11 @@ var jsonizer = function() {
    */
   function keep(options, item, sequence, index) {
     item.headers.forEach(function (h) {
-      options.headers[h.name.toLowerCase()] = h.value;
+      if (h.value) {
+        options.headers[h.name.toLowerCase()] = h.value;
+      } else {
+        delete options.headers[h.name.toLowerCase()];
+      }
     });
     u.keep(options, item, ['method', 'path'], true);
     if (item.host) options.host = checkHost(item.host);
