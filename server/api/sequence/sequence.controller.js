@@ -3,8 +3,8 @@
 var _ = require('lodash');
 var Sequence = require('./sequence.model');
 var Release = require('../deploy/release.controller');
-var J = require('node-jsonizer');
-//var J = require('../../jsonizer-dev/jsonizer');
+//var J = require('node-jsonizer');
+var J = require('../../jsonizer-dev/jsonizer');
 
 
 function checkUser(req, res){

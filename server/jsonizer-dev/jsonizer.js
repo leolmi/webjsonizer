@@ -27,6 +27,7 @@ var jsonizer = function() {
   function noop(){}
 
   var opt_prototype = {
+    timeout: 120000,
     headers: {}
   };
 
@@ -211,6 +212,13 @@ var jsonizer = function() {
       if (options.verbose) console.log('['+title+']-send data: '+data);
       req.write(data);
     }
+
+    if (options.timeout) {
+      req.setTimeout(options.timeout, function() {
+        cb('request timed out');
+      });
+    }
+
 
     req.end();
   }
