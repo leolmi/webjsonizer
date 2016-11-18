@@ -61,6 +61,9 @@ var jsonizer = function() {
   function getRedirectPath(opt, nxt) {
     var prev = opt.path.split('/');
     var next = nxt.split('/');
+    console.log('[REDIRECT]: prv=' + opt.path + '   prev='+JSON.stringify(prev));
+    console.log('[REDIRECT]: nxt=' + nxt + '   next='+JSON.stringify(next));
+
     if (prev.length) prev.pop();
     while(next.length && next[0]=='..') {
       next.splice(0,1);
@@ -68,7 +71,9 @@ var jsonizer = function() {
     }
 
     prev.push.apply(prev, next);
+
     nxt = prev.join('/');
+    console.log('[REDIRECT]: res=' + nxt + '   result='+JSON.stringify(prev));
     return nxt;
   }
 
