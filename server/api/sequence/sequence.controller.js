@@ -3,11 +3,11 @@
 var _ = require('lodash');
 var Sequence = require('./sequence.model');
 var Release = require('../deploy/release.controller');
-//var J = require('node-jsonizer');
-var J = require('../../jsonizer-dev/jsonizer');
+var J = require('node-jsonizer');
+//var J = require('../../jsonizer-dev/jsonizer');
 
 
-function checkUser(req, res){
+function checkUser(req, res) {
   var check = (req.user && req.user._id);
   if (!check) J.util.error(res, 'Undefined user!');
   return check;
