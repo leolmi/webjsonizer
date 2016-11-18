@@ -122,13 +122,13 @@ var jsonizer = function() {
         if (options.verbose) console.log('new location:' + newpath);
         var path = getRedirectPath(options, newpath);
         if (path == options.path) {
-          console.log('Location is the same!');
+          console.warn('Location is the same!');
           return;
         }
         if (!path || path.split(options.host).length>2) {
-          var msg = 'Wrong path: ' + path;
+          var msg = 'WARINNG: Wrong path: ' + path;
           console.error(msg);
-          throw new Error(msg);
+          return;
         }
         options.path = path;
         if (options.verbose) console.log('Redir new path:' + options.path);
