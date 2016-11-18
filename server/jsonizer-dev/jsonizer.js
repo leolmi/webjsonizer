@@ -125,6 +125,11 @@ var jsonizer = function() {
           console.log('Location is the same!');
           return;
         }
+        if (!path || path.split(options.host).length>2) {
+          var msg = 'Wrong path: ' + path;
+          console.error(msg);
+          throw new Error(msg);
+        }
         options.path = path;
         if (options.verbose) console.log('Redir new path:' + options.path);
         checkCookies(res, options);
