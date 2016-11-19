@@ -14,12 +14,14 @@ angular.module('webjsonizerApp')
 
           function loadTestSchema() {
             scope.testIdle = true;
+            scope.testJ.result = null;
             if (!scope.testJ.id)
               return scope.clearTest();
             $http.get('/jsonize/schema/' + scope.testJ.id)
               .then(function (resp) {
                 scope.testJ.ok = true;
                 _.extend(scope.testJ, resp.data);
+                $rootScope.$broadcast('TEST-SEQUENCE-LOADED', {J:scope.testJ});
                 scope.testIdle = false;
               }, function () {
                 scope.testJ = {
@@ -47,6 +49,7 @@ angular.module('webjsonizerApp')
                 scope.testIdle = false;
               }, function(err){
                 Logger.error("Error jsonizing!", JSON.stringify(err));
+                scope.testJ.result = null;
                 scope.testIdle = false;
               });
           };
@@ -54,6 +57,18 @@ angular.module('webjsonizerApp')
           scope.clearTest = function() {
             scope.testJ = { id: '' };
             scope.testIdle = false;
+          };
+
+          var default_tab = {name:'json'};
+          scope.tabs = {
+            items:[
+              default_tab,
+              {name:'table'}],
+            current:default_tab
+          };
+
+          scope.isCurrent = function(tabName) {
+            return scope.tabs.current && scope.tabs.current.name==tabName;
           };
 
           $rootScope.$on('TEST-THIS-SEQUENCE', function(e, data){

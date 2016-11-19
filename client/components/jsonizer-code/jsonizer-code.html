@@ -1,0 +1,10 @@
+<div ng-if="cm.j && cm.j.ok" class="jsonizer-code">
+  <div class="jsonizer-container">
+    <h1>Jsonizer Code</h1>
+    <div class="test-info">
+      <h1>{{cm.j.title}}</h1>
+      <p>{{cm.j.desc}}</p>
+    </div>
+    <ui-codemirror ui-codemirror-opts="cm.options" ng-model="cm.code"></ui-codemirror>
+  </div>
+</div>

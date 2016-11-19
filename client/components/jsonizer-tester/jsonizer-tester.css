@@ -29,3 +29,11 @@
   background-color: white;
   margin: 50px 50px 0;
 }
+
+
+.tab-content .test-table-result {
+  margin: 50px 50px 0;
+}
+.tab-content .test-table-result .result-list {
+  background-color: transparent;
+}

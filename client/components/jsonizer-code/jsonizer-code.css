@@ -1,0 +1,11 @@
+.jsonizer-code {
+  text-align: center;
+  background-color: #111;
+  padding: 50px 0;
+  min-height: 400px;
+}
+
+.jsonizer-code .CodeMirror {
+  /*border: 1px solid #eee;*/
+  height: auto;
+}

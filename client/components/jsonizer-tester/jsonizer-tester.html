@@ -23,7 +23,7 @@
               <label class="control-label">{{p.name}}</label>
             </div>
             <div class="col-md-7">
-              <input type="text" class="form-control input-sm" ng-model="p.value">
+              <input ng-attr-type="{{p.type||'text'}}" class="form-control input-sm" ng-model="p.value">
             </div>
           </div>
         </div>
@@ -32,6 +32,27 @@
     <div class="test-info" ng-show="testJ.ok">
       <button class="btn btn-primary" ng-click="runTest()" ng-disabled="testIdle">jsonize!</button>
     </div>
-    <pre class="test-result" ng-show="testJ.result">{{testJ.result}}</pre>
+    <ul class="nav nav-tabs" ng-show="testJ.result">
+      <li ng-repeat="tab in tabs.items" class="test-tab"
+          ng-class="{'active':tabs.current==tab}">
+        <a data-toggle="tab" href="#" ng-click="tabs.current=tab">{{tab.name}}</a></li>
+    </ul>
+    <div class="tab-content" ng-show="testJ.result">
+      <div id="json" class="tab-pane" ng-class="{'active':isCurrent('json')}">
+        <!-- JSON -->
+        <pre class="test-result">{{testJ.result}}</pre>
+      </div>
+      <div id="table" class="tab-pane" ng-class="{'active':isCurrent('table')}">
+        <!-- TABLE -->
+        <div class="test-table-result" ng-show="testJ.result.data && testJ.result.data.length">
+          <div class="result-list">
+            <div class="result-item-row" ng-repeat="i in testJ.result.data">
+              <div class="result-item-num">{{$index}} </div>
+              <div class="result-item-cell" ng-repeat="c in i track by $index" title="{{c}}">{{c}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

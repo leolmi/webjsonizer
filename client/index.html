@@ -16,6 +16,7 @@
       <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
       <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
       <link rel="stylesheet" href="bower_components/angular-toastr/dist/angular-toastr.css" />
+      <link rel="stylesheet" href="bower_components/codemirror/lib/codemirror.css" />
       <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,client}) app/app.css -->
@@ -23,6 +24,7 @@
       <!-- injector:css -->
       <link rel="stylesheet" href="app/admin/admin.css">
       <link rel="stylesheet" href="app/app.css">
+      <link rel="stylesheet" href="app/blackboard.css">
       <link rel="stylesheet" href="app/editor/controls/sequence-item.css">
       <link rel="stylesheet" href="app/editor/controls/sequence-keeper.css">
       <link rel="stylesheet" href="app/editor/controls/sequence-parser.css">
@@ -34,6 +36,7 @@
       <link rel="stylesheet" href="app/overpages/overpage-releases.css">
       <link rel="stylesheet" href="app/overpages/overpage-sample.css">
       <link rel="stylesheet" href="app/test/test.css">
+      <link rel="stylesheet" href="components/jsonizer-code/jsonizer-code.css">
       <link rel="stylesheet" href="components/jsonizer-finder/jsonizer-finder.css">
       <link rel="stylesheet" href="components/jsonizer-tester/jsonizer-tester.css">
       <link rel="stylesheet" href="components/modal/modal-create.css">
@@ -81,9 +84,13 @@
       <script src="bower_components/angular-socket-io/socket.js"></script>
       <script src="bower_components/angular-toastr/dist/angular-toastr.tpls.js"></script>
       <script src="bower_components/file-saver.js/FileSaver.js"></script>
+      <script src="bower_components/codemirror/lib/codemirror.js"></script>
+      <script src="bower_components/angular-ui-codemirror/ui-codemirror.js"></script>
       <!-- endbower -->
     <!-- endbuild -->
-
+    <script src="bower_components/codemirror/mode/javascript/javascript.js"></script>
+    
+    
         <!-- build:js({.tmp,client}) app/app.js -->
         <script src="app/app.js"></script>
           <!-- injector:js -->
@@ -107,6 +114,7 @@
           <script src="app/test/test.js"></script>
           <script src="components/auth/auth.service.js"></script>
           <script src="components/auth/user.service.js"></script>
+          <script src="components/jsonizer-code/jsonizer-code.directive.js"></script>
           <script src="components/jsonizer-finder/jsonizer-finder.directive.js"></script>
           <script src="components/jsonizer-tester/jsonizer-tester.directive.js"></script>
           <script src="components/logger/log.service.js"></script>

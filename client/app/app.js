@@ -7,7 +7,8 @@ angular.module('webjsonizerApp', [
   'ngRoute',
   'btford.socket-io',
   'ui.bootstrap',
-  'toastr'
+  'toastr',
+  'ui.codemirror'
 ])
   .config(function ($routeProvider, $locationProvider, $httpProvider) {
     $routeProvider
