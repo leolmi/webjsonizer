@@ -71,7 +71,7 @@ angular.module('webjsonizerApp')
               var params = '';
               j.parameters.forEach(function (p) {
                 if (params) params += ',\n';
-                params += '\t' + p.name + ' = ' + p.name + '_value';
+                params += '\t' + p.name + ': ' + p.name + '_value';
               });
               code += util.format(_template.data, [params]);
             }
