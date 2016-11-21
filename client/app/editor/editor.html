@@ -122,7 +122,22 @@
                 </div>
                 <div class="col col-md-6">
                   <input type="text" class="form-control input-sm" ng-model="p.value" ng-change="changed()">
-                  <i class="jsz-fa-btn btn-right fa fa-remove" ng-click="removeParameter($index)"></i>
+                  <!--<i class="jsz-fa-btn btn-right fa fa-remove" ng-click="removeParameter($index)"></i>-->
+                  <div class="dropdown paramter-menu">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                      <i class="jsz-fa-btn fa fa-fw fa-bars"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
+                      <li ng-repeat="bt in parameterTypes" ng-class="{'checked':p.type==bt.value}">
+                        <a href="#" ng-click="setParameterType(p, bt)">{{bt.desc}}</a>
+                      </li>
+                      <li role="separator" class="divider"></li>
+                      <li><a href="#" ng-click="setDefault(p)">Default<span class="default-value" ng-show="p.default"> ({{p.default}})</span></a></li>
+                      <li><a href="#" ng-click="reset(p)">Reset to default</a></li>
+                      <li role="separator" class="divider"></li>
+                      <li><a href="#" ng-click="removeParameter($index)">Remove</a></li>
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
@@ -134,9 +149,9 @@
               <label>JavaScript utilities</label>
               <p>Define the javascript utilities you can use in all fields.</p>
             </div>
-            <div class="col-md-7">
-              <textarea class="form-control input-sm vertical script" ng-model="sequence.jsutil"
-                        ng-change="changed()" spellcheck="false" rows="3"></textarea>
+            <div class="col-md-7 ">
+              <div ng-hide="jsutil || sequence.jsutil" class="jsutil-link aslink" ng-click="activateJSUtil()">write javascript code for custom routines.</div>
+              <ui-codemirror ng-show="sequence.jsutil || jsutil" ui-codemirror-opts="cmOptions" ng-model="sequence.jsutil" ng-change="changed()"></ui-codemirror>
             </div>
           </div>
 

@@ -198,7 +198,7 @@ exports.schema = function(req, res) {
           return !p.hidden;
         })
         .map(function(p){
-          return {name: p.name, value:''};
+          return {name: p.name, value:p.default, type:p.type};
         })
         .value()
     };

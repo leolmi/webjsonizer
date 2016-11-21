@@ -9,6 +9,8 @@ angular.module('webjsonizerApp')
         this.id = util.guid();
         this.name = '';
         this.value = '';
+        this.default = '';
+        this.type = '';
         this.hidden = false;
         if (info)
           _.extend(this, info);
@@ -16,7 +18,9 @@ angular.module('webjsonizerApp')
       Parameter.prototype = {
         id: '',
         name: '',
+        default: '',
         value: '',
+        type: '',
         hidden: false
       };
 

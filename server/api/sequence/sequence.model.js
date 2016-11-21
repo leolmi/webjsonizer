@@ -19,7 +19,9 @@ var NameValueSchema = new Schema({
   id: String,
   name: String,
   value: String,
+  default: String,
   hidden: Boolean,
+  type: String,
   logicType: String
 });
 

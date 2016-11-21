@@ -12,12 +12,27 @@ angular.module('webjsonizerApp')
       $scope.debug = false;
       $scope.menuActive = false;
       $scope.test = {};
-
+      $scope.jsutil = false;
       $scope.toggleDebug = function () {
         $scope.debug = !$scope.debug;
       };
       $scope.toggleMenu = function() {
         $scope.menuActive = !$scope.menuActive;
+      };
+
+      $scope.cmOptions = {
+        mode: {name: "javascript", json: true},
+        indentWithTabs: true,
+        smartIndent: true,
+        lineWrapping: true,
+        lineNumbers: true,
+        matchBrackets: true,
+        autoFocus: true,
+        readOnly: false,
+        viewportMargin: Infinity,
+        onLoad:function(cm){
+          $scope.editor = cm;
+        }
       };
 
       function notifyModifies(modified) {
@@ -259,6 +274,10 @@ angular.module('webjsonizerApp')
         saveAs(data, clone.title+'.json');
       }
 
+      $scope.parameterTypes = [
+        {desc:'Standard', value:''},
+        {desc:'Password', value:'password'}];
+
       $scope.buttons = [{
         icon: 'fa-eraser',
         action: clearResult,
@@ -335,6 +354,19 @@ angular.module('webjsonizerApp')
         });
       }
 
+      $scope.setParameterType = function(p, bt){
+        p.type = bt.value;
+        $scope.changed();
+      };
+
+      $scope.setDefault = function(p) {
+        p.default = p.value;
+      };
+
+      $scope.reset = function(p) {
+        p.value = p.default;
+      };
+
       $scope.logout = function () {
         $rootScope.user = {};
         Auth.logout();
@@ -383,6 +415,20 @@ angular.module('webjsonizerApp')
         modalSaveChanges(opt, seq, cb);
       }
 
+      function refreshJSUtil(focus) {
+        $timeout(function() {
+          if ($scope.editor && ($scope.jsutil || $scope.sequence.jsutil)) {
+            $scope.editor.refresh();
+            if (focus) $scope.editor.focus();
+          }
+        }, 250);
+      }
+
+      $scope.activateJSUtil = function() {
+        $scope.jsutil = true;
+        refreshJSUtil(true);
+      };
+
       $scope.open = function (raw) {
         if ($scope.sequence && raw._id == $scope.sequence._id) return;
         checkToUpdateSequence(function () {
@@ -391,6 +437,8 @@ angular.module('webjsonizerApp')
           notifyModifies(false);
           $scope.closeOverlay();
           $scope.menuActive = false;
+          $scope.jsutil = false;
+          refreshJSUtil();
         })
       };
 
@@ -418,6 +466,10 @@ angular.module('webjsonizerApp')
       $scope.profile = function() {
         //TODO: impostazioni utente (cambio password, nome utente)
         Logger.info('[TODO] - Profile settings tool...');
+      };
+
+      $scope.popupMenu = function() {
+        $('.dropdown-toggle').dropdown();
       };
 
       $scope.$on('MODIFIED', function () {

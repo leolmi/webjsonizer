@@ -75,6 +75,7 @@ pre.code {
 
 .aslink {
   cursor: pointer;
+  outline: none;
 }
 
 .aslink:hover {

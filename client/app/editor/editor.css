@@ -219,3 +219,30 @@ select.as-label {
   background-color: transparent;
   /*color: */
 }
+
+.jsutil-link {
+  text-align: center;
+  padding: 10px;
+  font-variant: small-caps;
+  color: darkgoldenrod;
+}
+
+.paramter-menu {
+  position: absolute;
+  right: -14px;
+  top: 0;
+}
+.paramter-menu > button {
+  padding: 0;
+  border: none;
+}
+
+.default-value {
+  font-size: .8em;
+  color: #666;
+  margin-left: 10px;
+}
+
+.dropdown-menu li.checked {
+  background-color: orange;
+}
