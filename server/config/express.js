@@ -19,6 +19,15 @@ var session = require('express-session');
 var mongoStore = require('connect-mongo')(session);
 var mongoose = require('mongoose');
 
+
+//CORS middleware
+var allowCrossDomain = function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+};
+
 module.exports = function(app) {
   var env = app.get('env');
 
@@ -31,6 +40,7 @@ module.exports = function(app) {
   app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
   app.use(methodOverride());
+  app.use(allowCrossDomain);
   app.use(cookieParser());
   app.use(passport.initialize());
 
