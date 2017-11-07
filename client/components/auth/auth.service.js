@@ -18,23 +18,21 @@ angular.module('webjsonizerApp')
        */
       login: function(user, callback) {
         var cb = callback || angular.noop;
-        var deferred = $q.defer();
-
-        $http.post('/auth/local', {
-          email: user.email,
-          password: user.password
-        }).then(function(data) {
-          $cookieStore.put('token', data.token);
-          currentUser = User.get();
-          deferred.resolve(data);
-          return cb();
-        }, function(err) {
-          this.logout();
-          deferred.reject(err);
-          return cb(err);
-        }).bind(this);
-
-        return deferred.promise;
+        return $q(function(resolve, reject) {
+          $http.post('/auth/local', {
+            email: user.email,
+            password: user.password
+          }).then(function(data) {
+            $cookieStore.put('token', data.token);
+            currentUser = User.get();
+            resolve(data);
+            return cb();
+          }, function(err) {
+            this.logout();
+            reject(err);
+            return cb(err);
+          });
+        });
       },
 
       /**
@@ -62,11 +60,10 @@ angular.module('webjsonizerApp')
             $cookieStore.put('token', data.token);
             currentUser = User.get();
             return cb(user);
-          },
-          function(err) {
+          }, function(err) {
             this.logout();
             return cb(err);
-          }.bind(this)).$promise;
+          }).$promise;
       },
 
       /**
