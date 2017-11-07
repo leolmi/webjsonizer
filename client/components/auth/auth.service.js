@@ -17,6 +17,7 @@ angular.module('webjsonizerApp')
        * @return {Promise}
        */
       login: function(user, callback) {
+        const self = this;
         var cb = callback || angular.noop;
         return $q(function(resolve, reject) {
           $http.post('/auth/local', {
@@ -28,7 +29,7 @@ angular.module('webjsonizerApp')
             resolve(data);
             return cb();
           }, function(err) {
-            this.logout();
+            self.logout();
             reject(err);
             return cb(err);
           });
@@ -54,14 +55,14 @@ angular.module('webjsonizerApp')
        */
       createUser: function(user, callback) {
         var cb = callback || angular.noop;
-
+        const self = this;
         return User.save(user,
           function(data) {
             $cookieStore.put('token', data.token);
             currentUser = User.get();
             return cb(user);
           }, function(err) {
-            this.logout();
+            self.logout();
             return cb(err);
           }).$promise;
       },
