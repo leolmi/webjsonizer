@@ -59,13 +59,12 @@ angular.module('webjsonizerApp')
 
       var modalDelete = Modal.confirm.ask(function (seq) {
         $http.delete('/api/sequence/' + seq._id)
-          .success(function () {
+          .then(function () {
             removeSequence(seq._id)
             $scope.sequence = undefined;
             refreshAllSequences();
             Logger.ok('Sequence "' + seq.title + '" deleted!');
-          })
-          .error(function (err) {
+          }, function (err) {
             Logger.error("Error deleting sequence", JSON.stringify(err));
           });
       });
@@ -191,12 +190,11 @@ angular.module('webjsonizerApp')
         var seq = $scope.sequence;
         if (!seq || !$scope.modified) return;
         $http.put('/api/sequence/' + seq._id, seq)
-          .success(function () {
+          .then(function () {
             notifyModifies(false);
             Logger.ok('Sequence ' + seq.title + ' updated');
             reload(seq._id);
-          })
-          .error(function (err) {
+          }, function (err) {
             Logger.error('Error updating sequence ' + seq.title, JSON.stringify(err));
           });
       };
@@ -208,11 +206,10 @@ angular.module('webjsonizerApp')
 
       function createSequence(seqinfo) {
         $http.post('/api/sequence', seqinfo)
-          .success(function (seq) {
+          .then(function (seq) {
             refreshAllSequences();
             $scope.open(seq);
-          })
-          .error(function (err) {
+          }, function (err) {
             Logger.error("Error creating new sequence", JSON.stringify(err));
           });
       }
@@ -333,11 +330,10 @@ angular.module('webjsonizerApp')
 
       function refreshAllSequences(cb) {
         $http.get('/api/sequence')
-          .success(function (sequences) {
+          .then(function (sequences) {
             $scope.sequences = sequences;
             if (cb) cb();
-          })
-          .error(function (err) {
+          }, function (err) {
             Logger.error('Error loading sequences', JSON.stringify(err));
             if (cb) cb();
           });
@@ -383,10 +379,9 @@ angular.module('webjsonizerApp')
         e.stopPropagation();
         sequence.star = !sequence.star;
         $http.post('/api/sequence/star', sequence)
-          .success(function () {
+          .then(function () {
             Logger.ok('Star updated');
-          })
-          .error(function (err) {
+          }, function (err) {
             Logger.error('Error star sequence', JSON.stringify(err));
           });
       };
@@ -396,12 +391,11 @@ angular.module('webjsonizerApp')
           return refreshAllSequences(cb);
         }
         $http.put('/api/sequence/' + seq._id, seq)
-          .success(function () {
+          .then(function () {
             Logger.ok('Sequence "' + seq.title + '" updated!');
             reload(seq._id);
             cb();
-          })
-          .error(function (err) {
+          }, function (err) {
             Logger.error("Error updating sequence", JSON.stringify(err));
           });
       });
