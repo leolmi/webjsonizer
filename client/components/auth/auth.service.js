@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('webjsonizerApp')
-  .factory('Auth', function Auth($location, $rootScope, $http, User, $cookieStore, $q) {
+  .factory('Auth', function Auth($location, $rootScope, $http, User, $cookies, $q) {
     var currentUser = {};
-    if($cookieStore.get('token')) {
+    if($cookies.get('token')) {
       currentUser = User.get();
     }
 
@@ -23,10 +23,10 @@ angular.module('webjsonizerApp')
           $http.post('/auth/local', {
             email: user.email,
             password: user.password
-          }).then(function(data) {
-            $cookieStore.put('token', data.token);
+          }).then(function(resp) {
+            $cookies.put('token', resp.data.token);
             currentUser = User.get();
-            resolve(data);
+            resolve(resp.data);
             return cb();
           }, function(err) {
             self.logout();
@@ -42,7 +42,7 @@ angular.module('webjsonizerApp')
        * @param  {Function}
        */
       logout: function() {
-        $cookieStore.remove('token');
+        $cookies.remove('token');
         currentUser = {};
       },
 
@@ -58,7 +58,7 @@ angular.module('webjsonizerApp')
         const self = this;
         return User.save(user,
           function(data) {
-            $cookieStore.put('token', data.token);
+            $cookies.put('token', data.token);
             currentUser = User.get();
             return cb(user);
           }, function(err) {
@@ -136,7 +136,7 @@ angular.module('webjsonizerApp')
        * Get auth token
        */
       getToken: function() {
-        return $cookieStore.get('token');
+        return $cookies.get('token');
       }
     };
   });

@@ -33,13 +33,15 @@
   <div class="menu-hidden"></div>
   <div class="editor-body">
     <div ng-hide="sequence" class="editor-main-menu">
-      <div class="editor-main-menu-btn btn-right col">
-        <i class="fa fa-magic aslink big-button" ng-click="newSequence()"></i>
-        new jsonizer
-      </div>
-      <div class="editor-main-menu-btn btn-left col">
-        <i class="fa fa-cloud-upload aslink big-button" ng-click="importSequence()"></i>
-        import jsonizer
+      <div class="buttons-container">
+        <div class="editor-main-menu-btn">
+          <i class="fa fa-magic aslink big-button" ng-click="newSequence()"></i>
+          new jsonizer
+        </div>
+        <div class="editor-main-menu-btn">
+          <i class="fa fa-cloud-upload aslink big-button" ng-click="importSequence()"></i>
+          import jsonizer
+        </div>
       </div>
     </div>
     <div ng-show="sequence" class="sequence-editor">

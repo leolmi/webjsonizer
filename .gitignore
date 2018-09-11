@@ -4,7 +4,7 @@ public
 .tmp
 .idea
 .settings
-client/bower_components
 dist
 /server/config/local.env.js
 mongo.cmd
+package-lock.json

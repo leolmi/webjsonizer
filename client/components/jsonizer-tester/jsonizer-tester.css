@@ -4,8 +4,10 @@
   padding: 50px 0;
   min-height: 400px;
 }
-.jsonizer-tester .test-url {
-  /*margin-top: 50px;*/
+.jsonizer-tester .test-url .test-row {
+  margin: auto;
+  font-family: monospace;
+  font-size: 1.6em;
 }
 .jsonizer-tester .test-idle {
   height: 60px;

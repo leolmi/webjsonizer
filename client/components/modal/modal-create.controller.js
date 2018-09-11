@@ -30,16 +30,16 @@ angular.module('webjsonizerApp')
             break;
         }
       };
-      $scope.modal.leftbuttons = [{
-        classes: 'btn-primary',
-        text: '<<',
-        disabled: function() {
-          return $scope.mode == '';
-        },
-        click: function(e){
-          $scope.mode = '';
-        }
-      }];
+      $scope.modal.leftbuttons = [];
+      //   classes: 'btn-primary',
+      //   text: '<<',
+      //   disabled: function() {
+      //     return $scope.mode == '';
+      //   },
+      //   click: function(e){
+      //     $scope.mode = '';
+      //   }
+      // }];
 
 
       function generateSequence(content) {

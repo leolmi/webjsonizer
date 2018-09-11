@@ -11,6 +11,7 @@
   /*padding: 20px;*/
   width: calc(100% - 270px);
   position: absolute;
+  left: 270px;
 }
 .new-sequence {
   text-align: center;
@@ -38,9 +39,9 @@
 .top-menu > .title {
   position: absolute;
   color: yellowgreen;
-  margin: 10px;
-  font-weight: bold;
-  font-size: 24px;
+  margin: 0 10px;
+  font-size: 34px;
+  font-variant: small-caps;
 }
 
 .contextual-menu {
@@ -105,8 +106,10 @@
   color: #222;
 }
 .sequence-address {
-  /*background-color: transparent;*/
-  font-weight: bold;
+  font-size: 1.2em;
+  font-family: monospace;
+  padding: 6px 10px;
+  border-radius: 10px;
 }
 
 .last-version {
@@ -138,18 +141,17 @@
 }
 
 .editor-main-menu-btn {
-  position: absolute;
-  top: 100px;
-  margin: auto;
-  height: 120px;
   text-align: center;
   text-transform: uppercase;
+  width: 140px;
+  display: inline-block;
+  margin: 0 4vw;
 }
 .editor-main-menu-btn.btn-right {
-  right: 15%
+  /*right: 15%*/
 }
 .editor-main-menu-btn.btn-left {
-  left: 15%;
+  /*left: 15%;*/
 }
 
 .big-button {
@@ -158,11 +160,11 @@
 }
 
 .big-button-right {
-  right: 15%
+  /*right: 15%*/
 }
 
 .big-button-left {
-  left: 15%;
+  /*left: 15%;*/
 }
 
 .editor-container textarea {
@@ -192,6 +194,9 @@ select.as-label {
   text-align: center;
   padding: 50px 0;
   min-height: 400px;
+}
+.editor-main-menu .buttons-container {
+  display: inline-flex;
 }
 
 .test-idle {

@@ -5,8 +5,9 @@
 
 'use strict';
 
-var User = require('../api/user/user.model');
-User.find({}).remove(function() {
+const User = require('../api/user/user.model');
+
+User.deleteMany({}, () => {
   User.create({
     _id: '54b3e04cde6279a8211b42fe',
     provider: 'local',
@@ -20,9 +21,7 @@ User.find({}).remove(function() {
     name: 'Admin',
     email: 'admin@admin.com',
     password: 'admin'
-  }, function() {
-    console.log('finished populating users');
-  });
+  }, () => console.log('finished populating users'));
 });
 
 // var Sequence = require('../api/sequence/sequence.model');
@@ -128,7 +127,5 @@ User.find({}).remove(function() {
 //   });
 // });
 
-var Release = require('../api/deploy/release.model');
-Release.find({}).remove(function() {
-  console.log('finished deleting releases');
-});
+const Release = require('../api/deploy/release.model');
+Release.deleteMany({}, () => console.log('finished deleting releases'));

@@ -7,3 +7,10 @@
   color: yellowgreen;
   margin-bottom: 50px;
 }
+
+.overpage-sample pre.code {
+  background-color: #fff;
+  color: #111;
+  padding: 20px;
+  border-radius: 5px;
+}

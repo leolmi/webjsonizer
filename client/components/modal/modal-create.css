@@ -17,11 +17,11 @@
   font-size: 24px;
   text-align: center;
   position: relative;
-  margin-bottom: -30px;
+  /*margin-bottom: -30px;*/
 }
 .modal-create .create-buttons > .create-btn {
   display: inline-block;
-  margin: 20px 40px;
+  /*margin: 20px 40px;*/
   min-width: 170px;
   cursor: pointer;
   color: #444;

@@ -1,10 +1,8 @@
-/**
- * Created by Leo on 06/02/2015.
- */
+'use strict';
 
 angular.module('webjsonizerApp')
   .factory('Logger', function(toastr){
-    var _settings = {
+    const _settings = {
       target: 'body',
       allowHtml: true,
       closeButton: false,
@@ -26,24 +24,22 @@ angular.module('webjsonizerApp')
     };
 
     function validateMessage(message) {
-      if (typeof message!='string')
-        return JSON.stringify(message);
-      return message;
+      return _.isString(message) ? message : JSON.stringify(message);
     }
 
-    var toastOk = function(title, message){
+    const toastOk = function(title, message){
       toastr.success(validateMessage(message), title, _settings);
     };
 
-    var toastError = function(title, message){
+    const toastError = function(title, message){
       toastr.error(validateMessage(message), title, _settings);
     };
 
-    var toastInfo = function(title, message){
+    const toastInfo = function(title, message){
       toastr.info(validateMessage(message), title, _settings);
     };
 
-    var toastWarning = function(title, message){
+    const toastWarning = function(title, message){
       toastr.warning(validateMessage(message), title, _settings);
     };
 

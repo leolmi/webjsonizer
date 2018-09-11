@@ -195,7 +195,8 @@
     display: none;
   }
   .editor-body {
-    width: 100%;
+    width: 100vw;
+    left: 0;
   }
   .editor-menu-toggler {
     display: inherit;

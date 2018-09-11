@@ -1,13 +1,11 @@
 'use strict';
 
-var mongoose = require('mongoose');
-var passport = require('passport');
-var config = require('../config/environment');
-var jwt = require('jsonwebtoken');
-var expressJwt = require('express-jwt');
-var compose = require('composable-middleware');
-var User = require('../api/user/user.model');
-var validateJwt = expressJwt({ secret: config.secrets.session });
+const config = require('../config/environment');
+const jwt = require('jsonwebtoken');
+const expressJwt = require('express-jwt');
+const compose = require('composable-middleware');
+const User = require('../api/user/user.model');
+const validateJwt = expressJwt({ secret: config.secrets.session });
 
 /**
  * Attaches the user object to the request if authenticated
@@ -26,9 +24,8 @@ function isAuthenticated() {
     // Attach user to request
     .use(function(req, res, next) {
       User.findById(req.user._id, function (err, user) {
-        if (err) return next(err);
-        if (!user) return res.send(401);
-
+        if (err) {return next(err);}
+        if (!user) {return res.send(401);}
         req.user = user;
         next();
       });
@@ -57,15 +54,15 @@ function hasRole(roleRequired) {
  * Returns a jwt token signed by the app secret
  */
 function signToken(id) {
-  return jwt.sign({ _id: id }, config.secrets.session, { expiresInMinutes: 60*5 });
+  return jwt.sign({ _id: id }, config.secrets.session, { expiresIn: '5m' });
 }
 
 /**
  * Set token cookie directly for oAuth strategies
  */
 function setTokenCookie(req, res) {
-  if (!req.user) return res.json(404, { message: 'Something went wrong, please try again.'});
-  var token = signToken(req.user._id, req.user.role);
+  if (!req.user) {return res.json(404, { message: 'Something went wrong, please try again.'});}
+  const token = signToken(req.user._id, req.user.role);
   res.cookie('token', JSON.stringify(token));
   res.redirect('/');
 }

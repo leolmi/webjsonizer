@@ -64,7 +64,7 @@ angular.module('webjsonizerApp')
               $location.path('/editor');
             })
             .catch(function (err) {
-              $rootScope.errors.other = err.message;
+              $rootScope.errors.other = err.data.message;
             });
         }
       };

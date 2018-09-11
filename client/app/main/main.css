@@ -39,6 +39,9 @@
   border-radius: 30px;
   position: relative;
 }
+.login-form .help-block {
+  color: tomato;
+}
 .recover-tool {
   position: absolute;
   right: 16px;

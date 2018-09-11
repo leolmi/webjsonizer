@@ -4,7 +4,18 @@
 
 'use strict';
 
-var config = require('./environment');
+const config = require('./environment');
+
+function _log(message) {
+  const now = new Date();
+  return {
+    time: now,
+    time_str: now.toLocaleTimeString(),
+    type: 'info',
+    message: message
+  };
+}
+
 
 // When the user disconnects.. perform this
 function onDisconnect(socket) {
@@ -19,6 +30,8 @@ function onConnect(socket) {
 
   // Insert sockets below
   //require('../api/thing/thing.socket').register(socket);
+
+  socket.emit('log', _log('Wellcome "'+socket.address+'" to webjsonizer!'));
 }
 
 module.exports = function (socketio) {
@@ -38,9 +51,8 @@ module.exports = function (socketio) {
   // }));
 
   socketio.on('connection', function (socket) {
-    socket.address = socket.handshake.address !== null ?
-            socket.handshake.address.address + ':' + socket.handshake.address.port :
-            process.env.DOMAIN;
+    const hs = socket.handshake.address||{};
+    socket.address = hs.address ? hs.address + ':' + hs.port : hs;
 
     socket.connectedAt = new Date();
 
@@ -53,5 +65,9 @@ module.exports = function (socketio) {
     // Call onConnect.
     onConnect(socket);
     console.info('[%s] CONNECTED', socket.address);
+  });
+
+  socketio.on('error', function (err) {
+    console.error(err);
   });
 };

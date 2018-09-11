@@ -2,40 +2,44 @@
 'use strict';
 
 angular.module('webjsonizerApp')
-  .directive('jsonizerTester', ['$http','$timeout','$rootScope','Logger',
-    function ($http, $timeout, $rootScope, Logger) {
+  .directive('jsonizerTester', ['$http','$timeout','$rootScope','Logger','util','JSONIZER_CONSTANT',
+    function ($http, $timeout, $rootScope, Logger, util, JSONIZER_CONSTANT) {
       return {
         restrict: 'E',
         scope: { },
         templateUrl: 'components/jsonizer-tester/jsonizer-tester.html',
-        link: function (scope, elm, atr) {
+        link: function (scope) {
           scope.testJ = {id: ''};
-          var _testTimeout = null;
+          scope.URL = JSONIZER_CONSTANT.url;
+          let _testTimeout = null;
 
           function loadTestSchema() {
             scope.testIdle = true;
             scope.testJ.result = null;
-            if (!scope.testJ.id)
+            if (!scope.testJ.id) {
               return scope.clearTest();
+            }
             $http.get('/jsonize/schema/' + scope.testJ.id)
               .then(function (resp) {
                 scope.testJ.ok = true;
                 _.extend(scope.testJ, resp.data);
                 $rootScope.$broadcast('TEST-SEQUENCE-LOADED', {J:scope.testJ});
                 scope.testIdle = false;
-              }, function () {
+              }, function (err) {
                 scope.testJ = {
                   id: scope.testJ.id,
                   message: 'no jsonizer founded!'
                 };
                 scope.testIdle = false;
+                console.error(err);
               });
           }
 
           scope.testChanged = function () {
             scope.testIdle = true;
-            if (_testTimeout)
+            if (_testTimeout) {
               $timeout.cancel(_testTimeout);
+            }
             _testTimeout = $timeout(function () {
               loadTestSchema();
             }, 1000);
@@ -59,16 +63,22 @@ angular.module('webjsonizerApp')
             scope.testIdle = false;
           };
 
-          var default_tab = {name:'json'};
+          scope.copyTest = function() {
+            const txt =  JSONIZER_CONSTANT.url + scope.testJ.id;
+            util.copyToClipboard(txt);
+            Logger.ok('Url copied in clipboard!');
+          };
+
+          const defaultTab = {name:'json'};
           scope.tabs = {
             items:[
-              default_tab,
+              defaultTab,
               {name:'table'}],
-            current:default_tab
+            current:defaultTab
           };
 
           scope.isCurrent = function(tabName) {
-            return scope.tabs.current && scope.tabs.current.name==tabName;
+            return scope.tabs.current && scope.tabs.current.name===tabName;
           };
 
           $rootScope.$on('TEST-THIS-SEQUENCE', function(e, data){

@@ -1,7 +1,7 @@
 'use strict';
 
-var path = require('path');
-var _ = require('lodash');
+const path = require('path');
+const _ = require('lodash');
 
 function requiredProcessEnv(name) {
   if(!process.env[name]) {
@@ -12,14 +12,17 @@ function requiredProcessEnv(name) {
 
 // All configurations will extend these options
 // ============================================
-var all = {
+const all = {
   env: process.env.NODE_ENV,
 
   // Root path of server
   root: path.normalize(__dirname + '/../../..'),
 
   // Server port
-  port: process.env.PORT || 9000,
+  port: process.env.OPENSHIFT_NODEJS_PORT ||
+        process.env.SERVER_PORT ||
+        process.env.PORT ||
+        9000,
 
   // Should we populate the DB with sample data?
   seedDB: false,
@@ -35,9 +38,8 @@ var all = {
   // MongoDB connection options
   mongo: {
     options: {
-      db: {
-        safe: true
-      }
+      // useNewUrlParser: true,
+      useMongoClient: true
     }
   },
 

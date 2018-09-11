@@ -4,9 +4,10 @@
 'use strict';
 
 angular.module('webjsonizerApp')
-  .config(function ($routeProvider) {
-    $routeProvider
-      .when('/editor', {
+  .config(function ($stateProvider) {
+    $stateProvider
+      .state('editor', {
+        url: '/editor',
         templateUrl: 'app/editor/editor.html',
         controller: 'EditorCtrl'
       });

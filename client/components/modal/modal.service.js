@@ -1,36 +1,40 @@
 'use strict';
 
 angular.module('webjsonizerApp')
-  .factory('Modal', function ($rootScope, $modal) {
-    var modal_DELETE = 'delete';
-    var modal_YESNOCANCEL = 'yesnocancel';
-    var modal_PUBLISH = 'publish';
+  .factory('Modal', function ($rootScope, $uibModal) {
+    const BUTTON = {
+      DELETE: 'delete',
+      YESNOCANCEL: 'yesnocancel',
+      PUBLISH: 'publish'
+    };
+
     /**
      * Opens a modal
      * @param  {Object} scope      - an object to be merged with modal's scope
      * @param  {String} modalClass - (optional) class(es) to be applied to the modal
-     * @return {Object}            - the instance $modal.open() returns
+     * @return {Object}            - the instance $uibModal.open() returns
      */
     function openModal(scope, modalClass) {
-      var modalScope = $rootScope.$new();
+      const modalScope = $rootScope.$new();
       scope = scope || {};
       modalClass = modalClass || 'modal-default';
 
       angular.extend(modalScope, scope);
 
-      return $modal.open({
+      return $uibModal.open({
+        animation: true,
         templateUrl: 'components/modal/modal.html',
         windowClass: modalClass,
         scope: modalScope,
-        size: scope.modal ? scope.modal.size : ''
+        size: (scope.modal||{}).size||''
       });
     }
 
     // Public API here
     return {
-      MODAL_DELETE:modal_DELETE,
-      MODAL_YESNOCANCEL:modal_YESNOCANCEL,
-      MODAL_PUBLISH: modal_PUBLISH,
+      MODAL_DELETE: BUTTON.DELETE,
+      MODAL_YESNOCANCEL: BUTTON.YESNOCANCEL,
+      MODAL_PUBLISH: BUTTON.PUBLISH,
       /* Confirmation modals */
       confirm: {
         /**
@@ -38,9 +42,9 @@ angular.module('webjsonizerApp')
          * @param type
          */
         getAskOptions: function(type) {
-          var args = Array.prototype.slice.call(arguments),
-            type = args.shift();
-          var opt = {
+          let args = Array.prototype.slice.call(arguments);
+          type = type || args.shift();
+          const opt = {
             title: '',
             body: '',
             ok: 'OK',
@@ -54,21 +58,21 @@ angular.module('webjsonizerApp')
             modalClass: 'modal-warning'
           };
           switch(type) {
-            case modal_DELETE:
+            case BUTTON.DELETE:
               opt.title = 'Confirm Delete';
               opt.body = '<p>Are you sure you want to delete "<strong>' + args[0] + '</strong>" ?</p>';
               opt.ok = 'Delete';
               opt.okClass = 'btn-danger';
               opt.modalClass = 'modal-danger';
               break;
-            case modal_PUBLISH:
+            case BUTTON.PUBLISH:
               opt.title = 'Confirm Publish';
               opt.body = '<p>Are you sure you want to publish a new version of "<strong>' + args[0] + '</strong>" ?</p>';
               opt.ok = 'Publish';
               opt.okClass = 'btn-danger';
               opt.modalClass = 'modal-warning';
               break;
-            case modal_YESNOCANCEL:
+            case BUTTON.YESNOCANCEL:
               opt.ok = 'Yes';
               opt.no = 'No';
               break;
@@ -92,34 +96,34 @@ angular.module('webjsonizerApp')
            * @param  {All}     - any additional args are passed staight to del callback
            */
           return function() {
-            var args = Array.prototype.slice.call(arguments),
+            let args = Array.prototype.slice.call(arguments),
               options = args.shift(),
               execModal;
 
-            var buttons = [];
-            if (options.ok) buttons.push({
+            const buttons = [];
+            if (options.ok) {buttons.push({
                 classes: options.okClass,
                 text: options.ok,
-                click: function(e) {
+                click(e) {
                   args.push(options.okResult);
                   execModal.close(e);
                 }
-              });
-            if (options.no) buttons.push({
+              });}
+            if (options.no) {buttons.push({
                 classes: options.noClass,
                 text: options.no,
-                click: function(e) {
+                click(e) {
                   args.push(options.noResult);
                   execModal.close(e);
                 }
-              });
-            if (options.cancel) buttons.push({
+              });}
+            if (options.cancel) {buttons.push({
                 classes: options.cancelClass,
                 text: options.cancel,
-                click: function(e) {
+                click(e) {
                   execModal.dismiss(e);
                 }
-              });
+              });}
 
             execModal = openModal({
               modal: {
@@ -130,11 +134,7 @@ angular.module('webjsonizerApp')
               }
             }, options.modalClass);
 
-            execModal.result.then(function(event) {
-              exc.apply(event, args);
-            }, function(event){
-              dsc.apply(event, args);
-            });
+            execModal.result.then((e) => exc.apply(e, args), (e) => dsc.apply(e, args));
           };
         },
 
@@ -147,9 +147,9 @@ angular.module('webjsonizerApp')
           cb = cb || angular.noop;
 
           return function() {
-            var args = Array.prototype.slice.call(arguments);
-
-            var modal = {
+            const args = Array.prototype.slice.call(arguments);
+            let createModal;
+            const modal = {
               info: args[0],
               dismissable: true,
               idle: false,
@@ -158,27 +158,24 @@ angular.module('webjsonizerApp')
               buttons: [{
                 classes: 'btn-success',
                 text: 'Ok',
-                click: function(e) {
-                  if (_.isFunction(modal.apply))
-                    modal.apply();
+                click(e) {
+                  if (_.isFunction(modal.apply)) {modal.apply();}
                   createModal.close(e);
                 }
               },{
                 classes: 'btn-warning',
                 text: 'Cancel',
-                click: function(e) {
+                click(e) {
                   createModal.dismiss(e);
                 }
               }]
             };
 
-            var createModal = openModal({
+            createModal = openModal({
               modal: modal
             }, 'modal-warning');
 
-            createModal.result.then(function(event) {
-              cb.apply(event, args);
-            });
+            createModal.result.then((e) => cb.apply(e, args), () => console.log('modal dismissed'));
           }
         },
 
@@ -216,9 +213,7 @@ angular.module('webjsonizerApp')
               }
             }, 'modal-warning');
 
-            testModal.result.then(function(event) {
-              cb.apply(event, args);
-            });
+            testModal.result.then((e) => cb.apply(e, args), () => console.log('modal dismissed'));
           }
         },
 
@@ -255,9 +250,7 @@ angular.module('webjsonizerApp')
               }
             }, 'modal-warning');
 
-            parametersModal.result.then(function(event) {
-              cb.apply(event, args);
-            });
+            parametersModal.result.then((e) => cb.apply(e, args), () => console.log('modal dismissed'));
           }
         }
       }

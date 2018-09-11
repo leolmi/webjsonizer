@@ -5,9 +5,12 @@
       <i ng-show="testIdle" class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i>
     </div>
     <div class="test-url row">
-      https://jsonizer.herokuapp.com/jsonize/
-      <input type="text" class="form-control input-sm test-id" ng-model="testJ.id" ng-change="testChanged()" placeholder="insert code...">
-      <i class="jsz-fa-btn btn-right fa fa-remove" ng-click="clearTest()"></i>
+      <div class="test-row">
+        {{::URL}}
+        <input type="text" class="form-control input-sm test-id" ng-model="testJ.id" ng-change="testChanged()" placeholder="insert code...">
+        <i class="jsz-fa-btn btn-right fa fa-remove" ng-click="clearTest($event)"></i>
+        <i class="jsz-fa-btn btn-right fa fa-copy" ng-disabled="!testJ.id" ng-click="copyTest($event)"></i>
+      </div>
     </div>
     <div class="test-message" ng-show="!testJ.ok && testJ.message">{{testJ.message}}</div>
     <div class="test-info" ng-show="testJ.ok">

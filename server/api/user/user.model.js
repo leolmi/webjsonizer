@@ -1,11 +1,11 @@
 'use strict';
 
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-var crypto = require('crypto');
-var authTypes = ['github', 'twitter', 'facebook', 'google'];
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const crypto = require('crypto');
+const authTypes = ['github', 'twitter', 'facebook', 'google'];
 
-var UserSchema = new Schema({
+const UserSchema = new Schema({
   name: String,
   email: { type: String, lowercase: true },
   role: {
@@ -142,7 +142,7 @@ UserSchema.methods = {
   encryptPassword: function(password) {
     if (!password || !this.salt) return '';
     var salt = new Buffer(this.salt, 'base64');
-    return crypto.pbkdf2Sync(password, salt, 10000, 64).toString('base64');
+    return crypto.pbkdf2Sync(password, salt, 10000, 64, 'sha1').toString('base64');
   }
 };
 
